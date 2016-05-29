@@ -1,0 +1,65 @@
+<Alloy>
+	<Collection src="schedule"/>
+	<Collection src="labor"/>
+	<Model src="dummy" />
+	<Tab id="schedule_tab" title="SCHEDULE" icon="calendar112.png">
+  <Window id="schedule_window" backgroundColor="white" title="Schedule">
+  	<RightNavButton platform="ios">
+  			<Button title="Refresh" width="20" height="20"  onClick="refreshCalendar" /> 	
+	</RightNavButton>
+	<RightNavButton platform="ios">
+		<Button systemButton="Ti.UI.iPhone.SystemButton.ADD" onClick="multiplepicker" />
+	</RightNavButton>	
+	 <Widget id="ptr" src="nl.fokkezb.pullToRefresh" onRelease="myRefresher">
+	 	<ListView id="schedule_list" height="Ti.UI.Size" defaultItemTemplate="template">
+		<SearchBar id="search_history" barColor="gray" />
+		<HeaderView>
+                <View backgroundColor="#DDD" height="Ti.UI.SIZE">
+                    <Label>Events</Label>
+                </View>>
+        </HeaderView>
+		<Templates>
+			<ItemTemplate name="template" backgroundColor="white" height="118" onClick="selectItem" >
+				<Label id="label_header" color="gray"  left="80" top="10" bindId="info"/>
+				<Label id="label_subheader" color="#333"  left="16" top="70" bindId="startmonth"/>
+				<Label id="label_sub1" color="#333" left="30" top="97" bindId="startyear"/>
+				<Label id="label_sub1" color="orange"  left="80" top="54" bindId="event"/>
+				<Label id="label_sub1" color="#333"  left="80" top="68" bindId="client"/>
+				<Label id="label_sub3" color="#333"  left="80" top="84" bindId="address"/>
+				<ImageView bindId="img" id="icon" height="10" width="60" left="80" top="103"/>
+				<ImageView bindId="imgday" id="iconday" height="80" width="80" left="5" top="1"/>
+				<Button id="next_button" bindId="all" image="light_info.png" right="30" top="45" width="20" height="20" onClick="doClick"/>
+			</ItemTemplate>
+		</Templates>
+		<ListSection id="schedule_section" headerTitle="{dummy.HeaderTitle}" dataCollection="schedule" dataTransform="transformFunction">
+			<ListItem id="schedule_listitem" all:text="{title}" info:text="{custom}" client:text="{client}" address:text="{address}"
+				startday:text="{startday}" startmonth:text="{startmonth}" daymonthyear:text="{daymonthyear}" event:text="{event}" 
+				startyear:text="{startyear}" img:image="{img}" imgday:image="{imgday}" searchableText="{searchitems}" />
+		</ListSection>
+		<FooterView>
+	        <View backgroundColor="#DDD" height="50">
+	        </View>>
+        </FooterView>
+   </ListView>
+   </Widget>
+		<Toolbar id="sortview" platform="ios" bottom="0" borderTop="true" borderBottom="false">
+			<Items >
+				<!--FlexSpace/>
+					<Button top="1" title="Check Events" image="checkevent.png" onClick="CheckEvents"/-->
+				<FlexSpace/>
+					<Button title="Day" style="Ti.UI.iPhone.SystemButtonStyle.PLAIN" onClick="buttonAction"/>
+					<Button title="Week" style="Ti.UI.iPhone.SystemButtonStyle.PLAIN" onClick="buttonAction"/>
+					<Button title="Month" style="Ti.UI.iPhone.SystemButtonStyle.PLAIN" onClick="buttonAction"/>
+					<Button title="All" style="Ti.UI.iPhone.SystemButtonStyle.PLAIN" onClick="buttonAction"/>
+				<FlexSpace/>
+					<!--Button top="5" title="Now" onClick="CreateEvents"/>
+					<Button title="Future" onClick="createEventFuture"/>
+					<Button top="20" title="Multiple" onClick="multiplepicker"/>
+				<FlexSpace/>
+					<Button top="1" image="createevent.png" title="create event" onClick="sharedCalendar"/>
+				<FlexSpace/-->
+			</Items>
+		</Toolbar>
+  </Window>
+ </Tab>
+</Alloy>

@@ -1,0 +1,31 @@
+<Alloy>
+	<Model src="dummy" />
+	<Tab id="tab_clientdetail" title="clientdetail">
+  <Window id="clientdetail_window" title="Client Detail" backgroundColor="white">
+  	<RightNavButton platform="ios">
+	   <Button id="edit_rightnavbutton" systemButton="Ti.UI.iPhone.SystemButton.EDIT" onClick="editAction" /> 
+	</RightNavButton>
+	  <TableView id="clientdetail_table"  backgroundColor="white" separatorStyle="Titanium.UI.iPhone.TableViewSeparatorStyle.NONE" >
+	  	<TableViewSection id="contactdetail_section" headerTitle="ContactDetails" >
+	  	  <TableViewRow/>
+		  <TableViewRow id="clientdetail_row" backgroundColor="white" height="Ti.UI.SIZE" color="#333">
+		  	  <Label id="Firstname" text="Firstname:" left="20" top="10"/>
+		  	  <Label id="Firstname" text="{dummy.firstname}" left="120" top="10"/>
+		  	  <Label id="Lastname" text="Lastname:" left="20" top="40"/>
+		  	  <Label id="Lastname" text="{dummy.lastname}" left="120" top="40"/>
+		  	  <Label id="phone" text="Phone:" left="20" top="70"/>
+	   		  <Label id="phone" text="{dummy.phone}" left="120" top="70"/>
+	   		  <Label id="email" text="Email:" left="20" top="100"/>
+	   		  <Label id="email" text="{dummy.email}" left="120" top="100"/>
+	   		  <Label id="address" text="Address:" left="20" top="130" />
+	   		  <Label id="address" text="{dummy.address}" left="120" top="130" />
+	   		  <Label id="citystate" text="City/State:" left="20" top="160" />
+	   		  <Label id="citystate" text="{dummy.citystate}" left="120" top="160" />
+	   		  <Label id="company" text="Company:" left="20" top="190"/>
+	   		  <Label id="company" text="{dummy.company}" left="120" top="190"/>
+		  </TableViewRow>
+	  </TableViewSection>
+	  </TableView>
+  </Window>
+ </Tab>
+</Alloy>

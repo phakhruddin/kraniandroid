@@ -1,0 +1,54 @@
+<Alloy>
+	<Model src="dummy" />
+	<Collection src="adhoc" />
+	<Tab id="tab_proposaldetail">
+  <Window id="proposaldetail_window" title="Proposal Detail" backgroundColor="white">
+	  <TableView id="proposaldetail_table"  backgroundColor="transparent">
+	  	<TableViewSection  headerTitle="Summary">
+		  <TableViewRow id="proposalnumber_row" color="gray" Title="Summary" height="100">
+		  	  <Label id="proposalnumber" color="#404040" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="10" text="{dummy.proposalnumber}" />
+	   		  <Label id="header" color="#404040" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="25" text="{dummy.firstname} {dummy.lastname}" />
+	   		  <Label id="customernumber" color="gray" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="65" text="Cust no: {dummy.customernumber}" />
+	   	  </TableViewRow>
+	  </TableViewSection>
+	  <TableViewSection  headerTitle="Details">
+	  	<TableViewRow id="totalbalance_row" height="140">
+	  		<Label id="bal_title" color="gray" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="10" text="total"/>
+	  		  <Label id="balance1" color="red" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="20" text="{dummy.total}" />
+	  		  <Label id="currency" color="gray" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="90" text="{dummy.currency}" />
+	   </TableViewRow>
+	   </TableViewSection>
+	  <TableViewSection  headerTitle="Dates">
+	  	<TableViewRow id="dates_row" height="35" >
+	   		  <Button id="duedate_button" left="20" top="5" title="Follow-up date: " onClick="duedateAction" />
+	   		  <Label id="duedate_label" color="red" left="45%" top="10"  text="{dummy.duedate}" /> 
+	   		  <Button id="duedate_done" right="40" top="10" title="DONE" onClick="duedateActionDone" />
+	    </TableViewRow>
+		  	  <TableViewRow id="datepicker_row" height="1"/>
+	  </TableViewSection>
+	  <TableViewSection  headerTitle="Action">
+	  	  <!--TableViewRow id="action_row" Title="duedate" height="Ti.UI.Size">
+	   		  <Button id="phone_button" left="30%" top="10" height="30" width="Ti.UI.SIZE" color="gray" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" 
+	   		  	image="call.png" title=" {dummy.phone}" onClick="actionPhone" />
+	   		  <Button id="email_button" left="30%" top="50" height="30" width="Ti.UI.SIZE" color="gray" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" 
+	   		  	image="email.png" title="  {dummy.email}" onClick="actioneMail"  />
+	   		  <Button id="proposal_button" image="pdf.png" left="30%" top="80" title=" Generate proposal" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" onClick="genproposal"/>
+	   		  <Button id="viewproposal_button" top="80" title="Click to view the proposal" onClick="actionPreview"></Button>
+		  </TableViewRow-->  	
+  	  	  <TableViewRow id="action_row" Title="duedate" height="Ti.UI.Size">
+	   		  <Button id="phone_button" left="15%" top="10" height="30" width="Ti.UI.SIZE" color="gray" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" 
+	   		  	image="call.png" titleid=" {dummy.phone}" onClick="actionPhone" />
+	   		  <Button id="email_button" left="40%" top="10" height="30" width="Ti.UI.SIZE" color="gray" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" 
+	   		  	image="email.png" titleid=" {dummy.email}" onClick="actioneMail"  />
+	   		  <ImageView id="viewproposal_button" image="documents@2x.png"  left="65%" top="10" height="30" width="Ti.UI.SIZE" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" 
+	   		  	onClick="actionPreview" />
+	   		  <Button id="proposal_button" image="pdf.png" left="30%" top="50" title=" Generate proposal" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" onClick="genproposal"/>
+		  </TableViewRow>  		 
+	  </TableViewSection>
+	  <TableViewSection id="projitem_section" headerTitle="Project Items">
+	  	<TableViewRow id="jobitem_row" height="Ti.UI.Size"/>
+	  </TableViewSection>
+	  </TableView>
+  </Window>
+  </Tab>
+</Alloy>

@@ -1,0 +1,59 @@
+<Alloy>
+	<Model src="dummy"/>
+ <Tab id="tab_invoicelist" title="invoice">
+  <Window id="invoicelist_window"  title="INVOICE">
+	<RightNavButton platform="ios">
+	   <Button systemButton="Ti.UI.iPhone.SystemButton.ADD" onClick="addHandler" /> 
+	   <!--Button systemButton="Ti.UI.iPhone.SystemButton.SEARCH" right="20" onClick="searchHandler"/-->
+	</RightNavButton>
+	<!--Widget id="ptr" src="nl.fokkezb.pullToRefresh" onRelease="myRefresher"-->
+	<ListView id="invoicelist_list" height="Ti.UI.Size" defaultItemTemplate="template">
+		<SearchBar barColor="gray" />
+		<HeaderView>
+                <View backgroundColor="#DDD" height="Ti.UI.SIZE">
+                    <Label>Invoices</Label>
+                </View>>
+            </HeaderView>
+		<Templates>
+			<ItemTemplate name="template" backgroundColor="white" height="65" onClick="doClick" >
+				<Label id="label_header" color="#333"  left="20" top="10" bindId="info"   />
+				<Label id="label_sub1" color="#330"  left="20" top="35" bindId="invoicenumber"/>
+				<Label id="label_sub1" color="#330"  left="20" top="50" bindId="total"/>				
+				<Label  id="label_sub2" color="orange"  left="50%" top="35" bindId="bal"/>
+				<Label  id="label_sub3" color="#333"  left="50%" top="50" bindId="paid" />
+				<ImageView bindId="img" id="icon" height="10" width="20%" left="75%" top="45"/>
+				<Button id="next_button" bindId="all" image="light_info.png" right="20" top="15" width="20" height="20"/>
+			</ItemTemplate>
+		</Templates>
+		<ListSection id="invoicelist_section" headerTitle="Invoice List" dataCollection="invoice" dataTransform="transformFunction">
+			<ListItem id="invoice_listitem" all:text="{title}" all:input="{title}" info:text="{custom}" info:input="{title}" total:text="{total}" total:input="{title}" 
+				bal:text="{bal}" bal:input="{title}" bal:color="{color}" paid:text="{paid}" paid:input="{title}" status:text="{status}" status:input="{title}" img:image="{img}" img:input="{title}"
+				invoicenumber:text="{invoicenumber}" invoicenumber:input="{title}" searchableText="{title}" />
+		</ListSection>
+			<FooterView>
+                <View backgroundColor="#DDD" height="50">
+                </View>>
+            </FooterView>
+   </ListView>
+  <!--/Widget-->
+       <!--View id="sortview" backgroundColor="#DDD" width="Ti.UI.SIZE" height="Ti.UI.SIZE">
+       	<Require src="button" label="All"/>
+		<Require src="button" label="Paid"/>
+		<Require src="button" label="Owed"/>
+		<Require src="button" label="None"/>	
+    </View-->
+          <Toolbar id="sortview" platform="ios" bottom="0" borderTop="true" borderBottom="false">
+            <Items >
+            	<FlexSpace/>
+            	<Button systemButton="COMPOSE" onClick="mailAction"/>
+            	<FlexSpace/>
+            	<Button id="All" title="All" style="Ti.UI.iPhone.SystemButtonStyle.PLAIN" onClick="buttonAction" />
+            	<Button id="Paid"  title="Paid" style="Ti.UI.iPhone.SystemButtonStyle.PLAIN" onClick="buttonAction"  />            	
+            	<Button id="Owed"  title="Owed" style="Ti.UI.iPhone.SystemButtonStyle.PLAIN" onClick="buttonAction"  />
+            	<FlexSpace/>
+            </Items>
+        </Toolbar>
+
+  </Window>
+    </Tab>
+</Alloy>

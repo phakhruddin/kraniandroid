@@ -1,0 +1,20 @@
+"#button": {
+	height: '50dp',
+	width: '25%',
+	borderWidth: 1,
+	borderColor: '#000',
+	backgroundColor: '#333'
+}
+
+"#label": {
+	height: '50dp',
+	width: '100%',
+	color: '#fff',
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+	font: {
+		fontSize: '12dp',
+		fontWeight: 'bold'
+	},
+	touchEnabled: true,
+	bubbleParent: true
+}

@@ -1,0 +1,46 @@
+<Alloy>
+  <Window id="enterclient_window" bbackgroundColor="white" title="enterclient List">
+	  <TableView id="enterclient_table" backgroundColor="transparent" >
+	  	  <TableViewRow id="clientfirstnameinput" backgroundColor="transparent" opacity="0" color="#333" Title="Client FirstName">
+		  	<TextField id="clientfirstname_tf"></TextField>
+			<Button id="save_clientfirstname_button"></Button>
+		  </TableViewRow>
+		  <TableViewRow id="clientlastnameinput" backgroundColor="transparent" opacity="0" color="#333" Title="Client lastname">
+		  	<TextField id="clientlastname_tf"></TextField>
+			<Button id="save_clientlastname_button"></Button>
+		  </TableViewRow>
+		  <TableViewRow id="clientphoneinput" backgroundColor="transparent" opacity="0" color="#333" Title="Client phone">
+		  	<TextField id="clientphone_tf"></TextField>
+			<Button id="save_clientphone_button"></Button>
+		  </TableViewRow>
+		  <TableViewRow id="clientemailinput" backgroundColor="transparent" opacity="0" color="#333" Title="Client email">
+		  	<TextField id="clientemail_tf"></TextField>
+			<Button id="save_clientemail_button"></Button>
+		  </TableViewRow>
+		  <TableViewRow id="clientstreetaddressinput" backgroundColor="transparent" opacity="0" color="#333" Title="Client streetaddress">
+		  	<TextField id="clientstreetaddress_tf"></TextField>
+			<Button id="save_clientstreetaddress_button"></Button>
+		  </TableViewRow>
+		  <TableViewRow id="clientcityinput" backgroundColor="transparent" opacity="0" color="#333" Title="Client city">
+		  	<TextField id="clientcity_tf"></TextField>
+			<Button id="save_clientcity_button"></Button>
+		  </TableViewRow>
+		  <TableViewRow id="clientstateinput" backgroundColor="transparent" opacity="0" color="#333" Title="Client state">
+		  	<TextField id="clientstate_tf"></TextField>
+			<Button id="save_clientstate_button"></Button>
+		  </TableViewRow>
+		  <TableViewRow id="clientprojectinput" backgroundColor="transparent" opacity="0" color="#333" Title="Client project">
+		  	<TextField id="clientproject_tf"></TextField>
+			<Button id="save_clientproject_button"></Button>
+		  </TableViewRow>
+		  <TableViewRow id="clientcompanyinput" backgroundColor="transparent" opacity="0" color="#333" Title="Client company">
+		  	<TextField id="clientcompany_tf"></TextField>
+			<Button id="save_clientcompany_button"></Button>
+		  </TableViewRow>
+		  <TableViewRow id="submitinput" backgroundColor="transparent" opacity="0" color="#333" Title="Submit">
+			<Button id="submit_button"></Button>
+		  </TableViewRow>
+		  <TableViewRow id="enterclient_row" backgroundColor="transparent" opacity="0" Title="enterclient"/>
+	  </TableView>
+  </Window>
+</Alloy>

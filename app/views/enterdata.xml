@@ -1,0 +1,17 @@
+<Alloy>
+  <Tab id="tab_enterdata">
+  <Window id="enterdata_window" backgroundColor="white" title="DATA">
+	  <TableView id="enterdata_table" backgroundColor="transparent" >
+		   <TableViewRow id="enterclient" backgroundColor="transparent" Title="Enter Client">
+		   		  <Label id="label_enterclient" color="#AFEEEE" top="5" left="50" text="Enter Clients Data >"/>
+		   </TableViewRow>
+		   <TableViewRow id="enterinvoice" backgroundColor="transparent" Title="Enter Invoice">
+		   		  <Label id="label_enterinvoice" color="#FFD700" top="5" left="50" text="Enter Invoices >"/>
+		   </TableViewRow>
+		   <TableViewRow id="enterproject" backgroundColor="transparent" Title="Enter Project">
+		   		  <Label id="label_enterproject" color="#CFB53B" top="5" left="50" text="Enter Projects Data >"/>
+		   </TableViewRow>
+	  </TableView>
+  </Window>
+  </Tab>
+</Alloy>

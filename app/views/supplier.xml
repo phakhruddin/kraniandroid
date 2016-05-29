@@ -1,0 +1,13 @@
+<Alloy>
+  <Window id="supplier_window" backgroundColor="white" title="Supplier List">
+ 	<RightNavButton platform="ios">
+	   <Button systemButton="Ti.UI.iPhone.SystemButton.ADD" onClick="addHandler" /> 
+	</RightNavButton>
+		<!--Widget id="ptr" src="nl.fokkezb.pullToRefresh" onRelease="myRefresher"-->
+ 	  <TableView id="supplier_table" backgroundColor="transparent" search="search_history" filterAttribute="title" >
+ 	  	<SearchBar id="search_history" height="43" />
+		  <TableViewRow id="supplier_row" backgroundColor="transparent" opacity="0" title=""/>
+	  </TableView>
+	  <!--/Widget-->
+  </Window>
+</Alloy>

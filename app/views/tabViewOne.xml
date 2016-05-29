@@ -1,0 +1,82 @@
+<Alloy>
+  <Collection src="project"/>
+  <Collection src="client"/>
+  <Collection src="invoice"/>
+  <Collection src="inventory"/>
+  <Collection src="labor"/>
+  <Collection src="schedule"/>
+  <Collection src="proposal"/>
+  <Collection src="master"/>
+  <Collection src="joblogsid"/>
+  <Tab id="tab_one" title="MAIN" icon="home45.png">
+    <Window id="tabviewone_window" title="Krani" class='container'>
+    <ActivityIndicator id="activityIndicator" style="Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN"/>
+    <RightNavButton platform="ios">
+	   <Button id="login_button" systemButton="Ti.UI.iPhone.SystemButton.PLAIN" title="LOGIN" onClick="login" /> 
+	</RightNavButton>
+	<LeftNavButton platform="ios">
+	   <Button id="logout_button" systemButton="Ti.UI.iPhone.SystemButton.PLAIN" onClick="logout" /> 
+	</LeftNavButton>
+      <TableView id="table" backgroundColor="white" separatorStyle="none">
+      		<HeaderView id="tabviewone_headerview">
+				<View height="5%" id="status_view" backgroundColor="red">
+					<Label id="status_label" color="white" text="Please click login above" textAlign="right"/>				
+				</View>
+			</HeaderView>
+		 <TableViewRow id="user_row" opacity="1.0" height="1">
+		 	<Label id="user_label" textAlign="center" left="35%"/>
+		 </TableViewRow>
+  		<!--TableViewRow id="logo_row" height="Ti.UI.Size">
+  		</TableViewRow-->
+ 	      <TableViewRow id="schedule" opacity="1.0" Title="location">
+ 	      	<Label id="label_schedule"/>
+		   		  <Label id="label_schedule" color="orange"  left="80" text="Schedule"/>
+		   		  <ImageView image="calendar90.png" left="12" height="50" width="50"/>
+		   </TableViewRow>
+	      <TableViewRow id="location" backgroundColor="transparent" Title="Location">
+	      	<Label id="label_location" />
+		   		  <Label id="label_location" color="#333"  left="80" text="Locate Tech"/>
+		   		  <ImageView image="man388.png" left="20" height="30" width="30"/>
+		   </TableViewRow>
+		   <TableViewRow id="project" backgroundColor="transparent" Title="Project">
+		   	<Label id="label_project"/>
+		   		  <Label id="label_project" color="#008080"  left="80" text="Projects"/>
+		   		  <ImageView image="silhouette35.png" left="20" height="30" width="30"/>
+		   </TableViewRow>
+		   <TableViewRow id="client" backgroundColor="transparent" Title="Clients">
+		   		  <Label id="label_clients" color="#228B22"  left="80" text="Clients"/>
+		   		  <ImageView image="hands8.png" left="20" height="30" width="30"/>
+		   </TableViewRow>
+		   <TableViewRow id="invoicelistlist" backgroundColor="transparent" Title="Invoice">
+		   		   <Label id="label_invoice" color="#008080"  left="80" text="Invoice"/>
+		   		  <ImageView image="dollar150.png" left="15" height="40" width="40"/>
+		   </TableViewRow>
+   		   <TableViewRow id="proposallistlist" backgroundColor="transparent" Title="Proposal">
+		   		  <Label id="label_proposal" color="#008080"  left="80" text="Proposal"/>
+		   		  <ImageView image="silhouette61.png" left="20" height="30" width="30"/>
+		   </TableViewRow>
+   		   <TableViewRow id="settings" backgroundColor="transparent" Title="Settings">
+		   		  <Label id="label_settings" color="orange"  left="80" text="Settings"/>
+		   		  <ImageView image="Gear@3x.png" left="20" height="30" width="30"/>
+		   </TableViewRow>
+		   <TableViewRow id="futuremenu" height="20" backgroundColor="#757474">
+		   		<Label id="futuremenu_label" text="C o m i n g   S o o n" color="white" />
+		   </TableViewRow>
+		   <TableViewRow id="supplier" backgroundColor="transparent" Title="Supplier">
+		   		 <Label id="label_supplier" color="#333"  left="80" text="Supplier"/>
+		   		  <ImageView id="supplier_image" image="industrial4.png" left="20" height="30" width="30"/>
+		   </TableViewRow>
+		   <TableViewRow id="inventory" backgroundColor="transparent" Title="Inventory">
+		   		  <Label id="label_inventory" color="orange"  left="80" text="Inventory"/>
+		   		  <ImageView id="inventory_image" image="global35.png" left="20" height="40" width="40"/>
+		   </TableViewRow>
+		   <TableViewRow id="report" backgroundColor="transparent" Title="Report">
+		   		  <Label id="label_report" color="#333"  left="80" text="Report"/>
+		   		  <ImageView id="report_image"  image="business155.png" left="20" height="30" width="30"/>
+		   </TableViewRow>
+		   <TableViewRow/>
+		   <TableViewRow id="google" Title="google"/>		   
+	   </TableView>
+    </Window>
+  </Tab>
+</Alloy>

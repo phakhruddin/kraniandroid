@@ -1,0 +1,21 @@
+".container": {
+	backgroundColor:"black"
+},
+"TableViewRow": {
+	width: Ti.UI.SIZE,
+	height: "36"
+},
+"Label": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: "#999"
+},
+"Tab":{
+	font: {
+		fontSize: '50dp',
+		fontWeight: 'bold',
+		textStyle : Ti.UI.TEXT_STYLE_HEADLINE
+	},
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+}

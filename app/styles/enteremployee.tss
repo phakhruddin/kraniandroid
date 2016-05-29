@@ -1,0 +1,42 @@
+"TextField" : {
+	left:'140',
+	borderColor : 'white', // border color
+    width: Ti.UI.FILL,
+    font: {fontSize: '18'}
+},
+"TextArea":{
+	font: {fontSize: '16'}
+},
+"#employeelastname_tf" : {
+		height:Ti.UI.SIZE
+},
+"#employeeemail_tf[platform=android]" : {
+		height:Ti.UI.SIZE ,
+},
+"#employeestreetaddress_tf[platform=android]" : {
+		height:Ti.UI.SIZE ,
+},
+"#employeestate_tf[platform=android]" : {
+		height:Ti.UI.SIZE ,
+},
+"#employeecompany_tf[platform=android]" : {
+		height:Ti.UI.SIZE ,
+},
+"#submit_button" :{
+		title:"SUBMIT",
+		height:Ti.UI.SIZE,
+		width:80,
+		top:50
+},
+"Label" :{
+	color: "#3B708A",
+	left: "20",
+		font:{
+		fontSize : "18"
+	}
+},
+"#itemline_row" : {
+	font:{
+		fontSize : "18"
+	}
+}

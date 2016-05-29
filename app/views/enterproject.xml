@@ -1,0 +1,98 @@
+<Alloy>
+<Model src="dummy" />
+<Tab id="enterproject_tab">
+  <Window id="enterproject_window"backgroundColor="white" title="Project Entry">
+  	<!--LeftNavButton platform="ios">
+	   <Button id="back_button" systemButton="Ti.UI.iPhone.SystemButton.PLAIN" title="Back" onClick="goBack" /> 
+	</LeftNavButton-->
+  	<RightNavButton platform="ios">
+	   <Button id="save_button" systemButton="Ti.UI.iPhone.SystemButton.SAVE" onClick="saveHandler" /> 
+	</RightNavButton>
+	<View id="coverview" backgroundColor="#222" height="Ti.UI.Fill" opacity="0.1" />
+	  <TableView id="enterproject_table" backgroundColor="transparent" separatorColor="transparent" >
+	  	<TableViewRow id="existing" borderColor="white" backgroundColor="#80c342" height="30" opacity="1" Title="Existing">
+	  		<Label id="titleinvoiceinput_label" color="white" left="20" text="Client Details"/>
+	  		<Button id="check_client" width="20" height="20" right="20" image="dark_search@2x.png"/>
+	  	  </TableViewRow>
+		  <TableViewRow id="clientdetail_row" backgroundColor="transparent" opacity="0" height="200" color="#333">
+		  	<Label id="tflabel" top="10">Firstname: </Label>
+		  	<TextField  top="12" id="projectclientfirstname_tf"/>
+		  	<Label id="tflabel" top="30">Lastname: </Label>
+		  	<TextField top="32"  id="projectclientlastname_tf"></TextField>
+		  	<Label id="tflabel" top="50">Phone: </Label>
+		  	<TextField top="52" id="projectclientphone_tf" keyboardType="Ti.UI.KEYBOARD_NUMBER_PAD"></TextField>
+		  	<Label id="tflabel" top="70">Email: </Label>
+		  	<TextField top="72" id="projectclientemail_tf"></TextField>
+		  	<Label id="tflabel" top="90">Street addr: </Label>
+		  	<TextField top="92" id="projectclientstreetaddress_tf"></TextField>
+		  	<Label id="tflabel" top="110">City: </Label>
+		  	<TextField  top="112" id="projectclientcity_tf"></TextField>
+		  	<Label id="tflabel" top="130">State: </Label>
+		  	<TextField  top="132" id="projectclientstate_tf"></TextField>
+		  	<Label id="tflabel" top="150">Company: </Label>
+		  	<TextField  top="152" id="projectclientcompany_tf"></TextField>
+		  </TableViewRow>
+		  <TableViewRow id="clientselect_row" backgroundColor="transparent" opacity="0" height="200" color="#333">
+		  	  <Label id="Firstname" text="Firstname:" left="20" top="10"/>
+		  	  <Label id="clientfirstname_tf" text="{dummy.firstname}" left="120" top="10"/>
+		  	  <Label id="Lastname" text="Lastname:" left="20" top="30"/>
+		  	  <Label id="clientlastname_tf" text="{dummy.lastname}" left="120" top="30"/>
+		  	  <Label id="phone" text="Phone:" left="20" top="50"/>
+	   		  <Label id="clientphone_tf" text="{dummy.phone}" left="120" top="50"/>
+	   		  <Label id="email" text="Email:" left="20" top="70"/>
+	   		  <Label id="clientemail_tf" text="{dummy.email}" left="120" top="70"/>
+	   		  <Label id="streetaddress" text="Street addr:" left="20" top="90" />
+	   		  <Label id="clientstreetaddress_tf" text="{dummy.address}" left="120" top="90" suppressReturn="true"/>
+	   		  <Label id="clientcity" text="City:" left="20" top="110" />
+	   		  <Label id="clientcity_tf" text="{dummy.city}" left="120" top="110" />
+	   		  <Label id="clientstate" text="State:" left="20" top="130" />
+	   		  <Label id="clientstate_tf" text="{dummy.state}" left="120" top="130" />
+	   		  <Label id="company" text="Company:" left="20" top="150"/>
+	   		  <Label id="clientcompany_tf" text="{dummy.company}" left="120" top="150"/>	   		
+		  </TableViewRow>
+		  <TableViewRow id="itemline_row" height="20" borderColor="white" opacity="0.1" backgroundColor="#80c342" color="white" title="Project Details"/>
+	  	  <TableViewRow id="cover_row" borderColor="white" backgroundColor="transparent" height="500" opacity="0.1"/>
+		  <TableViewRow id="itemdetail_row" borderColor="white" backgroundColor="white">
+		  	<Label id="tflabelprojectname" top="10" text="Project Name :"/>
+		  	<TextField id="projectname_tf" left="120" top="12" height="20" ></TextField>	
+		  	<Label id="tflabelprojectdescr" top="32" text="Description :"/>
+		  	<TextArea id="projectdescr_tf" left="120" top="32" height="40" suppressReturn="false" >
+				<KeyboardToolbar id="ktb_textarea">
+        			<Toolbar>
+        				<Items>
+        					<FlexSpace/>
+        					<FlexSpace/>
+         					<Button title="Done" onClick="done"/> 
+        				</Items>
+        			</Toolbar>
+        		</KeyboardToolbar>	
+		  	</TextArea>	
+		  	<Label id="tflabellineitem" top="60" text="Line Item 1 :"/>
+		  	<TextField id="lineitem_tf" width="200" left="120" top="62" height="20" ></TextField>	
+		  	<Label id="tflineitemqty" top="80" text="qty(opt) : "/>
+		  	<TextField id="lineitemqty_tf" top="82" left="90" hintText="2" width="60" keyboardType="Ti.UI.KEYBOARD_NUMBER_PAD"></TextField>	
+		  	<Label id="tflineitemprice" left="180" top="80" text="price(opt) : "/>
+		  	<TextField id="lineitemprice_tf" left="260" top="82" width="80" hintText="120" returnKeyType="Ti.UI.RETURNKEY_DONE" keyboardType="Ti.UI.KEYBOARD_DECIMAL_PAD">
+				<KeyboardToolbar>
+			    <Toolbar id="donetoolbar" platform="ios" bottom="0" borderTop="true" borderBottom="false">
+	            <Items>
+	            	<FlexSpace/>
+	            	<Button systemButton="DONE" onClick="allTFBlur"/>
+	            </Items>
+       		    </Toolbar>
+       		    </KeyboardToolbar>
+		  	</TextField> 		  	
+		  </TableViewRow>
+		  <TableViewRow id="addrow_row" borderColor="white">
+		  	<Button id="addrow_button" image="light_add.png" width="20" height="20" right="20" onClick="addItem" />	
+		  </TableViewRow>
+		  <TableViewRow id="itemlineend_row" height="2" borderColor="white" backgroundColor="#80c342" />
+		  <TableViewRow id="totalrow" backgroundColor="transparent" right="50" opacity="0" color="#333" Title="Total: ">
+		  	<Label id="totallabel" left="150" text="total :"/>
+		  	<Label id="totalvalue" left="200" text="100"/>
+		  </TableViewRow>
+	  </TableView>
+  <Button id="selectclient_button" title="Select Client > " top="70" onClick="matchClient"/>
+  </Window>
+  </Tab>
+</Alloy>

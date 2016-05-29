@@ -1,0 +1,41 @@
+<Alloy>
+<Model src="dummy" />
+<Tab id="enterclient_tab">
+  <Window id="enterclient_window" backgroundColor="white" title="client Entry">
+  	<RightNavButton platform="ios">
+	   <Button id="save_button" systemButton="Ti.UI.iPhone.SystemButton.SAVE" onClick="saveHandler" /> 
+	</RightNavButton>
+	  <TableView id="enterclient_table" backgroundColor="transparent" separatorColor="transparent" >
+	  	<TableViewRow id="existing" borderColor="white" backgroundColor="#80c342" height="30" opacity="1" Title="Existing">
+	  		<Label id="titleinvoiceinput_label" color="white" left="20" text="Client Details"/>
+	  		<Button id="check_client" width="20" height="20" right="20" image="dark_search@2x.png"/>
+	  	  </TableViewRow>
+		  <TableViewRow id="clientdetail_row" backgroundColor="transparent" opacity="0" height="Ti.UI.SIZE" color="#333">
+		  	<Label id="tflabel" top="10">Firstname: </Label>
+		  	<TextField  top="10" id="clientfirstname_tf"/>
+		  	<Label id="tflabel" top="40">Lastname: </Label>
+		  	<TextField top="40"  id="clientlastname_tf"></TextField>
+		  	<Label id="tflabel" top="70">Phone: </Label>
+		  	<TextField top="70" id="clientphone_tf" keyboardType="Ti.UI.KEYBOARD_NUMBER_PAD"></TextField>
+		  	<Label id="tflabel" top="100">Email: </Label>
+		  	<TextArea id="clientemail_tf" top="100" height="20" textAlign="left" width="Ti.UI.FILL" left="115" keyboardType="Titanium.UI.KEYBOARD_TYPE_EMAIL" ></TextArea>
+		  	<Label id="tflabel" top="130">Street addr: </Label>
+		  	<TextArea id="clientstreetaddress_tf" top="130" height="20" textAlign="left" width="250" left="115" ></TextArea>
+		  	<Label id="tflabel" top="160">City: </Label>
+		  	<TextField  top="160" id="clientcity_tf"></TextField>
+		  	<Label id="tflabel" top="190">State: </Label>
+		  	<TextField  top="190" id="clientstate_tf"></TextField>
+		  	<Label id="tflabel" top="220">Company: </Label>
+		  	<TextField  top="220" id="clientcompany_tf"></TextField>
+		  </TableViewRow>
+		  <TableViewRow id="itemline_row" height="20" borderColor="white" opacity="0.1" backgroundColor="#80c342" color="white" title="Additional Details"/>
+	  	  <TableViewRow id="cover_row" borderColor="white" backgroundColor="transparent" height="500" opacity="0.1"/>	
+		  <TableViewRow id="itemdetail_row" borderColor="white" backgroundColor="white" height="Ti.UI.SIZE">
+		  	<Label id="tflabel" top="5">Notes: </Label>
+        	<TextArea id="notes_tf" width="320" height="200" top="30" color="#888" textAlign="left" suppressReturn="false"/ > 
+		  </TableViewRow>
+		  <TableViewRow id="itemlineend_row" height="2" borderColor="white" backgroundColor="#80c342" />
+	  </TableView>
+  </Window>
+  </Tab>
+</Alloy>

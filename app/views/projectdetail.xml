@@ -1,0 +1,57 @@
+<Alloy>
+	<Model src="dummy" />
+	<Collection src="joblog"/>
+	<Collection src="joblogsid"/>
+	<Tab id="tab_projectdetail" title="Project">
+  <Window id="projectdetail_window" title="project Detail" backgroundColor="white">
+  	<RightNavButton platform="ios">
+<Button id="edit_rightnavbutton" systemButton="Ti.UI.iPhone.SystemButton.EDIT" onClick="editAction" /> 
+	</RightNavButton>
+	  <TableView id="projectdetail_table"  backgroundColor="transparent">
+	  	<TableViewSection headerTitle="Project#: {dummy.projectid}">
+		  <TableViewRow id="projectdetail_row"  height="180">
+		  	  <Label id="label_header" left="20" color="#333" top="5" text="{dummy.projectname}" />
+		  	  <Label left="20" color="#333" top="40" text="Client:" />
+	   		  <Label left="100" color="black" top="35" text="{dummy.fullname}" onClick="nameAction"/>
+	   		  <Label left="20" color="#333" top="60" text="Phone:" />
+	   		  <Label left="100"  color="black"  top="55" text="{dummy.phone}" onClick="phoneAction"/>
+	   		  <Label left="20" color="#333" top="80" text="Email:" />
+	   		  <Label left="100"   color="black" top="75" text="{dummy.email}" onClick="emailAction"/>
+	   		  <Label left="20" color="#333" top="100" text="Company:" />
+	   		  <Label left="100"  color="black" top="100" text="{dummy.company}" />
+	   		  <Label left="20" color="#333" top="120" text="Address:" />
+	   		  <Label left="100"  color="black" top="115" text="{dummy.address}" onClick="addressAction"/>
+	   		  <Label left="100"  color="black" top="135" text="{dummy.citystate}" onClick="addressAction" />
+		  </TableViewRow>
+	  </TableViewSection>
+	  <TableViewSection  headerTitle="Status summary" >
+		  <TableViewRow id="status_row" height="Ti.UI.Size"/>
+	  </TableViewSection>
+	  <TableViewSection headerTitle="Dates" >
+		  <TableViewRow id="nextapptdetail_row" Title="nextapptDetail" height="60">
+		  	  <Button id="nextapptdate_button" textid="pickerhide" top="5" left="20" title="Next appointment date: " onClick="nextapptdateAction" />
+		  	   <Button id="nextapptdate_done" right="40" top="5" title="DONE" onClick="nextapptdateActionDone" />
+		  	  <Label id="nextapptdate_label" top="8" left="200" color="black" textAlign="Ti.UI.TEXT_ALIGNMENT_LEFT"/>
+	   		  <Button top="35" id="duedate_button" textid="pickerhide" left="20" title="Due Date: "  onClick="duedateAction" />
+	   		  <Button id="duedate_done" right="40" top="35" title="DONE" onClick="duedateActionDone" />
+	   		  <Label id="datedue_label" top="38" left="200" color="black" textAlign="Ti.UI.TEXT_ALIGNMENT_LEFT"/>
+		  </TableViewRow>
+		  <TableViewRow id="datepicker_row" height="1">
+		  </TableViewRow>
+	  </TableViewSection>
+	  <TableViewSection headerTitle="Job Logs" >
+		  <TableViewRow id="joblog_row"  color="blue">
+		  	  <Button id="joblog_button" left="100" title="View/Update Job Logs > "/>  	  
+		  </TableViewRow>
+		  <TableViewRow id="jobreport_row"  color="blue">
+		  	<Button id="jobreport_button" left="100" title="Generate Report in PDF > " onClick="genJoblog" />
+		  </TableViewRow>
+	  </TableViewSection>
+	 <TableViewSection headerTitle="Job Items">
+		  <TableViewRow id="jobdescr_row" editable="true" moveable="true"/>
+		  <TableViewRow id="jobitem_row" height="Ti.UI.Size" editable="true" moveable="true" />
+	  </TableViewSection>
+	  </TableView>
+  </Window>
+ </Tab>
+</Alloy>

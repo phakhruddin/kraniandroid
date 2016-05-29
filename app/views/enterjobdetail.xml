@@ -1,0 +1,43 @@
+<Alloy>
+	<Model src="dummy" />
+	<Collection src="joblog"/>
+	<Collection src="joblogsid"/>
+  <Window id="enterjobdetail_window" title="Job Logs" backgroundColor="white">
+	<TableView id="labor_table" height="Ti.UI.SIZE" separatorStyle="Titanium.UI.iPhone.TableViewSeparatorStyle.NONE"  backgroundColor="transparent" editable="true" moveable="true"   >
+		<TableViewSection headerTitle="Please enter job details for:" />
+		<TableViewSection id="name_section" />
+		<TableViewSection id="joblogsection" >
+		<FooterView>
+	        <View backgroundColor="#DDD" height="150">
+	        	<TextArea id="notes_textarea" width="300" height="100" top="5" borderWidth="2" borderColor="#bbb" borderRadius="5" 
+	        		color="#888" textAlign="left" suppressReturn="false" >
+	        		<KeyboardToolbar id="ktb_textarea">
+	        			<Toolbar>
+	        				<Items>
+	        					<Button systemButton="ACTION" onClick="uploadFile"/>
+            					<Button systemButton="CAMERA" onClick="takePic"/>
+            					<FlexSpace/>
+            					<FlexSpace/>
+             					<Button title="Save" onClick="save"/> 
+	        				</Items>
+	        			</Toolbar>
+	        		</KeyboardToolbar>	        		
+	        		</TextArea>
+	        </View>
+        </FooterView>
+        </TableViewSection>
+  	</TableView>
+          <Toolbar id="jobdetailtoolbar" platform="ios" bottom="0" borderTop="true" borderBottom="false">
+            <Items id="itemjobdetail">
+            	<FlexSpace/>
+            	<Button systemButton="ACTION" onClick="uploadFile"/>
+            	<Button systemButton="CAMERA" onClick="takePic"/>
+             	<FlexSpace/> 	
+             	<Button title="GeneratePDFReport" onClick="getReport"/>  
+             	<FlexSpace/>
+             	<Button title="Save" onClick="save"/>
+             	<FlexSpace/>        	
+            </Items>
+        </Toolbar>   
+  </Window>
+</Alloy>

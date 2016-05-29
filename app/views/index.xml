@@ -1,0 +1,8 @@
+<Alloy>
+  <Collection src="client"/>
+  <TabGroup backgroundColor="white">
+    <Require src="tabViewOne"/>
+    <Require src="location"/>  
+    <Require src="schedule"/>    
+  </TabGroup>
+</Alloy>

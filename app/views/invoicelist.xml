@@ -1,0 +1,13 @@
+<Alloy>
+	<Collection src="invoice"/>
+ <Tab id="tab_invoicelist" title="invoice">
+  <Window id="invoicelist_window" backgroundColor="white"  title="invoicelist List">
+	  <TableView id="invoicelist_table" backgroundColor="transparent" dataCollection="invoice" search="search_history" dataTransform="transformFunction" filterAttribute="title">
+		<SearchBar id="search_history" height="43" />
+		  <TableViewRow id="invoicelist_row" backgroundColor="transparent" opacity="0"  color="transparent" title="{title}">
+		  	<Label color="#D8D8BF" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" text="{custom}"/>
+		  </TableViewRow>
+	  </TableView>
+  </Window>
+    </Tab>
+</Alloy>

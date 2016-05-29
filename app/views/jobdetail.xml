@@ -1,0 +1,13 @@
+<Alloy>
+	<Model src="dummy" />
+  <Window id="jobdetail_window" title="Job Detail" backgroundColor="white">
+  <TableView>
+  	<TableViewRow>
+  		<ImageView image="https://docs.google.com/drawings/d/1g6kF9-owcNNAEyBfpXAeQxF5pBUfZ2FROfngEdws4Eg/pub?w=480&h=360"></ImageView>
+  	</TableViewRow>
+  	<TableViewRow>
+  		<WebView id="webview" enableZoomControls="true" onDblclick="closeWin"  url="https://drive.google.com/file/d/0B3XMbMJnSVEGVzdpTzFSUjYwazA/view?usp=sharing"></WebView>
+  	</TableViewRow>
+  </TableView>
+  </Window>
+</Alloy>

@@ -1,0 +1,41 @@
+<Alloy>
+<Model src="dummy" />
+<Tab id="enteremployee_tab">
+  <Window id="enteremployee_window" backgroundColor="white" title="employee Entry">
+  	<RightNavButton platform="ios">
+	   <Button id="save_button" systemButton="Ti.UI.iPhone.SystemButton.SAVE" onClick="saveHandler" /> 
+	</RightNavButton>
+	  <TableView id="enteremployee_table" backgroundColor="transparent" separatorColor="transparent" >
+	  	<TableViewRow id="existing" borderColor="white" backgroundColor="#80c342" height="30" opacity="1" Title="Existing">
+	  		<Label id="titleinvoiceinput_label" color="white" left="20" text="employee Details"/>
+	  		<Button id="check_employee" width="20" height="20" right="20" image="dark_search@2x.png"/>
+	  	  </TableViewRow>
+		  <TableViewRow id="employeedetail_row" backgroundColor="white" opacity="0" height="Ti.UI.SIZE" color="#333">
+		  	<Label id="tflabel" top="10">Firstname: </Label>
+		  	<TextField  top="12" id="employeefirstname_tf" color="black"   />
+		  	<Label id="tflabel" top="40">Lastname: </Label>
+		  	<TextField top="42"  id="employeelastname_tf"></TextField>
+		  	<Label id="tflabel" top="70">Phone: </Label>
+		  	<TextField top="72" id="employeephone_tf" keyboardType="Ti.UI.KEYBOARD_NUMBER_PAD" hintText=""></TextField>
+		  	<Label id="tflabel" top="100">Email: </Label>
+		  	<TextField top="102" id="employeeemail_tf" hintText=""></TextField>
+		  	<Label id="tflabel" top="130">Street addr: </Label>
+		  	<TextField   top="132" id="employeestreetaddress_tf"></TextField>
+		  	<Label id="tflabel" top="160">City: </Label>
+		  	<TextField  top="162" id="employeecity_tf"></TextField>
+		  	<Label id="tflabel" top="190">State: </Label>
+		  	<TextField  top="192" id="employeestate_tf"></TextField>
+		  	<Label id="tflabel" top="220">Job Title: </Label>
+		  	<TextField  top="222" id="employeejobtitle_tf"></TextField>
+		  </TableViewRow>
+		  <TableViewRow id="itemline_row" height="20" borderColor="white" opacity="0.1" backgroundColor="#80c342" color="white" title="Additional Details"/>
+	  	  <TableViewRow id="cover_row" borderColor="white" backgroundColor="transparent" height="500" opacity="0.1"/>	
+		  <TableViewRow id="itemdetail_row" borderColor="white" backgroundColor="white" height="Ti.UI.SIZE">
+		  	<Label id="tflabel" top="5">Notes: </Label>
+        	<TextArea id="notes_tf" width="320" height="200" top="30" color="#888" textAlign="left" suppressReturn="false"/ >     			
+		  </TableViewRow>
+		  <TableViewRow id="itemlineend_row" height="2" borderColor="white" backgroundColor="#80c342" />
+	  </TableView>
+  </Window>
+  </Tab>
+</Alloy>

@@ -1,0 +1,14 @@
+<Alloy>
+ <Tab id="tab_enterproposal" title="enterproposal">
+	  <Window id="enterproposal_window" backgroundColor="white" title="enterproposal List">
+	  <TableView id="enterproposal_table" backgroundColor="transparent">
+		  <TableViewRow id="proposalcustomerdetail_row" backgroundColor="transparent" opacity="0" Title="Customer Detail">
+		  	<Label id="proposalcustomerdetail_label" color="#333" top="5" left="50" text="Customer Detail >"/>
+		  </TableViewRow>
+		  <TableViewRow id="lineitem_row" backgroundColor="transparent" opacity="0" Title="Line Item ">
+		  	<Label id="lineitem_label" color="#333" top="5" left="50" text="Line Item >"/>
+		  </TableViewRow>
+	  </TableView>
+	  </Window>
+  </Tab>
+</Alloy>

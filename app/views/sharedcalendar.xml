@@ -1,0 +1,20 @@
+<Alloy>
+  <Window id="sharedcalendar_window" backgroundColor="white" title="sharedcalendar List">
+	  <TableView id="sharedcalendar_table" backgroundColor="transparent" >
+	  	<TableViewRow id="urlinput" backgroundColor="transparent" opacity="0" color="#333" Title="INPUT URL">
+		  	<TextField id="url_tf"></TextField>
+			<Button id="save_url_button"></Button>
+		  </TableViewRow>
+		  <TableViewRow id="getdatainput" backgroundColor="transparent" opacity="0" color="#333" Title="Get Data Input">
+		  	<Label id="getdatainput_label" color="yellow" top="5" left="50" text="Get Data Based on URL entered"/>
+		  </TableViewRow>
+		  <TableViewRow id="sharedcalendar_row" backgroundColor="transparent" opacity="0" Title="sharedcalendar"/>
+		  <TableViewRow id="url1" backgroundColor="transparent" opacity="0" color="#333" Title="Get Data Input">
+		  	<Label id="url1_label" color="yellow" top="5" left="50" text="url feed from cloud"/>
+		  </TableViewRow>
+		  <TableViewRow id="createevent" backgroundColor="transparent" opacity="0" color="#333" Title="Create Event">
+		  	<Label id="createevent_label" color="yellow" top="5" left="50" text="Create Event"/>
+		  </TableViewRow>
+	  </TableView>
+  </Window>
+</Alloy>

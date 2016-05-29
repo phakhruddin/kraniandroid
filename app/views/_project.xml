@@ -1,0 +1,17 @@
+<Alloy>
+ <Tab id="tab_project" title="project">
+  <Window id="project_window" backgroundColor="white" title="project List">
+	  <TableView id="project_table" backgroundColor="transparent">
+	  	 <TableViewRow id="dummy_row" backgroundColor="transparent" opacity="0"/>
+		  <TableViewRow id="projectenter_row" backgroundColor="transparent" opacity="0" Title="Project Entry">
+		  	<Label id="projectenter_label" color="#333" top="5" left="50" text="Enter Project >"/>
+		  </TableViewRow>
+		  <TableViewRow id="dummy_row" backgroundColor="transparent" opacity="0"/>
+		  <TableViewRow id="projectlist_row" backgroundColor="transparent" opacity="0" Title="Project Entry">
+		  	<Label id="projectlist_label" color="#EEE8AA" top="5" left="50" text="List Projects >"/>
+		  </TableViewRow>
+		  <TableViewRow id="dummy_row" backgroundColor="transparent" opacity="0"/>
+	  </TableView>
+  </Window>
+  </Tab>
+</Alloy>

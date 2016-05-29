@@ -1,0 +1,5 @@
+<Alloy>
+  <Window id="googleauth_window" modal="true">
+  	<View id="googleauth_view" height="50"/>
+  </Window>
+</Alloy>

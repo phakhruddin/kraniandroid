@@ -1,0 +1,17 @@
+<Alloy>
+  <Tab id="tab_client" title="Client">
+	  <Window id="client_window" backgroundColor="white" title="Client List">
+	  <TableView id="client_table" backgroundColor="transparent">
+	  	 <TableViewRow id="dummy_row" backgroundColor="transparent" opacity="0"/>
+		  <TableViewRow id="cliententer_row" backgroundColor="transparent" opacity="0" Title="client Entry">
+		  	<Label id="cliententer_label" color="gray" top="5" left="50" text="Enter client >"/>
+		  </TableViewRow>
+		  <TableViewRow id="dummy_row" backgroundColor="transparent" opacity="0"/>
+		  <TableViewRow id="clientlist_row" backgroundColor="transparent" opacity="0" Title="client Entry">
+		  	<Label id="clientlist_label" color="#EEE8AA" top="5" left="50" text="List clients >"/>
+		  </TableViewRow>
+		  <TableViewRow id="dummy_row" backgroundColor="transparent" opacity="0"/>
+	  </TableView>
+	  </Window>
+  </Tab>
+</Alloy>

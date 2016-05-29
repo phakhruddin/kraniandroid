@@ -1,0 +1,21 @@
+<Alloy>
+	<Collection src="invoice"/>
+ <Tab id="tab_invoice" title="invoice">
+  <Window id="invoice_window" backgroundColor="white"  title="Invoice List">
+	  <TableView id="invoice_table" backgroundColor="transparent">
+	  	 <TableViewRow id="dummy_row" backgroundColor="transparent" opacity="0"/>
+		  <TableViewRow id="invoiceenter_row" backgroundColor="transparent" opacity="0" Title="invoice Entry">
+		  	<Label id="invoiceenter_label" color="#333" top="5" left="50" text="Enter invoice >"/>
+		  </TableViewRow>
+		  <TableViewRow id="dummy_row" backgroundColor="transparent" opacity="0"/>
+		  <TableViewRow id="invoicelist_row" backgroundColor="transparent" opacity="0" Title="invoice Entry">
+		  	<Label id="invoicelist_label" color="#EEE8AA" top="5" left="50" text="List invoices >"/>
+		  </TableViewRow>
+		  <TableViewRow id="dummy_row" backgroundColor="transparent" opacity="0"/>
+		  <TableViewRow id="invoicesend_row" backgroundColor="transparent" opacity="0" Title="invoice Send">
+		  	<Label id="invoicesend_label" color="#EEE8AA" top="5" left="50" text="Send Invoice >"/>
+		  </TableViewRow>
+	  </TableView>
+  </Window>
+    </Tab>
+</Alloy>

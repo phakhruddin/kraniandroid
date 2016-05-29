@@ -1,0 +1,50 @@
+<Alloy>
+	<Model src="dummy" />
+  <Window id="proposaldetail_window" title="proposal Detail"  backgroundColor="white">
+	  <TableView id="proposaldetail_table"  backgroundColor="transparent">
+	  	<TableViewSection headerTitle="proposalDetails">
+		  <TableViewRow id="proposaldetail_row" Title="proposalDetail">
+		  	  <Label id="proposalName" text="{dummy.proposalname}" />
+		  </TableViewRow>
+		  <TableViewRow id="clientproposaldetail_row" Title="clientproposalDetail">
+	   		  <Label id="fullname" text="{dummy.fullname}" />
+	   	  </TableViewRow>
+		  <TableViewRow id="phoneproposaldetail_row" Title="PhoneproposalDetail">
+	   		  <Label id="phone" text="{dummy.phone}" />
+	   	  </TableViewRow>
+	   	  <TableViewRow id="addressproposaldetail_row" Title="addressproposalDetail">
+	   		  <Label id="address" text="{dummy.address}" />
+	   	  </TableViewRow>
+	   	  <TableViewRow id="emailproposaldetail_row" Title="emailproposalDetail">
+	   		  <Label id="email" text="{dummy.email}" />
+	   	  </TableViewRow>
+	   	  <TableViewRow id="companyproposaldetail_row" Title="companyproposalDetail">
+	   		  <Label id="company" text="{dummy.company}" />
+		  </TableViewRow>
+	  </TableViewSection>
+	  <TableViewSection headerTitle="Pending Invoice">
+		  <TableViewRow id="invoiceproposaldetail_row" Title="invoiceproposalDetail">
+	   		  <Label id="invoice" text="{dummy.invoice}" />
+		  </TableViewRow>
+	  </TableViewSection>
+	  <TableViewSection headerTitle="Percent Complete & Date Due">
+		  <TableViewRow id="percentcompletedetail_row" Title="percentcompleteDetail">
+	   		  <Label id="percentcomplete" text="{dummy.percentcomplete}" />
+		  </TableViewRow>
+		  <TableViewRow id="dateduedetail_row" Title="datedueDetail">
+	   		  <Label id="datedue" text="{dummy.datedue}" />
+		  </TableViewRow>
+	  </TableViewSection>
+	  <TableViewSection headerTitle="Next Appointment">
+		  <TableViewRow id="nextapptdetail_row" Title="nextapptDetail">
+	   		  <Label id="nextappt" text="{dummy.nextappt}" />
+		  </TableViewRow>
+	  </TableViewSection>
+	  <TableViewSection headerTitle="Notes">
+		  <TableViewRow id="notesdetail_row" Title="notesDetail">
+	   		  <Label id="notes" text="{dummy.notes}" />
+		  </TableViewRow>
+	  </TableViewSection>
+	  </TableView>
+  </Window>
+</Alloy>

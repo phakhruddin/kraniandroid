@@ -1,0 +1,55 @@
+<Alloy>
+	<Collection src="proposal"/>
+	<Model src="dummy"/>
+ <Tab id="tab_proposallist" title="proposal">
+  <Window id="proposallist_window"  title="proposal">
+	<RightNavButton platform="ios">
+	   <Button systemButton="Ti.UI.iPhone.SystemButton.ADD" onClick="addHandler" /> 
+	</RightNavButton>
+	<Widget id="ptr" src="nl.fokkezb.pullToRefresh" onRelease="myRefresher">
+	<ListView id="proposallist_list" height="Ti.UI.Size" defaultItemTemplate="template">
+		<SearchBar barColor="gray" />
+		<HeaderView>
+                <View backgroundColor="#DDD" height="Ti.UI.SIZE">
+                    <Label>proposals</Label>
+                </View>>
+            </HeaderView>
+		<Templates>
+			<ItemTemplate name="template" backgroundColor="white" height="125" onClick="selectItem" >
+				<Label id="label_header" color="#333"  left="20" top="10" bindId="info"/>
+				<Label  id="label_sub2" color="orange"  left="20" top="30" bindId="name"/>
+				<Label id="label_sub1" color="#330"  left="20" top="55" bindId="item"/>
+				<Label  id="label_sub2" color="#330"  left="20" top="68" bindId="descr"/>
+				<Label  id="label_sub3" color="#333"  left="20" top="81" bindId="hour"/>
+				<Label  id="label_sub3" color="#330"  left="100" top="81" bindId="costperhour"/>
+				<Label  id="label_sub3" color="#333"  left="20" top="94" bindId="qty"/>
+				<Label  id="label_sub3" color="#330"  left="100" top="94" bindId="costperqty"/>
+				<ImageView bindId="img" id="icon" height="10" width="60" left="20" top="43"/>
+				<Button id="next_button" bindId="all" image="light_info.png" right="20" top="30" width="20" height="20" onClick="doClick"/>
+			</ItemTemplate>
+		</Templates>
+		<ListSection id="proposallist_section" headerTitle="proposal List" dataCollection="proposal" dataFilter="filterFunction" dataTransform="transformFunction">
+			<ListItem id="proposal_listitem" all:text="{title}" info:text="{custom}" name:text="{name}" item:text="{item}" descr:text="{descr}" hour:text="{hour}" 
+				costperhour:text="{costperhour}" qty:text="{qty}" costperqty:text="{costperqty}" status:text="{status}" img:image="{img}"/>
+		</ListSection>
+			<FooterView>
+                <View backgroundColor="#DDD" height="50">
+                </View>>
+            </FooterView>
+   </ListView>
+  </Widget>
+          <Toolbar id="sortview" platform="ios" bottom="0" borderTop="true" borderBottom="false">
+            <Items >
+            	<FlexSpace/>
+            	<Button systemButton="COMPOSE" onClick="composeAction"/>
+            	<Button systemButton="BOOKMARKS" onClick="uploadFile"/>
+            	<FlexSpace/>
+            	<Button id="All" title="All" style="Ti.UI.iPhone.SystemButtonStyle.PLAIN" onClick="buttonAction" />
+            	<Button id="Submitted"  title="Submitted" style="Ti.UI.iPhone.SystemButtonStyle.PLAIN" onClick="buttonAction"  />            	
+            	<Button id="Pending"  title="Pending" style="Ti.UI.iPhone.SystemButtonStyle.PLAIN" onClick="buttonAction"  />
+            	<FlexSpace/>
+            </Items>
+        </Toolbar>
+  </Window>
+    </Tab>
+</Alloy>

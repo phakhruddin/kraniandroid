@@ -1,0 +1,75 @@
+<Alloy>
+  <Tab id="tab_google">
+  <Window id="google_window" backgroundColor="white" title="google List">
+	  <TableView id="google_table" backgroundColor="transparent" >
+		 <TableViewRow id="row_futuremenu" Title="Future Features">
+			 <Label id="label_futuremenu" color="#333" top="5" left="20" text="Future Features">Turn ON Future Features</Label>
+			 <Label id="label_futuremenu1" color="gray" top="30" left="20" text="FG LOC">Future Feature</Label>
+		     <Switch id="switch_futuremenu" right="20" titleOff="OFF" titleOn="ON" value=false />
+		 </TableViewRow>
+		  <TableViewRow id="sync" backgroundColor="transparent" opacity="0" color="white" Title="Google Sync">
+		  	<Label id="sync_label" color="yellow" top="5" left="50" text="Sync it"/>
+		  </TableViewRow>
+		  <TableViewRow id="logout" backgroundColor="transparent" opacity="0" color="white" Title="Logout">
+		  	<Label id="logout_label" color="red" top="5" left="50" text="Logout"/>
+		  </TableViewRow>
+		  <TableViewRow id="sheet" backgroundColor="transparent" opacity="0" color="white" Title="Sheet Sync">
+		  	<Label id="sheet_label" color="yellow" top="5" left="50" text="Check Spreadsheet Access"/>
+		  </TableViewRow>
+		  <TableViewRow id="urlinput" backgroundColor="transparent" opacity="0" color="white" Title="INPUT URL">
+		  	<TextField id="url_tf"></TextField>
+			<Button id="save_url_button"></Button>
+		  </TableViewRow>
+		  <TableViewRow id="getdatainput" backgroundColor="transparent" opacity="0" color="white" Title="Get Data Input">
+		  	<Label id="getdatainput_label" color="yellow" top="5" left="50" text="Get Data Based on URL entered"/>
+		  </TableViewRow>
+ 		  <TableViewRow id="renameFile" backgroundColor="transparent" opacity="0" color="white" height="80">
+ 		  	<TextField id="renameFileSID_tf" top="10" hintText="SID"></TextField>
+ 		  	<TextField id="renameFileNewName_tf" top="30" hintText="NewName"></TextField>
+		  	<Button id="renameFile_button" top="60" left="30" title="renameFile" onClick="renameFile"/>
+		  </TableViewRow>
+		  <TableViewRow id="checkuniqueid" backgroundColor="transparent" opacity="0" color="white" Title="checkuniqueid">
+		  	<Label id="checkuniqueid_label" color="yellow" top="5" left="50" text="Check Unique ID"/>
+		  </TableViewRow>
+		  <TableViewRow id="adhoctest" backgroundColor="transparent" opacity="0" color="white" Title="adhoctest">
+		  	<Button id="adhoctest_button"  top="5" left="50" title="AdHoc Test" onClick="AdHocTest"/>
+		  </TableViewRow>
+		  <TableViewRow id="checksid" backgroundColor="transparent" opacity="0" color="white" Title="CheckSid">
+		  	<Button id="checksid_button"  top="5" left="50" title="Check SID" onClick="checkSid"/>
+		  </TableViewRow>
+  		  <TableViewRow id="getIndex" backgroundColor="transparent" opacity="0" color="white">
+		  	<Button id="getIndex_button"  top="5" left="50" title="get Index" onClick="getIndex"/>
+		  </TableViewRow>
+		  <TableViewRow id="authorizeCallback" backgroundColor="transparent" opacity="0" color="white">
+		  	<Button id="authorizeCallback_button"  top="5" left="50" title="authorize Callback test" onClick="authorizeCallback"/>
+		  </TableViewRow>
+  		 <TableViewRow id="testLoopAuthorize_row" backgroundColor="transparent" opacity="0" color="white">
+		  	<Button id="testLoopAuthorize_button"  top="5" left="50" title="testLoopAuthorize" onClick="testLoopAuthorize"/>
+		  </TableViewRow>
+		  <TableViewRow id="getMaster_row" backgroundColor="transparent" opacity="0" color="white">
+		  	<Button id="getMaster_button"  top="5" left="50" title="getMaster" onClick="getMaster"/>
+		  </TableViewRow>
+		  <TableViewRow id="getMasterAllowance_row" backgroundColor="transparent" opacity="0" color="white">
+		  	<Button id="getMasterAllowance_button"  top="5" left="50" title="getMasterAllowance" onClick="getMasterAllowance"/>
+		  </TableViewRow>
+		  <TableViewRow id="getMasterAllowanceKrani_row" backgroundColor="transparent" opacity="0" color="white">
+		  	<Button id="getMasterAllowanceKrani_button"  top="5" left="50" title="getMasterAllowanceKrani" onClick="getMasterAllowanceKrani"/>
+		  </TableViewRow>
+		  <TableViewRow id="getMasterNew_row" backgroundColor="transparent" opacity="0" color="white">
+		  	<Button id="getMasterNew_button"  top="5" left="50" title="getMasterNew" onClick="getMasterNew"/>
+		  </TableViewRow>
+		  <TableViewRow id="findSIDFromFilename_row" backgroundColor="transparent" opacity="0" color="white">
+		  	<Button id="findSIDFromFilename_button"  top="5" left="50" title="findSIDFromFilename" onClick="findSIDFromFilename"/>
+		  </TableViewRow>
+		  <TableViewRow id="getJSONOnline_row" backgroundColor="transparent" opacity="0" color="white">
+		  	<Button id="getJSONOnline_button"  top="5" left="50" title="getJSONOnline" onClick="getJSONOnline"/>
+		  </TableViewRow>
+ 		  <TableViewRow id="licenseCheck" backgroundColor="transparent" opacity="0" color="white" height="80">
+ 		  	<TextField id="licensecheck_tf" top="10" hintText="zefilandscape_dir"></TextField>
+		  	<Button id="licenseCheck_button" top="60" left="30" title="licenseCheck" onClick="licenseCheck"/>
+		  </TableViewRow>
+		  <TableViewRow id="bootstrap" Title="bootstrap"/>
+	  </TableView>
+  </Window>
+  </Tab>
+</Alloy>

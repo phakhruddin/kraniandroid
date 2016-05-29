@@ -1,0 +1,24 @@
+<Alloy>
+ <Tab id="tab_proposal" title="proposal">
+	  <Window id="proposal_window" backgroundColor="white" title="proposal List">
+	  <TableView id="proposal_table" backgroundColor="transparent">
+	  	 <TableViewRow id="dummy_row" backgroundColor="transparent" opacity="0"/>
+		  <TableViewRow id="proposalenter_row" backgroundColor="transparent" opacity="0" Title="proposal Entry">
+		  	<Label id="proposalenter_label" color="#333" top="5" left="50" text="Enter proposal >"/>
+		  </TableViewRow>
+		  <TableViewRow id="dummy_row" backgroundColor="transparent" opacity="0"/>
+		  <TableViewRow id="pendingproposal_row" backgroundColor="transparent" opacity="0" Title="Pending Proposal">
+		  	<Label id="pendingproposal_label" color="#333" top="5" left="50" text="Pending Proposal >"/>
+		  </TableViewRow>
+		  <TableViewRow id="submittedproposal_row" backgroundColor="transparent" opacity="0" Title="Pending Proposal">
+		  	<Label id="submittedproposal_label" color="#333" top="5" left="50" text="Submitted Proposal >"/>
+		  </TableViewRow>
+		  <TableViewRow id="dummy_row" backgroundColor="transparent" opacity="0"/>
+		  <TableViewRow id="proposallist_row" backgroundColor="transparent" opacity="0" Title="proposallist">
+		  	<Label id="proposallist_label" color="#EEE8AA" top="5" left="50" text="All Proposals >"/>
+		  </TableViewRow>
+		  <TableViewRow id="dummy_row" backgroundColor="transparent" opacity="0"/>
+	  </TableView>
+	  </Window>
+  </Tab>
+</Alloy>

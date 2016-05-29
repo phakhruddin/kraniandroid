@@ -1,0 +1,15 @@
+<Alloy>
+  <Collection src="proposalsent" />
+  <Window id="proposalsent_window" backgroundColor="white" title="proposal Sent">
+ 	<RightNavButton platform="ios">
+	   <Button systemButton="Ti.UI.iPhone.SystemButton.ADD" onClick="addHandler" /> 
+	</RightNavButton>
+ 	  <TableView id="proposalsent_table" backgroundColor="transparent" dataCollection="proposalsent" dataFilter="filterFunction" dataTransform="transformFunction"  search="search_history" filterAttribute="title" >
+ 	  	<SearchBar id="search_history" height="43" />
+ 	  	<TableViewRow id="proposalsent_row" backgroundColor="transparent" opacity="0" color="transparent" title="{title}" url="{url}" onClick="viewproposal" >
+ 	  		<Label id="label_header" color="orange" top="5" left="20" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" text="{custom}" />
+ 	  		<ImageView id="img_preview" image="{imgurl}" left="100" top="30" width="200" length="400"></ImageView>
+ 	  	</TableViewRow>
+	  </TableView>
+  </Window>
+</Alloy>

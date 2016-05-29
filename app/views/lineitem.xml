@@ -1,0 +1,9 @@
+<Alloy>
+ <Tab id="tab_lineitem" title="lineitem">
+	  <Window id="lineitem_window" backgroundColor="white" title="lineitem List">
+	  <TableView id="lineitem_table" backgroundColor="transparent">
+		  <TableViewRow id="proposalcustomerdetail_row" backgroundColor="transparent" opacity="0" Title="Customer Detail"/>
+	  </TableView>
+	  </Window>
+  </Tab>
+</Alloy>

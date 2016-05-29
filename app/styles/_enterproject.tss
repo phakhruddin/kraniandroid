@@ -1,0 +1,151 @@
+"#clientfirstname_tf" : {
+		height: 40,
+		top:50,
+		width:250,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+		hintText:'FIRSTNAME: e.g. Isaac'
+},
+"#clientfirstname_tf[platform=android]" : {
+		height:Ti.UI.SIZE ,
+},
+"#save_clientfirstname_button" :{
+		title:"Save",
+		height:Ti.UI.SIZE,
+		width:80,
+		top:20
+},
+"#clientlastname_tf" : {
+		height: 40,
+		top:50,
+		width:250,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+		hintText:'LastName: e.g. Adam'
+},
+"#clientlastname_tf[platform=android]" : {
+		height:Ti.UI.SIZE ,
+},
+"#save_clientlastname_button" :{
+		title:"Save",
+		height:Ti.UI.SIZE,
+		width:80,
+		top:20
+},
+"#clientphone_tf" : {
+		height: 40,
+		top:50,
+		width:250,
+		keyboardType: Titanium.UI.KEYBOARD_DECIMAL_PAD,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+		hintText:'Phone: 2625012948'
+},
+"#clientphone_tf[platform=android]" : {
+		height:Ti.UI.SIZE ,
+},
+"#save_clientphone_button" :{
+		title:"Save",
+		height:Ti.UI.SIZE,
+		width:80,
+		top:20
+},
+"#clientemail_tf" : {
+		height: 40,
+		top:50,
+		width:250,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+		hintText:'Email: deen@idevice.net'
+},
+"#clientemail_tf[platform=android]" : {
+		height:Ti.UI.SIZE ,
+},
+"#save_clientemail_button" :{
+		title:"Save",
+		height:Ti.UI.SIZE,
+		width:80,
+		top:20
+},
+"#clientstreetaddress_tf" : {
+		height: 40,
+		top:50,
+		width:250,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+		hintText:'Street Address: 2258 S Sanctuary Dr.'
+},
+"#clientstreetaddress_tf[platform=android]" : {
+		height:Ti.UI.SIZE ,
+},
+"#save_clientstreetaddress_button" :{
+		title:"Save",
+		height:Ti.UI.SIZE,
+		width:80,
+		top:20
+},
+"#clientcity_tf" : {
+		height: 40,
+		top:50,
+		width:250,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+		hintText:'City: New Berlin'
+},
+"#clientcity_tf[platform=android]" : {
+		height:Ti.UI.SIZE ,
+},
+"#save_clientcity_button" :{
+		title:"Save",
+		height:Ti.UI.SIZE,
+		width:80,
+		top:20
+},
+"#clientstate_tf" : {
+		height: 40,
+		top:50,
+		width:250,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+		hintText:'State: WI'
+},
+"#clientstate_tf[platform=android]" : {
+		height:Ti.UI.SIZE ,
+},
+"#save_clientstate_button" :{
+		title:"Save",
+		height:Ti.UI.SIZE,
+		width:80,
+		top:20
+},
+"#clientproject_tf" : {
+		height: 40,
+		top:50,
+		width:250,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+		hintText:'Project: Landscape'
+},
+"#clientproject_tf[platform=android]" : {
+		height:Ti.UI.SIZE ,
+},
+"#save_clientproject_button" :{
+		title:"Save",
+		height:Ti.UI.SIZE,
+		width:80,
+		top:20
+},
+"#clientcompany_tf" : {
+		height: 40,
+		top:50,
+		width:250,
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+		hintText:'company: dBayCo Inc.'
+},
+"#clientcompany_tf[platform=android]" : {
+		height:Ti.UI.SIZE ,
+},
+"#save_clientcompany_button" :{
+		title:"Save",
+		height:Ti.UI.SIZE,
+		width:80,
+		top:20
+},
+"#submit_button" :{
+		title:"SUBMIT",
+		height:Ti.UI.SIZE,
+		width:80,
+		top:50
+}

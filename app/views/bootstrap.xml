@@ -1,0 +1,8 @@
+<Alloy>
+	<Collection src="project"/>
+  <Window id="bootstrap_window" backgroundColor="white" title="bootstrap List">
+ 	  <TableView id="bootstrap_table" backgroundColor="transparent" >
+ 		<TableViewRow id="createsssid" left="20" title="Create Main SID SS"></TableViewRow>
+	  </TableView>
+  </Window>
+</Alloy>

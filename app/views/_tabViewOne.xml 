@@ -1,0 +1,42 @@
+<Alloy>
+  <Collection src="project"/>
+  <Collection src="client"/>
+  <Collection src="invoice"/>
+  <Tab id="tab_one" title="MAIN">
+    <Window title="Labor&Gig" backgroundColor="white" class='container'>
+      <TableView id="table" backgroundColor="transparent"  >
+ 	      <TableViewRow id="schedule" opacity="0" Title="location">
+		   		  <Label id="label_schedule" image="Schedule.png" height="100" width="200" color="orange" top="5" left="50" text=""/>
+		   </TableViewRow>
+	      <TableViewRow id="location" backgroundColor="transparent" Title="Location">
+		   		  <Label id="label_location" color="#333" top="5" left="50" text="Labor Location >"/>
+		   </TableViewRow>
+		   <TableViewRow id="project" backgroundColor="transparent" Title="Project">
+		   		  <Label id="label_project" color="#008080" top="5" left="50" text="Projects >"/>
+		   </TableViewRow>
+		   <TableViewRow id="client" backgroundColor="transparent" Title="Clients">
+		   		  <Label id="label_clients" color="#228B22" top="5" left="50" text="Clients >"/>
+		   </TableViewRow>
+		   <TableViewRow id="invoicelistlist" backgroundColor="transparent" Title="Invoice">
+		   		  <Label id="label_invoice" color="#008080" top="5" left="50" text="Invoice >"/>
+		   </TableViewRow>
+		   <TableViewRow id="supplier" backgroundColor="transparent" Title="Supplier">
+		   		  <Label id="label_supplier" color="#333" top="5" left="50" text="Supplier >"/>
+		   </TableViewRow>
+		   <TableViewRow id="inventory" backgroundColor="transparent" Title="Inventory">
+		   		  <Label id="label_inventory" color="#333" top="5" left="50" text="Inventory >"/>
+		   </TableViewRow>
+		   <TableViewRow id="proposal" backgroundColor="transparent" Title="Proposal">
+		   		  <Label id="label_proposal" color="#333" top="5" left="50" text="Proposal >"/>
+		   </TableViewRow>
+		   <TableViewRow id="report" backgroundColor="transparent" Title="Report">
+		   		  <Label id="label_report" color="#333" top="5" left="50" text="Report >"/>
+		   </TableViewRow>
+		   <TableViewRow id="enterdata" backgroundColor="transparent" Title="Enter Data">
+	   		  	<Label id="enterdata_report" color="#333" top="5" left="50" text="Enter Client, Project & Invoice >"/>
+		   </TableViewRow>
+		   <TableViewRow id="google" Title="google"/>
+	   </TableView>
+    </Window>
+  </Tab>
+</Alloy>

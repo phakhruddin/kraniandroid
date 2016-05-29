@@ -1,0 +1,47 @@
+".container": {
+	backgroundColor:"black"
+}
+"TableViewRow": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	font: {fontSize: '1'}
+},
+"Label": {
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+	color: "#999"
+},
+"Tab":{
+	font: {
+		fontSize: '50dp',
+		fontWeight: 'bold',
+		textStyle : Ti.UI.TEXT_STYLE_HEADLINE
+	},
+	width: Ti.UI.SIZE,
+	height: Ti.UI.SIZE,
+},
+"#label_header": {
+	font: {
+		fontSize: "16"
+	}
+},
+"#label_sub1": {
+	font: {
+		fontSize: "14"
+	}
+},
+"#label_sub2": {
+	font: {
+		fontSize: "12"
+	}
+},
+"#label_sub3": {
+	font: {
+		fontSize: "10"
+	}
+},
+"#dateLabel": {
+	font: {
+		fontSize: "24"
+	}
+}

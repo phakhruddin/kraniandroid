@@ -1,0 +1,38 @@
+<Alloy>
+	<Model src="dummy" />
+	<Collection src="payment"/>
+	<Collection src="paymentsid"/>
+  <Window id="quotehistory_window" title="Payment details" backgroundColor="white">
+	<TableView id="labor_table" height="Ti.UI.FILL" separatorStyle="Titanium.UI.iPhone.TableViewSeparatorStyle.NONE"  backgroundColor="transparent" editable="true" moveable="true" onClick="checkClick"   >
+		<TableViewSection id="paymentsection"  autoStyle=true class="paymentsectioncontainer"/>
+		<TableViewSection headerTitle="Please enter paid amount:">	
+		<FooterView>
+	        <View height="300" backgroundColor="white">
+	        	<ImageView top="25" left="20" image="blueline.png"/>
+	        	<Label id="dateLabel" top="50" left="20" text="Please select date"/>
+	        	<TextArea id="notes_textarea" width="120" left="65%" height="44" top="45" borderWidth="1" borderColor="#bbb" borderRadius="5" 
+	        		color="#888" textAlign="left" hintText="100" keyboardType="Ti.UI.KEYBOARD_DECIMAL_PAD">
+	        		<KeyboardToolbar id="ktb_textarea">
+	        			<Toolbar>
+	        				<Items>
+            					<Button id="donebutton" title="DONE" onClick="blurIT"/>
+	        				</Items>
+	        			</Toolbar>
+	        		</KeyboardToolbar>	        		
+	        		</TextArea>
+    		 	<Picker id="picker" top="90" onChange="setDate" type=Titanium.UI.PICKER_TYPE_DATE_AND_TIME/>
+	        </View>
+        </FooterView>
+        </TableViewSection>
+  	</TableView>
+          <Toolbar id="paymenttoolbar" platform="ios" bottom="0" borderTop="true" borderBottom="false">
+            <Items id="itempayment">
+            	<Button systemButton="ACTION" onClick="uploadFile"/>
+            	<Button systemButton="CAMERA" onClick="takePic"/>
+             	<Button systemButton="DISCLOSURE" onClick="getParentFolder"/> 
+             	<FlexSpace/>
+             	<Button id="paymentdonebutton" title="DONE" onClick="blurIT"/>	
+            </Items>
+        </Toolbar>   
+  </Window>
+</Alloy>

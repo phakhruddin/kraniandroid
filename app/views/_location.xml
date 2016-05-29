@@ -1,0 +1,17 @@
+<Alloy>
+ <Tab id="tab_two" title="LOCATE" icon="locateemployee.png">
+  <Window id="location_window" backgroundColor="white" title="Location">
+	  <TableView id="location_table" backgroundColor="transparent">
+		  <TableViewRow id="updateloc" backgroundColor="transparent" opacity="0" Title="updateloc">
+		   		  <Label id="label_updateloc" color="#333" top="5" left="50" text="Update Your Location >"/>
+		  </TableViewRow>
+		  <TableViewRow id="checkloc" backgroundColor="transparent" opacity="0" Title="checkloc">
+		   		  <Label id="label_checkloc" color="#333" top="5" left="50" text="Check Every Labor Location >"/>
+		  </TableViewRow>
+		  <TableViewRow id="checkallloc" backgroundColor="transparent" opacity="0" Title="checkallloc">
+		   		  <Label id="label_checkallloc" color="#333" top="5" left="50" text="Check All Labor Location >"/>
+		  </TableViewRow>
+	  </TableView>
+  </Window>
+ </Tab>
+</Alloy>

@@ -1,0 +1,7 @@
+<Alloy>
+  <Window id="createevent_window" backgroundColor="white" title="createevent List">
+	<Picker id="picker" onChange="report" type="Titanium.UI.PICKER_TYPE_DATE_AND_TIME" minDate="2014,12,1" maxDate="May 1, 2034 12:00:00" value="2015-01-15T12:00:00" >
+    </Picker>
+	<Button id="selectdatetime_button" title="Next. Appointment details > " bottom="10" width="300" height="100" />
+  </Window>
+</Alloy>

@@ -1,0 +1,13 @@
+<Alloy>
+<Collection src="client"/>
+  <Tab id="tab_proposalcust" title="proposalcust">
+	  <Window id="proposalcust_window" backgroundColor="white" title="proposalcust List">
+	  	<TableView id="proposalcust_table"  backgroundColor="transparent" dataCollection="client" search="search_history" dataTransform="transformFunction" filterAttribute="title">
+		  	<SearchBar id="search_history" height="43" />
+				<TableViewRow id="proposalcust_row" backgroundColor="transparent" opacity="0" color="transparent" title="{title}">
+					<Label color="#333" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" text="{custom}"/>
+				</TableViewRow>
+		</TableView>
+	  </Window>
+  </Tab>
+</Alloy>
