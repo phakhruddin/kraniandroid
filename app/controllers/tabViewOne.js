@@ -1,12 +1,4 @@
 
-$.location.addEventListener ("click", function(e){
-	Alloy.Globals.openDetail(e);
-	var item = "labor";
-	var sid = Titanium.App.Properties.getString(item,"none");
-	Alloy.Globals.getPrivateData(sid,item);
-  	var tabViewOneChildController = Alloy.createController("location");
-  	tabViewOneChildController.openMainWindow($.tab_one);	
-});
 
 function openNextTab(item){
 	var sid = Titanium.App.Properties.getString(item,"none");
@@ -16,84 +8,12 @@ function openNextTab(item){
 	scheduleController.openMainWindow($.tab_one);	
 }
 
-$.project.addEventListener ("click", function(e){
-	///Alloy.Globals.checkFileExistThenCreateSS("joblogssid");
-	Alloy.Globals.openDetail(e);
-	var item = e.row.id;
-	openNextTab(item);
-});
-
 $.schedule.addEventListener ("click", function(e){
 	Alloy.Globals.openDetail(e);
 	var scheduleController = Alloy.createController("schedule");
  	scheduleController.openMainWindow($.tab_one);
 });
  	
-$.client.addEventListener ("click", function(e){
-	$.activityIndicator.show();
-	Alloy.Globals.openDetail(e);
-	Ti.API.info("e info : "+JSON.stringify(e));
-	var item = e.row.id;
-	openNextTab(item);
-});
-
-$.invoicelistlist.addEventListener ("click", function(e){
-	Alloy.Globals.openDetail(e);
-
- 		var item = 'invoice';
- 			var sid = Titanium.App.Properties.getString(item,"none");
-	Alloy.Globals.Log("tabviewone.js::sid for "+ item +" : "+sid);
-	Alloy.Globals.getPrivateData(sid,item);
-		var scheduleController = Alloy.createController("invoicelistlist");
- 	scheduleController.openMainWindow($.tab_one);
-	//openNextTab(item);
-});
-
-$.supplier.addEventListener ("click", function(e){
-	checkNetworkAndGoogleAuthorized('1gnkP116nsTVxtrw6d_mXVdOiesQEPH7LVUIyHUfx9EE');
-			var needAuth = Titanium.App.Properties.getString('needAuth');
-				Alloy.Globals.Log("needAuth is :  " +needAuth);
-	if (needAuth == "true") {googleAuth.authorize();};
-	Alloy.Globals.openDetail(e);
-	var scheduleController = Alloy.createController("supplier");
-	scheduleController.openMainWindow($.tab_one);	
-});
-
-$.inventory.addEventListener ("click", function(e){
-	Alloy.Globals.openDetail(e);
-	var item = e.row.id;
-	openNextTab(item);
-});
-
-$.proposallistlist.addEventListener ("click", function(e){
-	Alloy.Globals.openDetail(e);
-
- 		var item = 'proposal';
- 			var sid = Titanium.App.Properties.getString(item,"none");
-	Alloy.Globals.Log("tabviewone.js::sid for "+ item +" : "+sid);
-	Alloy.Globals.getPrivateData(sid,item);
-		var scheduleController = Alloy.createController("proposallistlist");
- 	scheduleController.openMainWindow($.tab_one);
-	//openNextTab(item);
-});
-
-
-/*
-$.proposal.addEventListener ("click", function(e){
-	Alloy.Globals.openDetail(e);
-	var item = e.row.id;
-	openNextTab(item);
-});*/
-
-$.settings.addEventListener ("click", function(e){
-	Alloy.Globals.openDetail(e);
-	var tabViewOneController = Alloy.createController("settings",{
-		metadata: "from tabviewOne",
-		callbackFunction: showFutureMenu
-	});
-	tabViewOneController.openMainWindow($.tab_one);	
-});
-
 
 var scope = ['https://spreadsheets.google.com/feeds', 'https://docs.google.com/feeds','https://www.googleapis.com/auth/calendar','https://www.googleapis.com/auth/calendar.readonly','https://www.googleapis.com/auth/drive'];
 scope.push ("https://www.googleapis.com/auth/drive.appdata");
@@ -493,21 +413,6 @@ function login(e) {
 
 }
 		
-var refresh = Ti.UI.createRefreshControl({
-    tintColor:'orange'
-});
-
-$.table.refreshControl=refresh;
-
-refresh.addEventListener('refreshstart',function(e){
-	setTimeout(function(){
-        Alloy.Globals.Log('tabviewone::refresh:: JSON.stringify(e): '+JSON.stringify(e));
-        Alloy.Globals.refreshActivity();
-        setMenuText();
-        refresh.endRefreshing();
-    }, 2000);
-});
-
 function showFutureMenu(response) {
 	if(response == "yes") {
 		$.table.appendRow($.futuremenu);
@@ -522,32 +427,6 @@ function showFutureMenu(response) {
 	}	
 }
 
-showFutureMenu("no");
+//showFutureMenu("no");
 
-$.google.addEventListener ("click", function(e){
-	Alloy.Globals.openDetail(e);
-	var tabViewOneController = Alloy.createController("google",{
-		metadata: "from tabviewOne",
-		callbackFunction: showFutureMenu
-	});
-	tabViewOneController.openMainWindow($.tab_one);	
-});
-
-//LOGO
-/*addLogo();
- $.logo_row.addEventListener ("click", function(e){
- 	Alloy.Globals.Log('tabviewone::logo_row:: JSON.stringify(e): '+JSON.stringify(e));
- 	if ( e.source.image = "" ) {
- 		Alloy.Globals.Log('tabviewone::logo_row:: expand row: e.source.image '+e.source.image);
- 		e.source.height = "Ti.UI.Size";		
- 		var logourl = Titanium.App.Properties.getString("logourl");
- 		e.source.image = logourl;	
- 	} else {
- 		Alloy.Globals.Log('tabviewone::logo_row:: shrink row: e.source.image '+e.source.image);
- 		e.source.image = "";
- 		e.source.height = "20";
- 
- 	}
- });*/
-
- 
+$.tabviewone_window.open();

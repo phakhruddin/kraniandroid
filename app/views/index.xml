@@ -1,8 +1,47 @@
-<Alloy>
-  <Collection src="client"/>
-  <TabGroup backgroundColor="white">
-    <Require src="tabViewOne"/>
-    <Require src="location"/>  
-    <Require src="schedule"/>    
-  </TabGroup>
+<Alloy platform="android">
+    <Window id="index" title=" " class="container" >
+	    <ActionBar id="actionbar" backgroundImage="/images/appicon.png" />
+        <Menu>
+            <MenuItem id="item1" title="Settings"/>
+            <MenuItem id="item2" title="Search"/>
+        </Menu>
+    	<TableView>
+			<TableViewRow></TableViewRow>
+			 <TableViewRow id="user_row" opacity="1.0" height="1" title="LOGIN">
+			 	<Label id="user_label" textAlign="center" left="35%" text="LOGIN"/>			 
+		 	</TableViewRow>
+		 	<TableViewRow id="schedule">
+		 		<Label text="Schedule" color="orange"></Label>
+		 		<ImageView image="/images/calendar90.png" width="50" height="50" left="20"></ImageView>
+		 	</TableViewRow>
+	      <TableViewRow id="location" backgroundColor="transparent">
+		   		  <Label id="label_location" color="#333" text="Locate Tech"/>
+		   		  <ImageView image="/images/man388.png" left="20" height="50" width="50"/>
+		   </TableViewRow>
+		   <TableViewRow id="project" backgroundColor="transparent">
+		   		  <Label id="label_project" color="#008080" text="Projects"/>
+		   		  <ImageView image="/images/silhouette35.png" left="20" height="50" width="50"/>
+		   </TableViewRow>
+		   <TableViewRow id="client" backgroundColor="transparent">
+		   		  <Label id="label_clients" color="#228B22" text="Clients"/>
+		   		  <ImageView image="/images/hands8.png" left="20" height="50" width="50"/>
+		   </TableViewRow>
+		   <TableViewRow id="invoicelistlist" backgroundColor="transparent">
+		   		   <Label id="label_invoice" color="#008080" text="Invoice"/>
+		   		  <ImageView image="/images/dollar150.png"  left="20" height="50" width="50"/>
+		   </TableViewRow>
+   		   <TableViewRow id="proposallistlist" backgroundColor="transparent">
+		   		  <Label id="label_proposal" color="#008080" text="Proposal"/>
+		   		  <ImageView image="/images/silhouette61.png"  left="20" height="50" width="50"/>
+		   </TableViewRow>
+   		   <TableViewRow id="settings" backgroundColor="transparent">
+		   		  <Label id="label_settings" color="orange" text="Settings"/>
+		   		  <ImageView image="/images/gear37.png"  left="20" height="50" width="50"/>
+		   </TableViewRow>
+		   <TableViewRow id="google" Title="google"/>
+		   <TableViewRow id="loginrow" backgroundColor="transparent">
+		   		  <Button id="login_button" title="LOGIN" onClick="Login" />
+		   </TableViewRow>
+    	</TableView>
+    </Window>  
 </Alloy>
