@@ -16,7 +16,8 @@
 //KRANI MASTER RECORD
 //MasterRecord
 
-Alloy.Globals.clientId = "101068780411-h8ko2j2s4jb6ikboj6epplbmrfgn3e9k.apps.googleusercontent.com"; // kraniapp@gmail.com
+Alloy.Globals.clientId = "101068780411-on2s0ja0vgo6lqci3hr2edbgikmt7phl.apps.googleusercontent.com"; // android
+//Alloy.Globals.clientId = "101068780411-h8ko2j2s4jb6ikboj6epplbmrfgn3e9k.apps.googleusercontent.com"; // kraniapp@gmail.com IOS
 //Alloy.Globals.clientId = "693726333078-uncq4tte4lo9vfbhl6569d3uduvnn8fd.apps.googleusercontent.com"; //oldkrani1
 //Alloy.Globals.clientId = "306793301753-8ej6duert04ksb3abjutpie916l8hcc7.apps.googleusercontent.com";
 //var bootstrapid =  "1XajtTX5pdo5yMM_v9cC5-hgHOFlH1n0SN9McS3qElgQ"; //krani1
@@ -156,8 +157,8 @@ Alloy.Globals.getEmail = function(e){
 	};
 	console.log('tabViewOne::getEmail:: URL:: https://www.googleapis.com/oauth2/v1/userinfo?alt=json');
 	xhr.open("GET", 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json');
-	xhr.setRequestHeader("Content-type", "application/json");
-    xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	///xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send();
 };
 
@@ -232,6 +233,18 @@ var laborsid = '1-weM0tLsaf51_bungT67LMpdgbXEJIbX6s_5qvVFOyE'; Titanium.App.Prop
 //var joblogsid = '1SLNRI176qK51rkFWWCQvqToXswdNYlqINsdB2HM0ozk'; Titanium.App.Properties.setString('joblog',joblogsid);
 var joblogsid = '1JX1pq5PNoG0MCyl1V17OAdM3KXSYvTdZACy_QlLA8ds'; Titanium.App.Properties.setString('joblog',joblogsid);*/
 
+/*
+var projectsid = Titanium.App.Properties.getString('project',"1hu9pxrBXySRV1ssnVpElK9vbQ9jtxbhfU_hAPgz-0Us");
+var clientsid = Titanium.App.Properties.getString('client',"1zV1OLmiBXe1PLxvokB7qWdA9jefijKIEA94hr69YmpM");
+var invoicesid = Titanium.App.Properties.getString('invoice',"13xkRwWIOepHedvy2q6BkQFu0yvwCtfLWDCLTU30rXHM");
+var inventorysid = Titanium.App.Properties.getString('inventory',"1pJmkdazzLHpN-jVk7_MEIZPkwkvPU4wY0hfdPMXT7go");
+var proposalsid = Titanium.App.Properties.getString('proposal',"1bzq7SXZ6tmiA391IH2ydE8n7zh7FpuAKJpfVDwO2dKE");
+var mastersid = Titanium.App.Properties.getString('master',"1Muo4myAp_0Bf61wE_FgBNVE6GMxpCW3WMvm1O46834k");
+var schedulesid = Titanium.App.Properties.getString('schedule',"1x-VmuPMqxC5QzZAU8-Jp-dxS0FNH2X-wkrBYjxSn_oE");
+var laborsid = Titanium.App.Properties.getString('labor',"1-evDY-lloJ9yj2z5Zk-zr8Prh4jXPQyZxur4rMJfGkY");
+var joblogsid = Titanium.App.Properties.getString('joblog',"1bpgmdeeFLqIQnMHlAV2J5wWFEzsyy8nI5mIeFBWYqk8");
+var authclientid = Titanium.App.Properties.getString('authclientid');
+var authclientsecret = Titanium.App.Properties.getString('authclientsecret');*/
 
 var projectsid = Titanium.App.Properties.getString('project');
 var clientsid = Titanium.App.Properties.getString('client');
@@ -555,15 +568,12 @@ Alloy.Globals.getPrivateData = function(sid,type) {
 	var xhr = Ti.Network.createHTTPClient({
 	    onload: function(e) {
 	    try {
-			var xml = Titanium.XML.parseString(this.responseText);
-			Alloy.Globals.Log("alloy.js::Alloy.Globals.getPrivateData:: response txt is: "+this.responseText);
+	    	Alloy.Globals.Log("alloy.js::Alloy.Globals.getPrivateData:: response txt is: "+this.responseText);
+			var xml = Titanium.XML.parseString(this.responseText);			
 			Alloy.Globals.Log("alloy.js::Alloy.Globals.getPrivateData:: this xml is: " +xml);
 			var feed = xml.documentElement.getElementsByTagName("feed");
 			var entry = xml.documentElement.getElementsByTagName("entry"); 
 			Alloy.Globals.Log("alloy.js::this entry length is: " +entry.length);
-			// deleting existing entry in database start
-			//var OfflineMode = Titanium.App.Properties.setInt('mindebug');
-			//if ( OfflineMode == 0 ){
 				(type == 'client') && Alloy.Collections.client.deleteAll();
 				(type == 'project') && Alloy.Collections.project.deleteAll();
 				(type == 'inventory') && Alloy.Collections.inventory.deleteAll();
@@ -578,8 +588,6 @@ Alloy.Globals.getPrivateData = function(sid,type) {
 				(type == 'paymentsid') && Alloy.Collections.paymentsid.deleteAll();
 				(type == 'invoicesent') && Alloy.Collections.invoicesent.deleteAll();
 				(type == 'proposalsent') && Alloy.Collections.proposalsent.deleteAll();
-			//};		
-			// deleting existing entry done
 			for (i=1;i<entry.length;i++){
 				var col1 = entry.item(i).getElementsByTagName("gsx:col1").item(0).text;
 				var col2 = entry.item(i).getElementsByTagName("gsx:col2").item(0).text;
@@ -591,9 +599,8 @@ Alloy.Globals.getPrivateData = function(sid,type) {
 	    			if (listitem.getAttribute("rel") == "edit"){ var edithref = listitem.getAttribute("href").replace(':','yCoLoNy');}
 	    			if (listitem.getAttribute("rel") == "self"){ var selfhref = listitem.getAttribute("href").replace(':','yCoLoNy');}
     			}
-				//data.push({"identification":col1,"next column":col2,"col4":col4});
 				data.push({"col1":col1,"col2":col2,"col4":col4});				
-				//Alloy.Globals.Log("alloy.js::updating database with data :"+col1+" url:"+idtag+" "+edithref);
+				Alloy.Globals.Log("alloy.js::updating database with data :"+col1+" url:"+idtag+" "+edithref);
 				var dataModel = Alloy.createModel(type,{
 					col1 :  entry.item(i).getElementsByTagName("gsx:col1").item(0).text.trim() || "none",
 					col2 : entry.item(i).getElementsByTagName("gsx:col2").item(0).text.trim() || "none",
@@ -608,7 +615,6 @@ Alloy.Globals.getPrivateData = function(sid,type) {
 					col11 :  entry.item(i).getElementsByTagName("gsx:col11").item(0).text.trim() || "none",
 					col12 :  entry.item(i).getElementsByTagName("gsx:col12").item(0).text.trim() || "none",
 					col13 :  entry.item(i).getElementsByTagName("gsx:col13").item(0).text.trim() || "none",
-					//col14 :  entry.item(i).getElementsByTagName("gsx:col14").item(0).text || "none",
 					col14 :  idtag+"xCoLoNx"+selfhref+"xCoLoNx"+edithref+"xCoLoNx"+selfhref.trim() || "none",
 					col15 :  entry.item(i).getElementsByTagName("gsx:col15").item(0).text.trim() || "none",
 					col16 :  entry.item(i).getElementsByTagName("gsx:col16").item(0).text.trim() || "none",		
@@ -624,11 +630,11 @@ Alloy.Globals.getPrivateData = function(sid,type) {
 			    Alloy.Globals.Log((success==true) ? 'success' : 'fail'); // outputs 'success'
 			}
 			file.write(this.responseText);
-			Alloy.Globals.Log("alloy.js::checking data " +JSON.stringify(data));
+			Alloy.Globals.Log("alloy.js:Alloy.Globals.getPrivateData:::checking data " +JSON.stringify(data));
 			//
 			Alloy.Globals.Log(" Alloy.Globals.getPrivateData::Data were successfuly downloaded from "+url+". Please proceed.");
 			} catch(e){
-				Alloy.Globals.Log("cathing e: "+JSON.stringify(e));
+				Alloy.Globals.Log("Alloy.Globals.getPrivateData:cathing e: "+JSON.stringify(e));
 			}
 		}
 	});
@@ -638,7 +644,9 @@ Alloy.Globals.getPrivateData = function(sid,type) {
 		alert("code:" +e.code+ " Unable to pull data from cloud");
 		Alloy.Globals.googleAuthSheet.authorize();
 	};
+	Alloy.Globals.Log("Alloy.Globals.getPrivateData:: url is: "+url);
 	xhr.open("GET", url);
+	xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send();
 	
 };
@@ -907,7 +915,7 @@ Alloy.Globals.postCreateEvent = function(calid,startdateTime,enddateTime,locatio
     }
 });
 	xhr.open("POST", url);
-	xhr.setRequestHeader("Content-type", "application/json");
+	///xhr.setRequestHeader("Content-type", "application/json");
 	xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send(event);
 	Alloy.Globals.Log('done POSTed');
@@ -1010,10 +1018,10 @@ Alloy.Globals.checkFileExistThenCreateSS = function(filename){
 	xhr.onerror = function(e){
 		alert("Please connect to the network.");
 	};
-	var rawquerystring = '?q=title+%3D+\''+filename+'\'+and+mimeType+%3D+\'application%2Fvnd.google-apps.spreadsheet\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Ctitle)';
+	var rawquerystring = '?q=title%3D\''+filename+'\'';
 	Alloy.Globals.Log("alloy.js::Alloy.Globals.checkFileExistThenCreateSS:: URL:: https://www.googleapis.com/drive/v2/files"+rawquerystring);
 	xhr.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring);
-	xhr.setRequestHeader("Content-type", "application/json");
+	///xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send();
 };
@@ -1053,10 +1061,10 @@ Alloy.Globals.checkFileExistThenUpdateSID = function(filename){
 		Alloy.Globals.Status ="failed";
 		Titanium.App.Properties.setString("status","failed");	
 	};
-	var rawquerystring = '?q=title+%3D+\''+filename+'\'+and+mimeType+%3D+\'application%2Fvnd.google-apps.spreadsheet\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Ctitle)';
+	var rawquerystring = '?q=title%3D\''+filename+'\'';
 	Alloy.Globals.Log("alloy.js::Alloy.Globals.checkFileExistThenUpdateSID:: URL:: https://www.googleapis.com/drive/v2/files"+rawquerystring);
 	xhr.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring);
-	xhr.setRequestHeader("Content-type", "application/json");
+	///xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send();
 	Alloy.Globals.Log("alloy.js::::JSON.stringify(Alloy.Globals.Status) :"+JSON.stringify(Alloy.Globals.Status)+" Titanium.App.Properties.getString(\"status\"): " +Titanium.App.Properties.getString("status"));
@@ -1098,7 +1106,7 @@ Alloy.Globals.createSpreadsheet = function(filename) {
 					},2500 + parseFloat(t));
 				Titanium.App.Properties.setInt("krani_t",3000 + parseFloat(t));
 	    	} catch(e){
-				Alloy.Globals.Log("cathing e: "+JSON.stringify(e));
+				Alloy.Globals.Log("Alloy.Globals.createSpreadsheet:cathing e: "+JSON.stringify(e));
 			}
 		}
 		});
@@ -1107,7 +1115,7 @@ Alloy.Globals.createSpreadsheet = function(filename) {
 		Alloy.Globals.Log("alloy.js::createSpreadsheet:: error is: "+JSON.stringify(e));
 	};
 	xhr.open("POST", 'https://www.googleapis.com/drive/v2/files');	
-	xhr.setRequestHeader("Content-type", "application/json");
+	///xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
     Alloy.Globals.Log("alloy.js::json post: "+jsonpost);
 	xhr.send(jsonpost);
@@ -1201,7 +1209,7 @@ Alloy.Globals.updateSpreadsheet = function(sid,col1,col2,col3,col4,col5,col6,col
 });
 	xhr.open("POST", 'https://spreadsheets.google.com/feeds/list/'+sid+'/od6/private/full');
 	xhr.setRequestHeader("Content-type", "application/atom+xml");
-	xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send(xmldatastring);
 	Alloy.Globals.Log('done POSTed');
 };
@@ -1229,7 +1237,7 @@ Alloy.Globals.updateSpreadsheet2 = function(sid,col1,col2,col3,col4,col5,col6,co
 });
 	xhr.open("POST", 'https://spreadsheets.google.com/feeds/list/'+sid+'/od6/private/full');
 	xhr.setRequestHeader("Content-type", "application/atom+xml");
-	xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send(xmldatastring);
 	Alloy.Globals.Log('done POSTed');
 };
@@ -1466,7 +1474,7 @@ Alloy.Globals.submit = function(type,clientfirstname,clientlastname,clientcompan
 			alert('Saved Successfully!');
 		} 
 	xhr.setRequestHeader("Content-type", "application/atom+xml");
-	xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send(xmldatastring);
  };
  
@@ -1754,7 +1762,7 @@ Alloy.Globals.submit = function(type,clientfirstname,clientlastname,clientcompan
 		Alloy.Globals.Log("alloy.js:Alloy.Globals.shareAnyonePermission:: error is: "+JSON.stringify(e));
 	};
 	xhr.open("POST", 'https://www.googleapis.com/drive/v2/files/'+sid+'/permissions');	
-	xhr.setRequestHeader("Content-type", "application/json");
+	///xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
     Alloy.Globals.Log("Alloy.Globals.shareAnyonePermission::shareAnyonePermission::json post: "+jsonpost);
 	xhr.send(jsonpost);
@@ -1857,7 +1865,7 @@ Alloy.Globals.populateSpreadsheetHeader = function(sid,rowno,colno,edithref,self
 });
         xhr.open("PUT", ''+edithref+'');
         xhr.setRequestHeader("Content-type", "application/atom+xml");
-        xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+        xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
         xhr.send(xmldatastring);
         Alloy.Globals.Log('done POSTed');
 };
@@ -1961,7 +1969,7 @@ Alloy.Globals.createSpreadsheet2 = function(filename,parentid,isinit){
 	};
 	xhr.open("POST", 'https://www.googleapis.com/drive/v2/files');	
 	xhr.setRequestHeader("Content-type", "application/json");
-    xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+    xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
     Alloy.Globals.Log("alloy.js::json post: "+jsonpost);
 	xhr.send(jsonpost);
 };
@@ -1993,11 +2001,11 @@ Alloy.Globals.createFolder = function(foldername,parentid){
 		}
 		});
 	xhr.onerror = function(e){
-		Alloy.Globals.Log("projectdetail::createFolder::Unable to createFolder with "+foldername+".");
+		Alloy.Globals.Log("projectdetail::createFolder::Unable to createFolder with "+foldername+". error: "+JSON.stringify(e));
 	};
 	xhr.open("POST", 'https://www.googleapis.com/drive/v2/files');	
-	xhr.setRequestHeader("Content-type", "application/json");
-    xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	///xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
     Alloy.Globals.Log("alloy.js::json post: "+jsonpost);
 	xhr.send(jsonpost);
 };
@@ -2035,11 +2043,11 @@ Alloy.Globals.createFolderIFNotExist = function(foldername,parentid){
 				});
 			xhr2.onerror = function(e){
 				//alert("Alloy.Globals.createFolderIFNotExist::Unable to create spreadsheet.");
-				Alloy.Globals.Log("Alloy.Globals.createFolderIFNotExist::Unable to createSpreadsheet with "+filename+".");
+				Alloy.Globals.Log("Alloy.Globals.createFolderIFNotExist::Unable to createSpreadsheet with "+filename+". error: "+JSON.stringify(e));
 			};
 			xhr2.open("POST", 'https://www.googleapis.com/drive/v2/files');	
-			xhr2.setRequestHeader("Content-type", "application/json");
-		    xhr2.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+			///xhr2.setRequestHeader("Content-type", "application/json");
+		    xhr2.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 		    Alloy.Globals.Log("alloy.js::json post: "+jsonpost);
 			xhr2.send(jsonpost);
 			// Create Credit and Debit END								
@@ -2048,10 +2056,10 @@ Alloy.Globals.createFolderIFNotExist = function(foldername,parentid){
 			}
 		}							
 	});	
-	var rawquerystring1 = '?q=title+%3D+\''+filename+'\'+and+mimeType+%3D+\'application%2Fvnd.google-apps.spreadsheet\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Cparents%2Ctitle)';	
+	var rawquerystring1 = '?q=title%3D\''+filename+'\'+and+mimeType%3D\'application%2Fvnd.google-apps.spreadsheet\'';	
 	xhr1.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring1);
-	xhr1.setRequestHeader("Content-type", "application/json");
-	xhr1.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	///xhr1.setRequestHeader("Content-type", "application/json");
+	xhr1.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr1.send();	
 		
 };
@@ -2105,7 +2113,7 @@ Alloy.Globals.createCoreSS = function (filename,parentid,indexsid) {
 							},17500+parseFloat(t));
 							Titanium.App.Properties.setInt("krani_t",t); // update the API delay				
 				    	} catch(e){
-							Alloy.Globals.Log("cathing e: "+JSON.stringify(e));
+							Alloy.Globals.Log("Alloy.Globals.createCoreSS::cathing e: "+JSON.stringify(e));
 						}
 					}
 				});
@@ -2114,8 +2122,8 @@ Alloy.Globals.createCoreSS = function (filename,parentid,indexsid) {
 				Alloy.Globals.Log("projectdetail::createSpreadsheet::Unable to createSpreadsheet with "+filename+".");
 			};
 			xhr2.open("POST", 'https://www.googleapis.com/drive/v2/files');	
-			xhr2.setRequestHeader("Content-type", "application/json");
-		    xhr2.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+			///xhr2.setRequestHeader("Content-type", "application/json");
+		    xhr2.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 		    Alloy.Globals.Log("alloy.js::json post: "+jsonpost);
 			xhr2.send(jsonpost);
 			// Create Credit and Debit END								
@@ -2124,10 +2132,10 @@ Alloy.Globals.createCoreSS = function (filename,parentid,indexsid) {
 			}
 		}							
 	});	
-	var rawquerystring1 = '?q=title+%3D+\''+filename+'\'+and+mimeType+%3D+\'application%2Fvnd.google-apps.spreadsheet\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Cparents%2Ctitle)';	
+	var rawquerystring1 = '?q=title%3D\''+filename+'\'+and+mimeType%3D\'application%2Fvnd.google-apps.spreadsheet\'';	
 	xhr1.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring1);
-	xhr1.setRequestHeader("Content-type", "application/json");
-	xhr1.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	///xhr1.setRequestHeader("Content-type", "application/json");
+	xhr1.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr1.send();	
 		
 };
@@ -2219,16 +2227,16 @@ Alloy.Globals.createCoreInitialCoreFolderandSS = function(name,foldername,parent
 						var filename = foldername+"list";
 						Alloy.Globals.createCoreSS(filename,parentid,indexsid);
 			    	} catch(e){
-						Alloy.Globals.Log("cathing e: "+JSON.stringify(e));
+						Alloy.Globals.Log("alloy.js::Alloy.Globals.createCoreInitialCoreFolderandSS:cathing e: "+JSON.stringify(e));
 					}
 				}
 				});
 				xhr.onerror = function(e){
-					Alloy.Globals.Log("projectdetail::createFolder::Unable to createFolder with "+foldername+".");
+					Alloy.Globals.Log("projectdetail::createFolder::Unable to createFolder with "+foldername+". error: "+JSON.stringify(e));
 				};
 				xhr.open("POST", 'https://www.googleapis.com/drive/v2/files');	
-				xhr.setRequestHeader("Content-type", "application/json");
-			    xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+				///xhr.setRequestHeader("Content-type", "application/json");
+			    xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 			    Alloy.Globals.Log("alloy.js::json post: "+jsonpost);
 				xhr.send(jsonpost);					
 			} else {
@@ -2243,10 +2251,10 @@ Alloy.Globals.createCoreInitialCoreFolderandSS = function(name,foldername,parent
 			}	
 		}
 	});
-	var rawquerystring1 = '?q=title+%3D+\''+foldername+'\'+and+mimeType+%3D+\'application%2Fvnd.google-apps.folder\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Cparents%2Ctitle)';	
+	var rawquerystring1 = '?q=title%3D\''+foldername+'\'';	
 	xhr1.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring1);
-	xhr1.setRequestHeader("Content-type", "application/json");
-	xhr1.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	///xhr1.setRequestHeader("Content-type", "application/json");
+	xhr1.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr1.send();		
 };
 
@@ -2305,14 +2313,14 @@ Alloy.Globals.locateIndexCreateSpreadsheet = function(name,name_dir_sid){
 	};
 	var filename = name+"_index";
 	if (name_dir_sid) {
-		var rawquerystring = '?q=title+%3D+\''+filename+'\'+and+\''+name_dir_sid+'\'+in+parents+and+mimeType+%3D+\'application%2Fvnd.google-apps.spreadsheet\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Cparents%2Ctitle)';
+		var rawquerystring = '?q=title%3D\''+filename+'\'';
 	} else {
-		var rawquerystring = '?q=title+%3D+\''+filename+'\'+and+mimeType+%3D+\'application%2Fvnd.google-apps.spreadsheet\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Cparents%2Ctitle)';
+		var rawquerystring = '?q=title%3D\''+filename+'\'';
 	}
 	Alloy.Globals.Log("alloy.js::Alloy.Globals.locateIndexCreateSpreadsheet: get rawquerystring is: "+rawquerystring);
 	xhr.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring);
-	xhr.setRequestHeader("Content-type", "application/json");
-    xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	///xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send();
 	Alloy.Globals.Log("alloy.js::::JSON.stringify(Alloy.Globals.Status) :"+JSON.stringify(Alloy.Globals.Status)+" Titanium.App.Properties.getString(\"status\"): " +Titanium.App.Properties.getString("status"));	
 };
@@ -2365,8 +2373,8 @@ Alloy.Globals.checkInitialFolderExistAfterLogin = function(name,parentid){
 					Alloy.Globals.Log("alloy::checkInitialFolderExistAfterLogin::Unable to checkInitialFolderExistAfterLogin with "+foldername+". error is: "+JSON.stringify(e));
 				};
 				xhr.open("POST", 'https://www.googleapis.com/drive/v2/files');	
-				xhr.setRequestHeader("Content-type", "application/json");
-			    xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+				///xhr.setRequestHeader("Content-type", "application/json");
+			    xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 			    Alloy.Globals.Log("alloy.js::json post: "+jsonpost);
 				xhr.send(jsonpost);				
 			} else {
@@ -2380,10 +2388,10 @@ Alloy.Globals.checkInitialFolderExistAfterLogin = function(name,parentid){
 			alert("error:"+e.code+": Please connect to the network."); 
 			Alloy.Globals.Log("alloy::checkFolderexist::Unable to checkInitialFolderExistAfterLogin with "+foldername+" error code is: "+JSON.stringify(e));
 		};	
-	var rawquerystring = '?q=title+%3D+\''+foldername+'\'+and+mimeType+%3D+\'application%2Fvnd.google-apps.folder\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Cparents%2Ctitle)';
+	var rawquerystring = '?q=title%3D\''+foldername+'\'';
 	xhr0.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring);
-	xhr0.setRequestHeader("Content-type", "application/json");
-    xhr0.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	///xhr0.setRequestHeader("Content-type", "application/json");
+    xhr0.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr0.send();
 };
 
@@ -2441,8 +2449,8 @@ Alloy.Globals.createInitialFolder = function(name,parentid){
 					Alloy.Globals.Log("alloy::Alloy.Globals.createInitialFolder::Unable to createInitialFolder with "+foldername+" error is: "+JSON.stringify(e));
 				};
 				xhr.open("POST", 'https://www.googleapis.com/drive/v2/files');	
-				xhr.setRequestHeader("Content-type", "application/json");
-			    xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+				///xhr.setRequestHeader("Content-type", "application/json");
+			    xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 			    Alloy.Globals.Log("alloy.js:Alloy.Globals.createInitialFolder:json post: "+jsonpost);
 				xhr.send(jsonpost);				
 			} else {
@@ -2456,11 +2464,15 @@ Alloy.Globals.createInitialFolder = function(name,parentid){
 			alert("error:"+e.code+": Please connect to the network."); 
 			Alloy.Globals.Log("alloy::checkFolderexist::Unable to createInitialFolder with "+foldername+" error is: "+JSON.stringify(e));
 		};	
-	//var rawquerystring = '?q=title+%3D+\''+foldername+'\'+and+mimeType+%3D+\'application%2Fvnd.google-apps.folder\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Cparents%2Ctitle)';
-	var rawquerystring = '?q=title+%3D+\''+foldername+'\'+and+\''+parentid+'\'+in+parents+and+mimeType+%3D+\'application%2Fvnd.google-apps.folder\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Cparents%2Ctitle)';
+	//var rawquerystring = '?q=title+%3D+\''+foldername+'\'+and+mimeType+%3D+\'application%2Fvnd.google-apps.folder\'+and+trashed+%3D+false&fields+%3D+items(id%2CmimeType%2Clabels%2Cparents%2Ctitle)';
+	//var rawquerystring = '?q=title+%3D+\''+foldername+'\'+and+\''+parentid+'\'+in+parents+and+mimeType%3D\'application%2Fvnd.google-apps.folder\'+and+trashed+%3D+false&fields+%3D+items(id%2CmimeType%2Clabels%2Cparents%2Ctitle)';
+	//var rawquerystring = '?q=title%3D\''+foldername+'\'+and+\''+parentid+'\'+in+parents+and+mimeType%3D\'application%2Fvnd.google-apps.folder\'';
+	var rawquerystring = '?q=title%3D\''+foldername+'\'';
+    Alloy.Globals.Log("alloy.js::Alloy.Globals.createInitialFolder:: rawquerystring  "+rawquerystring);
 	xhr0.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring);
-	xhr0.setRequestHeader("Content-type", "application/json");
-    xhr0.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	//xhr0.setRequestHeader("Content-type", "application/json");
+	///xhr0.setRequestHeader("Content-type", "application/json");
+    xhr0.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr0.send();
 };
 
@@ -2505,7 +2517,7 @@ Alloy.Globals.initialUserSetup = function(e){
 		Alloy.Globals.Log('main::getEmail:: URL:: https://www.googleapis.com/oauth2/v1/userinfo?alt=json');
 		xhr.open("GET", 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json');
 		xhr.setRequestHeader("Content-type", "application/json");
-	    xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	    xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 		xhr.send();
 };*/
 
@@ -2547,8 +2559,8 @@ Alloy.Globals.initialUserSetup = function(e){
 		};
 		Alloy.Globals.Log('main::getEmail:: URL:: https://www.googleapis.com/oauth2/v1/userinfo?alt=json');
 		xhr.open("GET", 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json');
-		xhr.setRequestHeader("Content-type", "application/json");
-	    xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+		///xhr.setRequestHeader("Content-type", "application/json");
+	    xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 		xhr.send();
 };
 
@@ -2753,7 +2765,7 @@ Alloy.Globals.getJSONOnline = function(e){
 					var json = out;		    
 			}	
 		});	
-		Alloy.Globals.Log("alloy::getMaster:url :"+url);		
+		Alloy.Globals.Log("Alloy.Globals.getJSONOnline:url :"+url);		
 		xhr.open("GET", url);
 		xhr.send();
 };
@@ -2789,6 +2801,10 @@ Alloy.Globals.getJSONOnlineCreateInitialFolder = function(name){
 					Alloy.Globals.createInitialFolder(name,parentid);		    
 			}	
 		});	
+		xhr.onerror = function(e){
+			alert("error:"+e.code+": Please connect to the network."); 
+			Alloy.Globals.Log("Alloy.Globals.getJSONOnlineCreateInitialFolder:: Unable to connect to the cloud. error: "+JSON.stringify(e));
+		};
 		Alloy.Globals.Log("alloy::getJSONOnlineCreateInitialFolder:url :"+url);		
 		xhr.open("GET", url);
 		xhr.send();
@@ -2835,10 +2851,11 @@ Alloy.Globals.stampSIDFromCoreFilename = function(filename){
 		alert("error:"+e.code+": Please connect to the network."); 
 		Alloy.Globals.Log("alloy.js::checkFileExistThenCreateSS:: Unable to connect to the cloud.");
 	};
-	var rawquerystring = '?q=title+%3D+\''+filename+'\'+and+mimeType+%3D+\'application%2Fvnd.google-apps.spreadsheet\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Ctitle)';
+	//var rawquerystring = '?q=title%3D\''+filename+'\'+and+mimeType%3D\'application%2Fvnd.google-apps.spreadsheet\'+and+trashed+%3D+false&fields+%3D+items(id%2CmimeType%2Clabels%2Ctitle)';
+	var rawquerystring = '?q=title%3D\''+filename+'\'';
 	Alloy.Globals.Log("alloy.js::Alloy.Globals.stampSIDFromCoreFilename:: URL:: https://www.googleapis.com/drive/v2/files"+rawquerystring);
 	xhr.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring);
-	xhr.setRequestHeader("Content-type", "application/json");
+	///xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send();
 };
@@ -2872,10 +2889,11 @@ Alloy.Globals.stampSIDFromCoreDirname = function(dirname){
 		alert("error:"+e.code+": Please connect to the network."); 
 		Alloy.Globals.Log("alloy.js::checkFileExistThenCreateSS:: Unable to connect to the cloud.");
 	};
-	var rawquerystring = '?q=title+%3D+\''+dirname+'\'+and+mimeType+%3D+\'application%2Fvnd.google-apps.folder\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Ctitle)';
+	/////var rawquerystring = '?q=title%3D\''+dirname+'\'+and+mimeType%3D\'application%2Fvnd.google-apps.folder\'+and+trashed+%3D+false&fields+%3D+items(id%2CmimeType%2Clabels%2Ctitle)';
+	var rawquerystring = '?q=title%3D\''+dirname+'\'';
 	Alloy.Globals.Log("alloy.js::Alloy.Globals.stampSIDFromCoreDirname:: URL:: https://www.googleapis.com/drive/v2/files"+rawquerystring);
 	xhr.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring);
-	xhr.setRequestHeader("Content-type", "application/json");
+	///xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send();
 };
@@ -2907,7 +2925,7 @@ Alloy.Globals.loginActivity = function(e){
 	    		if (Titanium.App.Properties.getString('kraniemailid')){
 		    			var kraniemailid = Titanium.App.Properties.getString('kraniemailid');
 		    		} else {Titanium.App.Properties.setString('kraniemailid',emailid);var kraniemailid=emaild;};
-	    		Alloy.Globals.Log("tabViewOne.js::args inside getEmail: emailid "+emailid+" :: "+JSON.stringify(e));
+	    		Alloy.Globals.Log("Alloy.Globals.loginActivity::args inside getEmail: emailid "+emailid+" :: "+JSON.stringify(e));
 	    		Alloy.Globals.getJSONOnline(); //Initial initiation information. 
 	    		var t=0;
 				for (i=0;i<Alloy.Globals.corefilenamearray.length;i++){
@@ -2936,8 +2954,8 @@ Alloy.Globals.loginActivity = function(e){
 	};
 	Alloy.Globals.Log('tabViewOne::getEmail:: URL:: https://www.googleapis.com/oauth2/v1/userinfo?alt=json');
 	xhr.open("GET", 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json');
-	xhr.setRequestHeader("Content-type", "application/json");
-    xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	///xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send();
 };
 
@@ -3015,7 +3033,7 @@ Alloy.Globals.updateExistingSpreadsheetAndDB = function(type,col1,col2,col3,col4
 		}).save();*/
 	
 	xhr.setRequestHeader("Content-type", "application/atom+xml");
-	xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send(xmldatastring);	
 };
 
@@ -3035,7 +3053,7 @@ Alloy.Globals.deleteFile = function(sid){
     }
 	});
 	xhr.open("DELETE", 'https://www.googleapis.com/drive/v2/files/'+sid);
-	//xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	//xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	Alloy.Globals.Log(new Date()+'::Alloy.Globals.deleteFile::done POSTed');
 
 };
@@ -3067,7 +3085,8 @@ Alloy.Globals.checkFileExistThenDelete = function(filename){
 	xhr.onerror = function(e){
 		Alloy.Globals.Log("Alloy.Globals.checkFileExistThenDelete::error e: "+JSON.stringify(e));
 	};
-	var rawquerystring = '?q=title+%3D+\''+filename+'\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Ctitle)';
+	/////var rawquerystring = '?q=title%3D\''+filename+'\'+and+trashed+%3D+false&fields+%3D+items(id%2CmimeType%2Clabels%2Ctitle)';
+	var rawquerystring = '?q=title%3D\''+filename+'\'';
 	xhr.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring);
 	xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
@@ -3094,8 +3113,8 @@ Alloy.Globals.renameFile = function(sid,newname){
     }
 	});
 	xhr.open("PATCH", 'https://www.googleapis.com/drive/v2/files/'+sid);
-	xhr.setRequestHeader("Content-type", "application/json");
-	xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+	///xhr.setRequestHeader("Content-type", "application/json");
+	xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send(meta);
 	Alloy.Globals.Log(new Date()+'::Alloy.Globals.renameFile::done POSTed');
 };
@@ -3128,9 +3147,9 @@ Alloy.Globals.checkFileExistThenUpdateTitaniumProperties = function(filename){
 		Alloy.Globals.Log("Alloy.Globals.checkFileExistThenUpdateTitaniumProperties::refReshActivity needed:  Alloy.Globals.refreshActivity()");
 		Alloy.Globals.refreshActivity();
 	};
-	var rawquerystring = '?q=title+%3D+\''+filename+'\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Ctitle%2CwebContentLink)';
+	var rawquerystring = '?q=title%3D\''+filename+'\'';
 	xhr.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring);
-	xhr.setRequestHeader("Content-type", "application/json");
+	///xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send();
 };
@@ -3176,8 +3195,8 @@ Alloy.Globals.refreshActivity = function() {
 		};
 		Alloy.Globals.Log('alloy::getEmail:: URL:: https://www.googleapis.com/oauth2/v1/userinfo?alt=json');
 		xhr.open("GET", 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json');
-		xhr.setRequestHeader("Content-type", "application/json");
-	    xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+		///xhr.setRequestHeader("Content-type", "application/json");
+	    xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 		xhr.send();
 	}
 		
@@ -3254,9 +3273,9 @@ Alloy.Globals.checkFileExistThenUpdateSID = function(filename){
 	xhr.onerror = function(e){
 		Alloy.Globals.Log("Alloy.Globals.checkFileExistThenUpdateSID::error e: "+JSON.stringify(e));
 	};
-	var rawquerystring = '?q=title+%3D+\''+filename+'\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Ctitle)';
+	var rawquerystring = '?q=title%3D\''+filename+'\'';
 	xhr.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring);
-	xhr.setRequestHeader("Content-type", "application/json");
+	///xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send();
 };
@@ -3427,7 +3446,7 @@ Alloy.Globals.LicenseCheck = function(name){
 		var rawquerystring1 = '?q=title+%3D+\''+foldername+'\'+and+\''+usertypeid+'\'+in+parents+and+mimeType+%3D+\'application%2Fvnd.google-apps.folder\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Cparents%2Ctitle)';
 		xhr1.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring1);
 		xhr1.setRequestHeader("Content-type", "application/json");
-		xhr1.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+		xhr1.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 		xhr1.send();
 		Alloy.Globals.Log("alloy.js::Alloy.Globals.LicenseCheck: execute GET https://www.googleapis.com/drive/v2/file/"+rawquerystring1);
 };*/
@@ -3439,7 +3458,8 @@ Alloy.Globals.LicenseCheck = function(name,licensetype){
 	Alloy.Globals.Log("alloy.js::Alloy.Globals.LicenseCheck on: foldername: "+foldername+" licensetype: "+licensetype);
 	var xhr1 = Ti.Network.createHTTPClient({
 		onload: function(e) {
-			var fileexistjsonlist = JSON.parse(this.responseText);
+			Alloy.Globals.Log("alloy.js::Alloy.Globals.LicenseCheck on: this.responseText: "+this.responseText);
+			var fileexistjsonlist = JSON.parse(this.responseText);			
 			if (fileexistjsonlist) {
 				Alloy.Globals.Log("Alloy.Globals.LicenseCheck::response of fileexistjsonlist is: "+JSON.stringify(fileexistjsonlist));
 				if (fileexistjsonlist.items.length == "0" ){
@@ -3455,10 +3475,11 @@ Alloy.Globals.LicenseCheck = function(name,licensetype){
 			}
 		});
 		var usertypeid = Titanium.App.Properties.getString(licensetype);
-		var rawquerystring1 = '?q=title+%3D+\''+foldername+'\'+and+\''+usertypeid+'\'+in+parents+and+mimeType+%3D+\'application%2Fvnd.google-apps.folder\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Cparents%2Ctitle)';
+		var rawquerystring1 = '?q=title%3D\''+foldername+'\'';
 		xhr1.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring1);
+		//xhr1.setRequestHeader("Content-type", "application/json");
 		xhr1.setRequestHeader("Content-type", "application/json");
-		xhr1.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+		xhr1.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 		xhr1.send();
 		Alloy.Globals.Log("alloy.js::Alloy.Globals.LicenseCheck: execute GET https://www.googleapis.com/drive/v2/file/"+rawquerystring1);
 };
@@ -3486,10 +3507,11 @@ Alloy.Globals.LicenseCheckNested = function(name,name1){
 			}
 		});
 		var usertypeid = Titanium.App.Properties.getString("freeuser");
-		var rawquerystring1 = '?q=title+%3D+\''+foldername+'\'+and+\''+usertypeid+'\'+in+parents+and+mimeType+%3D+\'application%2Fvnd.google-apps.folder\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Cparents%2Ctitle)';
+		//var rawquerystring1 = '?q=title+%3D+\''+foldername+'\'+and+\''+usertypeid+'\'+in+parents+and+mimeType+%3D+\'application%2Fvnd.google-apps.folder\'+and+trashed+%3D+false&fields=items(id%2CmimeType%2Clabels%2Cparents%2Ctitle)';
+		var rawquerystring1 = '?q=title%3D\''+foldername+'\'';
 		xhr1.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring1);
-		xhr1.setRequestHeader("Content-type", "application/json");
-		xhr1.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
+		///xhr1.setRequestHeader("Content-type", "application/json");
+		xhr1.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 		xhr1.send();
 		Alloy.Globals.Log("alloy.js::Alloy.Globals.LicenseCheck: execute GET https://www.googleapis.com/drive/v2/file/"+rawquerystring1);
 };

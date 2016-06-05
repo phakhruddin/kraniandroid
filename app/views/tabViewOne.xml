@@ -8,16 +8,51 @@
   <Collection src="proposal"/>
   <Collection src="master"/>
   <Collection src="joblogsid"/>
+  <Tab id="tab_one" title="MAIN" titleColor="white" backgroundFocusedColor="white">
     <Window id="tabviewone_window" title="Krani" class='container'>
-      <TableView id="table" backgroundColor="white" separatorStyle="none">
-		 <TableViewRow id="user_row" opacity="1.0" height="1">
-		 	<Label id="user_label" textAlign="center" left="35%"/>
-		 </TableViewRow>
- 	      <TableViewRow id="schedule" opacity="1.0" Title="location">
- 	      	<Label id="label_schedule"/>
-		   		  <Label id="label_schedule" color="orange"  left="80" text="Schedule"/>
-		   		  <ImageView image="calendar90.png" left="12" height="50" width="50"/>
-		   </TableViewRow> 
-	   </TableView>
-    </Window>
+    	<TableView>
+      		<HeaderView id="tabviewone_headerview">
+				<View height="20" id="status_view" backgroundColor="red">
+					<Label id="status_label" color="white" text="Please click login" textAlign="right"/>				
+				</View>
+			</HeaderView>
+			 <TableViewRow id="user_row" opacity="1.0" height="5" >
+			 	<Label id="user_label" textAlign="center" left="50"/>			 
+		 	</TableViewRow>
+		 	<TableViewRow id="schedule" title="Schedule">
+		 		<Label id="label_schedule" text="Schedule" color="orange"></Label>
+		 		<ImageView image="/images/calendar90.png" width="50" height="50" left="20"></ImageView>
+		 	</TableViewRow>
+	      <TableViewRow id="location" backgroundColor="transparent"  title="Location">
+		   		  <Label id="label_location" color="#333" text="Locate Tech"/>
+		   		  <ImageView image="/images/man388.png" left="20" height="50" width="50"/>
+		   </TableViewRow>
+		   <TableViewRow id="project" backgroundColor="transparent" title="Project">
+		   		  <Label id="label_project" color="#008080" text="Projects"/>
+		   		  <ImageView image="/images/silhouette35.png" left="20" height="50" width="50"/>
+		   </TableViewRow>
+		   <TableViewRow id="client" backgroundColor="transparent" title="Clients">
+		   		  <Label id="label_clients" color="#228B22" text="Clients"/>
+		   		  <ImageView image="/images/hands8.png" left="20" height="50" width="50"/>
+		   </TableViewRow>
+		   <TableViewRow id="invoicelistlist" backgroundColor="transparent" title="Invoice">
+		   		   <Label id="label_invoice" color="#008080" text="Invoice"/>
+		   		  <ImageView image="/images/dollar150.png"  left="20" height="50" width="50"/>
+		   </TableViewRow>
+   		   <TableViewRow id="proposallistlist" backgroundColor="transparent" title="Proposal">
+		   		  <Label id="label_proposal" color="#008080" text="Proposal"/>
+		   		  <ImageView image="/images/silhouette61.png"  left="20" height="50" width="50"/>
+		   </TableViewRow>
+   		   <TableViewRow id="settings" backgroundColor="transparent" title="Settings">
+		   		  <Label id="label_settings" color="orange" text="Settings"/>
+		   		  <ImageView image="/images/gear37.png"  left="20" height="50" width="50"/>
+		   </TableViewRow>
+		   <TableViewRow id="google" Title="google"/>
+		   <TableViewRow id="loginrow" backgroundColor="transparent">
+		   		  <Button id="login_button" title="LOGIN" onClick="login" right="50" />
+		   		  <Button id="logout_button" title="Logout" left="20" />
+		   </TableViewRow>
+    	</TableView>
+    </Window>  
+    </Tab>
 </Alloy>

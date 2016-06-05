@@ -24,7 +24,7 @@ var GoogleAuth = function(o) {
 		url : 'https://accounts.google.com/o/oauth2/auth',
 		scope : (o.scope) ? o.scope : ['https://www.googleapis.com/auth/tasks'],
 		closeTitle : (o.closeTitle) ? o.closeTitle : 'Close',
-		winTitle : (o.winTitle) ? o.winTitle : 'Google Account',
+		winTitle : (o.winTitle) ? o.winTitle : 'Scroll down and click allow.',
 		errorText : (o.errorText) ? o.errorText : 'Can not authorize user!',
 		winColor : (o.winColor) ? o.winColor : '#000',
 		quiet : ( typeof (o.quiet) === 'undefined') ? true : o.quiet
@@ -89,17 +89,25 @@ var GoogleAuth = function(o) {
 	function authorize(cb) {
 		cb = (cb) ? cb : function() {
 		};
+   		
 		win = Ti.UI.createWindow({
 			backgroundColor : 'white',
-			barColor : _opt.winColor,
+			//barColor : _opt.winColor,
 			modal : true,
 			title : _opt.winTitle
 		});
+		win1 = Titanium.UI.iOS.createNavigationWindow({
+			Title: "Authentication. Please wait.",
+			backgroundColor: "transparent",
+			//height: "85%",
+	   	  	window: win	   	  	
+    	});
 		var spinner = Ti.UI.createActivityIndicator({
 			zIndex : 1,
 			height : 50,
 			width : 50,
-			hide : true
+			hide : true,
+			style : Ti.UI.iPhone.ActivityIndicatorStyle.DARK
 		});
 
 		var close = Ti.UI.createButton({
@@ -107,10 +115,15 @@ var GoogleAuth = function(o) {
 		});
 
 		win.add(spinner);
-		win.rightNavButton = close;
+		//win.rightNavButton = close;
+		setTimeout(function(){
+			win.leftNavButton = close;
+			win.title = "Timeout, click close";
+		},60000); //user able to force close only after 1 min timeout.
+		
 
 		close.addEventListener('click', function() {
-			win.close();
+			win1.close({transition:Titanium.UI.iPhone.AnimationStyle.CURL_DOWN});
 		});
 		var url = prepareUrl();
 
@@ -134,7 +147,8 @@ var GoogleAuth = function(o) {
 				_prop.refreshToken = null;
 				_prop.tokenType = null;
 				_prop.expiresIn = 0;
-				win.close();
+				//win.close();
+				win1.close({transition:Titanium.UI.iPhone.AnimationStyle.CURL_DOWN});
 			}
 			var code = webview.evalJS('document.getElementById("code").value;');
 			if (code != '') {
@@ -147,10 +161,15 @@ var GoogleAuth = function(o) {
 			if (c > 10) {
 				//some error (to many requests :) )
 				log.debug('GoogleAuth: To many redirects...');
-				win.close();
+				//win.close();
+				win1.close({transition:Titanium.UI.iPhone.AnimationStyle.CURL_DOWN});
 			}
 		});
-		win.open();
+		//win.open();
+		//win1.open();
+		var tw = setTimeout(function() {
+			win1.open();
+		}, 5000);
 	}
 
 	function deAuthorize(cb) {
@@ -172,7 +191,8 @@ var GoogleAuth = function(o) {
 			var spinner = Ti.UI.createActivityIndicator({
 				zIndex : 1,
 				height : 50,
-				width : 50
+				width : 50,
+				style : Ti.UI.iPhone.ActivityIndicatorStyle.DARK
 			});
 			logoutWin.rightNavButton = close;
 
@@ -248,6 +268,7 @@ var GoogleAuth = function(o) {
 			timeout : 5000 /* in milliseconds */
 		});
 		// Prepare the connection.
+		log.info("googleAuth: _opt.url : "+_opt.url);
 		xhr.open("POST", _opt.url);
 		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		var d = {
@@ -284,7 +305,8 @@ var GoogleAuth = function(o) {
 				_prop.expiresIn = resp.expires_in;
 				log.debug(_prop);
 				//alert('success');
-				win.close();
+				///win.close();
+				win1.close({transition:Titanium.UI.iPhone.AnimationStyle.CURL_DOWN});
 				//callback
 				cb();
 			},
@@ -297,7 +319,7 @@ var GoogleAuth = function(o) {
 					title : 'Error',
 					message : _opt.errorText
 				});
-				win.close();
+				win.close({transition:Titanium.UI.iPhone.AnimationStyle.CURL_DOWN});
 			},
 			timeout : 5000 /* in milliseconds */
 		});
@@ -351,6 +373,7 @@ var GoogleAuth = function(o) {
 	}
 
 	function getAccessToken() {
+		log.info("googleAuth: get access token: "+_prop.accessToken);
 		return _prop.accessToken;
 	}
 

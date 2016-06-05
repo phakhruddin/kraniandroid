@@ -1,13 +1,12 @@
 var args = arguments[0] || {};
 exports.openMainWindow = function(_tab) {
   _tab.open($.projectlist_window);
-  Ti.API.info("This is child widow projectlist.js" +JSON.stringify(_tab));
+  Ti.API.info("This is child widow projectlist.js" +_tab);
   	$.projectlist_table.search = $.search_history;
 	Alloy.Collections.project.fetch();	
 
 };
 
-$.ptr.refresh();
 
 function transformFunction(model) {
 	var transform = model.toJSON();
@@ -57,7 +56,7 @@ function myRefresher(e) {
     });
 }
 
-Alloy.Globals.Log("args sourcecall detected is: " +args.sourcecall);
+Alloy.Globals.Log("project.js::args sourcecall detected is: " +args.sourcecall);
 if (args.sourcecall) {
 	$.projectlist_window.addEventListener("click", function(e){
 		Alloy.Globals.openDetail(e);

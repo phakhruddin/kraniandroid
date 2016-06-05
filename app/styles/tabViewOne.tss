@@ -1,5 +1,5 @@
 ".container": {
-	backgroundColor:"black"
+	backgroundColor:"white"
 },
 "TableViewRow": {
 	width: Ti.UI.SIZE,

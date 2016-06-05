@@ -1,4 +1,6 @@
-
+var count=7;
+var timeoutms = 10000; //10secs
+var i=0;
 
 function openNextTab(item){
 	var sid = Titanium.App.Properties.getString(item,"none");
@@ -8,269 +10,85 @@ function openNextTab(item){
 	scheduleController.openMainWindow($.tab_one);	
 }
 
-$.schedule.addEventListener ("click", function(e){
-	Alloy.Globals.openDetail(e);
-	var scheduleController = Alloy.createController("schedule");
- 	scheduleController.openMainWindow($.tab_one);
-});
- 	
-
-var scope = ['https://spreadsheets.google.com/feeds', 'https://docs.google.com/feeds','https://www.googleapis.com/auth/calendar','https://www.googleapis.com/auth/calendar.readonly','https://www.googleapis.com/auth/drive'];
-scope.push ("https://www.googleapis.com/auth/drive.appdata");
-scope.push ("https://www.googleapis.com/auth/drive.apps.readonly");
-scope.push ("https://www.googleapis.com/auth/drive.file");
-var GoogleAuth = require('googleAuth');
-var googleAuth = new GoogleAuth({
-	clientId : Alloy.Globals.clientId,
-	clientSecret : 'fjrsVudiK3ClrOKWxO5QvXYL',
-	propertyName : 'googleToken',
-	scope : scope,
-	quiet: false
-});
-
-var loadingLabel = Ti.UI.createLabel({
-  color: '#FCF9F9',
-  font: { fontSize:18 },
-  text: 'Connecting to google. Please wait ...',
-  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-  top: "50%",
-  width: Ti.UI.SIZE, height: Ti.UI.SIZE
-});
-var loadingView = Titanium.UI.createView({
-   borderRadius:10,
-   backgroundColor:'#514F4F',
-   width:Ti.UI.FILL,
-   height:Ti.UI.FILL
-});
-loadingView.add(loadingLabel);
-
-var refreshView = Titanium.UI.createView({
-   borderRadius:10,
-   opacity:"0.5",
-   backgroundColor:'#514F4F',
-   width:Ti.UI.FILL,
-   height:Ti.UI.FILL
-});
-
-var signinView = Titanium.UI.createView({
-   opacity:"0.95",
-   backgroundColor:'#514F4F',
-   width:Ti.UI.FILL,
-   height:Ti.UI.FILL
-});
-var signinButton = Titanium.UI.createButton({
-   title: 'LOGIN',
-   width: 100,
-   height: 50,
-   color: "white",
-   font: {
-   	fontSize:"32"
-   }
-});
-signinButton.addEventListener('click',function(e)
-{
-   Alloy.Globals.Log("You clicked the button");
-   $.tabviewone_window.remove(signinView);
-   login(e);
-});
-signinView.add(signinButton);
-$.tabviewone_window.add(signinView);
-
-
-checkNetworkAndGoogleAuthorized = function(sid){
-	var url = "https://spreadsheets.google.com/feeds/list/"+sid+"/od6/public/basic?hl=en_US&alt=json";
-	var xhr = Ti.Network.createHTTPClient({
-	    onload: function(e) {
-	    try {
-	    		Ti.API.info("network is good. Replies are: "+this.responseText);
-	    		Alloy.Globals.Log("googleAuth.isAuthorized:  " +googleAuth.isAuthorized);
-	    		Titanium.App.Properties.setString('needAuth',"false");
-	    		googleAuth.isAuthorized(function() {
-						Alloy.Globals.Log('Access Token: ' + googleAuth.getAccessToken());
-					}, function() {
-						Alloy.Globals.Log('TV1 Authorized first, see next window: '+(new  Date()));
-						Titanium.App.Properties.setString('needAuth',"true");
-					});
-			
-	    		
-	    	} catch(e){
-				Ti.API.info("cathing e: "+JSON.stringify(e));
-			}
-		}
-	});
-	xhr.onerror = function(e){
-		alert("error: "+e.code+" : Unable to pull data from cloud");
-		Alloy.Globals.Log("tabViewOne::checkNetworkAndGoogleAuthorized:failed to get to: "+url);
-	};
-	xhr.open("GET", url);
-	xhr.send();
-};
+function setMenuText() {
+	Alloy.Globals.Log("tabViewOne.js::Titanium.App.Properties.getString(sharedkraniemailid): " +Titanium.App.Properties.getString("sharedkraniemailid")+" Titanium.App.Properties.getString(kraniemailid): "+Titanium.App.Properties.getString("kraniemailid"));
+	//(Titanium.App.Properties.getString("kraniemailid"))?$.label_schedule.text=" Schedule \("+Titanium.App.Properties.getString("kraniemailid").split('@')[0].trim()+"\)":"";
+	//(Titanium.App.Properties.getString("sharedkraniemailid"))?$.label_schedule.text= " Schedule \("+Titanium.App.Properties.getString("sharedkraniemailid").split('@')[0].trim()+"\)":"";	
+	$.label_schedule.text=" Schedule";
+	Titanium.App.Properties.setString('employee',Titanium.App.Properties.getString("emailid"));
+	Alloy.Globals.Log("tabViewOne.js::setMenuText: sharedkraniemailid: " +Titanium.App.Properties.getString("sharedkraniemailid"));
+}
 
 function checkUserLicense(name){
 	Alloy.Globals.LicenseCheck(name,"freeuser");
-	setTimeout(function(){Alloy.Globals.LicenseCheck(name,"paidbasic");},1000);
+	//setTimeout(function(){Alloy.Globals.LicenseCheck(name,"paidbasic");},1000);
 	setTimeout(function(){
-		$.user_row.height = (Alloy.Globals.statusHeight)?Alloy.Globals.statusHeight:"1%";
+		$.user_row.height = (Alloy.Globals.statusHeight)?Alloy.Globals.statusHeight:"5";
 		$.user_row.backgroundColor = (Alloy.Globals.statusColor)?Alloy.Globals.statusColor:"white";
 		$.user_label.color = "white";
 		$.user_label.text = (Alloy.Globals.userText)?Alloy.Globals.userText:"";
 	},2000);		
 }
 
-function prefetchJoblogSID(){
-	var sid = Titanium.App.Properties.getString('joblogssid',"none");
-	Alloy.Globals.Log("prefetchJoblogSID:: checking sid :" +sid);
-	if ( sid != "none"){
-		Alloy.Globals.Log('prefetchJoblogSID:: populate Alloy.Globals.getPrivateData('+sid+','+joblogsid+'); ');
-		Alloy.Globals.getPrivateData(sid,"joblogsid");
-	} else {
-		Alloy.Globals.Log("prefetchJoblogSID:: joblogsid sid does not exists !");
-	}
-	
-}
 
-//prefetchJoblogSID();
-
-function initialLoad(){
-	checkNetworkAndGoogleAuthorized('1gnkP116nsTVxtrw6d_mXVdOiesQEPH7LVUIyHUfx9EE');
-	var item = 'invoice';
- 	var sid = Titanium.App.Properties.getString(item,"none");
- 	Alloy.Globals.Log("tabviewone.js:InitialLoad:sid for "+ item +" : "+sid);
-	Alloy.Globals.getPrivateData(sid,item);
-	Alloy.Collections.instance(item).fetch();
-}
-
-//initialLoad();
-
-function getParentFolder(args) {
-	var sid = Titanium.App.Properties.getString('joblog');
-	var xhr = Ti.Network.createHTTPClient({
-	    onload: function(e) {
-	    try {
-	    		Alloy.Globals.Log("tabViewOne:getParentFolder : this.responseText: "+this.responseText);
-	    		var json = JSON.parse(this.responseText);
-	    		Ti.API.info("response is: "+JSON.stringify(json));
-	    		var parentid = json.items[0].id;
-	    		Titanium.App.Properties.setString('parentid',parentid);
-	    		//Alloy.Globals.Log("tabViewOne.js::args inside getParentFolder: "+JSON.stringify(args));
-	    	} catch(e){
-				Ti.API.info("tabViewOne:getParentFolder::cathing e: "+JSON.stringify(e));
-				Ti.API.info('tabViewOne:getParentFolder::Authorized first, see next window: ');
-				Titanium.App.Properties.setString('needAuth',"true");
-				Alloy.Globals.googleAuthSheet.authorize();
-				Ti.API.info('tabViewOne:getParentFolder::Access Token: ' + Alloy.Globals.googleAuthSheet.getAccessToken());
-				$.login_button.title="REFRESH";
-			}
-			return parentid;
-			Titanium.App.Properties.setString('parentid',parentid);
-		}
-		});
-	xhr.onerror = function(e){
-		//alert("tabViewOne::getParentFolder::Unable to get info.");
-		Alloy.Globals.Log('tabViewOne::getParentFolder:: unable to get parents for '+sid);
-	};
-	Alloy.Globals.Log('tabViewOne::getParentFolder:: URL:: https://www.googleapis.com/drive/v2/files/'+sid+'/parents');
-	xhr.open("GET", 'https://www.googleapis.com/drive/v2/files/'+sid+'/parents');
-	xhr.setRequestHeader("Content-type", "application/json");
-    xhr.setRequestHeader("Authorization", 'Bearer '+ Alloy.Globals.googleAuthSheet.getAccessToken());
-	xhr.send();
-};
-
-//getParentFolder();
-//Initial user create under freeuser
-var parentid = Titanium.App.Properties.getString("freeuser");
-
-function logout(e){
-	Alloy.Globals.Log("tabviewone:: logout: "+JSON.stringify(e));
-	Alloy.Globals.Cleanup();
-	Alloy.Globals.googleAuthSheet.deAuthorize();
-	$.logout_button.title = "Please click login ->";
-}
-
-function setMenuText() {
-	Alloy.Globals.Log("tabViewOne.js::Titanium.App.Properties.getString(sharedkraniemailid): " +Titanium.App.Properties.getString("sharedkraniemailid")+" Titanium.App.Properties.getString(kraniemailid): "+Titanium.App.Properties.getString("kraniemailid"));
-	(Titanium.App.Properties.getString("kraniemailid"))?$.label_schedule.text=" Schedule \("+Titanium.App.Properties.getString("kraniemailid").split('@')[0].trim()+"\)":"";
-	(Titanium.App.Properties.getString("sharedkraniemailid"))?$.label_schedule.text= " Schedule \("+Titanium.App.Properties.getString("sharedkraniemailid").split('@')[0].trim()+"\)":"";	
-	Titanium.App.Properties.setString('employee',Titanium.App.Properties.getString("emailid"));
-	Alloy.Globals.Log("tabViewOne.js::setMenuText: sharedkraniemailid: " +Titanium.App.Properties.getString("sharedkraniemailid"));
-}
-
-//LOGO
-function addLogo(){
-	var logourl = Titanium.App.Properties.getString("logourl");
-	var logoview = Ti.UI.createImageView ({
-	        image : logourl,
-	        top : 10,
-	        height : "150",
-	        width : "150"
-	});
-	
-	if ( logourl ) {
-	 	var logourl = Titanium.App.Properties.getString('logourl') ; 
-	 	Alloy.Globals.Log("settings.js::logo url is: "+logourl); 
-	 	$.logo_row.add(logoview);
-	 } else { $.table.deleteRow($.logo_row);Alloy.Globals.Log("settings.js::logo does not exists.");};
-}
 
 function login(e) {
-	Alloy.Globals.Log("tabViewOne.js::login(e): " +JSON.stringify(e));
+	Alloy.Globals.Log("index.js::login(e): " +JSON.stringify(e));
 	var buttonstate = e.source.title;
-	Alloy.Globals.Log("tabViewOne.js::login(e): buttonstate: " +buttonstate);
+	Alloy.Globals.Log("index.js::login(e): buttonstate: " +buttonstate);
 	function logout(e){
-		Alloy.Globals.Log("tabviewone:: logout: "+JSON.stringify(e));
+		Alloy.Globals.Log("index.js:: logout: "+JSON.stringify(e));
 		Alloy.Globals.googleAuthSheet.deAuthorize();
 		Alloy.Globals.Cleanup();
-		$.logout_button.title = "Please click login ->";
 		$.login_button.title="LOGIN";
 	}
 	switch(buttonstate) {
     case "LOGIN":
-        
-    	Alloy.Globals.Log("tabViewOne.js::login(e): buttonstate: execute CASE " +buttonstate);
-		Alloy.Globals.googleAuthSheet.isAuthorized(function() {
-			$.login_button.title="";
-			$.tabviewone_window.add(loadingView);
-			Ti.API.info('Access Token: ' + Alloy.Globals.googleAuthSheet.getAccessToken());
+    	Alloy.Globals.Log("index.js::login(e): buttonstate: execute CASE " +buttonstate);
+    	Alloy.Globals.googleAuthSheet.isAuthorized(function() {
+    		Alloy.Globals.Log('Access Token 1st: ' + Alloy.Globals.googleAuthSheet.getAccessToken());
 			Titanium.App.Properties.setString('needAuth',"false");
 			//login activity
 			setTimeout(function(){
 				Alloy.Globals.Log(new Date()+"::tabviewone.js::login:before loginActivity()");
 				$.status_view.backgroundColor="green";
-				$.status_view.height="1%";
+				$.status_view.height="2";
 				$.status_label.text="";
 				$.login_button.title="Logout";
-				$.logout_button.title=Titanium.App.Properties.getString("emailid").split('@')[0].trim();
-				checkUserLicense($.logout_button.title);
-				setMenuText();
-				Alloy.Globals.loginActivity();
-				$.tabviewone_window.remove(loadingView);
-				$.tabviewone_window.remove(signinView);
+				if (Titanium.App.Properties.getString("emailid")) {
+					$.logout_button.title=Titanium.App.Properties.getString("emailid").split('@')[0].trim();
+					checkUserLicense($.logout_button.title);					
+					setMenuText();
+					Alloy.Globals.loginActivity();
+					$.tabviewone_window.remove(loadingView);
+					$.tabviewone_window.remove(signinView);
+				} else {
+					Alloy.Globals.Log(new Date()+"::tabviewone.js::login:before loginActivity(): email is not found "+Titanium.App.Properties.getString("emailid")); 
+					refresh(e);				}			
 			},2000);
-			
-		}, function() {
-			//$.tabviewone_window.hide();
-			$.login_button.title="";	
+
+    	}, function() {
+    		$.login_button.title="";	
 			$.tabviewone_window.add(loadingView);
-			Ti.API.info('Authorized first, see next window: ');		
-			Titanium.App.Properties.setString('needAuth',"true");
-			Alloy.Globals.googleAuthSheet.authorize();
+    		Alloy.Globals.Log('Authorized first, see next window: ');	
+    		Titanium.App.Properties.setString('needAuth',"true");
+    		Alloy.Globals.googleAuthSheet.authorize();
 			setTimeout(function(){
 				Alloy.Globals.Log((new Date())+"tabViewOne::show back window");
 				//$.tabviewone_window.show();
 				$.login_button.title="REFRESH";	
 				$.status_view.backgroundColor="orange";
-				$.status_view.height="5%";
+				$.status_view.height="30";
 				$.status_label.text="Please click REFRESH above.";
 				$.tabviewone_window.add(refreshView);
 				$.tabviewone_window.remove(loadingView);
 			},10000);
-			Ti.API.info('Access Token: ' + Alloy.Globals.googleAuthSheet.getAccessToken());
-			//pause for a while before next action.
-			function dosettimeout (i,timeoutms) {
+    		function dosettimeout (i,timeoutms) {
 				setTimeout(function(){
 					Alloy.Globals.Log((new Date())+"tabViewOne::loop no: "+i+" after "+timeoutms*i+" secs");		
 				},timeoutms*i);
 			}
+			Alloy.Globals.Log('Access Token 2nd: ' + Alloy.Globals.googleAuthSheet.getAccessToken());
 			
 			var count=7;
 			var timeoutms = 10000; //10secs
@@ -285,11 +103,23 @@ function login(e) {
 					dosettimeout(i,timeoutms);
 				}	
 			}
-
-		});
-        break;
-    case "REFRESH":
+			
+    	});
+    	
+    break;
+        case "REFRESH":
     	Alloy.Globals.Log("tabViewOne.js::login(e): buttonstate: execute CASE " +buttonstate);
+		refresh(e);
+        break;    
+    case "Logout":
+    Alloy.Globals.Log("tabViewOne.js::login(e): buttonstate: execute CASE " +buttonstate);
+    	logout();
+    break;
+   }
+}
+
+
+function refresh(e){
 		var themastersid=[];
 		//wait for 30secs upon OAUTH2 screen
 		function refreshActivity() {
@@ -389,7 +219,7 @@ function login(e) {
 		}
 		setTimeout(function(){
 			$.status_view.backgroundColor="green";
-			$.status_view.height="1%";
+			$.status_view.height="5";
 			$.status_label.text="";
 			$.login_button.title="Logout";
 			$.tabviewone_window.remove(refreshView);
@@ -400,33 +230,82 @@ function login(e) {
 				$.logout_button.title = buttontitle;
 				};*/
 		},2000);
-        break;
-    case "RefreshAgain":
-    	Alloy.Globals.Log("tabViewOne.js::login(e): buttonstate: execute CASE " +buttonstate);
-    	logout();
-    break;
-    case "Logout":
-    Alloy.Globals.Log("tabViewOne.js::login(e): buttonstate: execute CASE " +buttonstate);
-    	logout();
-    break;
-	} 
-
-}
-		
-function showFutureMenu(response) {
-	if(response == "yes") {
-		$.table.appendRow($.futuremenu);
-		$.table.appendRow($.supplier);
-		$.table.appendRow($.inventory);
-		$.table.appendRow($.report);			
-	} else {
-		$.table.deleteRow($.report);
-		$.table.deleteRow($.inventory);
-		$.table.deleteRow($.supplier);
-		$.table.deleteRow($.futuremenu);	
-	}	
 }
 
-//showFutureMenu("no");
+var loadingLabel = Ti.UI.createLabel({
+  color: '#FCF9F9',
+  font: { fontSize:18 },
+  text: 'Connecting to google. Please wait ...',
+  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+  top: "50%",
+  width: Ti.UI.SIZE, height: Ti.UI.SIZE
+});
+var loadingView = Titanium.UI.createView({
+   borderRadius:10,
+   backgroundColor:'#514F4F',
+   width:Ti.UI.FILL,
+   height:Ti.UI.FILL
+});
+loadingView.add(loadingLabel);
 
-$.tabviewone_window.open();
+var refreshView = Titanium.UI.createView({
+   borderRadius:10,
+   opacity:"0.5",
+   backgroundColor:'#514F4F',
+   width:Ti.UI.FILL,
+   height:Ti.UI.FILL
+});
+var refreshButton = Titanium.UI.createButton({
+   title: 'REFRESH',
+   width: 150,
+   height: 80,
+   color: "white",
+   font: {
+   	fontSize:"36"
+   }
+});
+refreshButton.addEventListener('click',function(e)
+{
+   Alloy.Globals.Log("You clicked the refresh button");
+   $.tabviewone_window.remove(refreshView);
+   refresh(e);
+});
+refreshView.add(refreshButton);
+
+var signinView = Titanium.UI.createView({
+   opacity:"0.95",
+   backgroundColor:'#514F4F',
+   width:Ti.UI.FILL,
+   height:Ti.UI.FILL
+});
+var signinButton = Titanium.UI.createButton({
+   title: 'LOGIN',
+   width: 150,
+   height: 80,
+   color: "white",
+   font: {
+   	fontSize:"36"
+   }
+});
+signinButton.addEventListener('click',function(e)
+{
+   Alloy.Globals.Log("You clicked the button");
+   $.tabviewone_window.remove(signinView);
+   login(e);
+});
+signinView.add(signinButton);
+$.tabviewone_window.add(signinView);
+
+
+
+$.schedule.addEventListener ("click", function(e){
+	Alloy.Globals.openDetail(e);
+	var scheduleController = Alloy.createController("schedule");
+ 	scheduleController.openMainWindow($.tab_one);
+});
+
+$.project.addEventListener ("click", function(e){
+	Alloy.Globals.openDetail(e);
+	var item = e.row.id;
+	openNextTab(item);
+});

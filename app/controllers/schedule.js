@@ -1,14 +1,12 @@
 exports.openMainWindow = function(_tab) {
   _tab.open($.schedule_window);
-  Ti.API.info("This is child widow schedule.js" +JSON.stringify(_tab));
-  $.schedule_list.search = $.search_history;
+  Ti.API.info("This is child widow schedule.js" +_tab);
   refreshCalendar();
   Alloy.Collections.schedule.fetch();
   Alloy.Collections.labor.fetch();	
   
 };
 
-$.ptr.refresh();
 
   var osname = Ti.Platform.osname;
   
@@ -898,13 +896,6 @@ function doClick(e) {
 	Alloy.Globals.Log("JSON stringify: "+JSON.stringify(e));
 }
 
-function myRefresher(e) {
-	Alloy.Globals.Log("refreshing after pull : " +JSON.stringify(e));
-    Alloy.Collections.schedule.fetch({
-        success: e.hide,
-        error: e.hide
-    });
-}
 
 function postCreateEvent(calid,startdateTime,enddateTime,location,summary,description,organizerdisplayName,organizeremail,colorid,attendeeslist) {
 	var attendeeslist = [];
@@ -975,5 +966,4 @@ function postCreateEvent(calid,startdateTime,enddateTime,location,summary,descri
 	xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send(event);
 	Ti.API.info('schedule.js::postCreateEvent: done POSTed , url:: '+url);
-	refreshCalendar();
 };
