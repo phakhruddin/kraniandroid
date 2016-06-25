@@ -589,10 +589,10 @@ Alloy.Globals.getPrivateData = function(sid,type) {
 				(type == 'invoicesent') && Alloy.Collections.invoicesent.deleteAll();
 				(type == 'proposalsent') && Alloy.Collections.proposalsent.deleteAll();
 			for (i=1;i<entry.length;i++){
-				var col1 = entry.item(i).getElementsByTagName("gsx:col1").item(0).text;
-				var col2 = entry.item(i).getElementsByTagName("gsx:col2").item(0).text;
-				var col4 = entry.item(i).getElementsByTagName("gsx:col4").item(0).text;
-				var idtag = entry.item(i).getElementsByTagName("id").item(0).text.replace(':','yCoLoNy');
+				var col1 = entry.item(i).getElementsByTagName("gsx:col1").item(0).textContent;
+				var col2 = entry.item(i).getElementsByTagName("gsx:col2").item(0).textContent;
+				var col4 = entry.item(i).getElementsByTagName("gsx:col4").item(0).textContent;
+				var idtag = entry.item(i).getElementsByTagName("id").item(0).textContent.replace(':','yCoLoNy');
 				var link = entry.item(i).getElementsByTagName("link");
 				for (y=0;y<link.length;y++){			
 	    			var listitem = link.item(y);
@@ -602,22 +602,22 @@ Alloy.Globals.getPrivateData = function(sid,type) {
 				data.push({"col1":col1,"col2":col2,"col4":col4});				
 				Alloy.Globals.Log("alloy.js::updating database with data :"+col1+" url:"+idtag+" "+edithref);
 				var dataModel = Alloy.createModel(type,{
-					col1 :  entry.item(i).getElementsByTagName("gsx:col1").item(0).text.trim() || "none",
-					col2 : entry.item(i).getElementsByTagName("gsx:col2").item(0).text.trim() || "none",
-					col3 :  entry.item(i).getElementsByTagName("gsx:col3").item(0).text.trim() || "none",
-					col4 :  entry.item(i).getElementsByTagName("gsx:col4").item(0).text.trim() || "none",
-					col5 :  entry.item(i).getElementsByTagName("gsx:col5").item(0).text.trim() || "none",
-					col6 :  entry.item(i).getElementsByTagName("gsx:col6").item(0).text.trim() || "none",
-					col7 :  entry.item(i).getElementsByTagName("gsx:col7").item(0).text.trim() || "none",
-					col8 :  entry.item(i).getElementsByTagName("gsx:col8").item(0).text.trim() || "none",
-					col9 :  entry.item(i).getElementsByTagName("gsx:col9").item(0).text.trim() || "none",
-					col10 :  entry.item(i).getElementsByTagName("gsx:col10").item(0).text.trim() || "none",
-					col11 :  entry.item(i).getElementsByTagName("gsx:col11").item(0).text.trim() || "none",
-					col12 :  entry.item(i).getElementsByTagName("gsx:col12").item(0).text.trim() || "none",
-					col13 :  entry.item(i).getElementsByTagName("gsx:col13").item(0).text.trim() || "none",
+					col1 :  entry.item(i).getElementsByTagName("gsx:col1").item(0).textContent.trim() || "none",
+					col2 : entry.item(i).getElementsByTagName("gsx:col2").item(0).textContent.trim() || "none",
+					col3 :  entry.item(i).getElementsByTagName("gsx:col3").item(0).textContent.trim() || "none",
+					col4 :  entry.item(i).getElementsByTagName("gsx:col4").item(0).textContent.trim() || "none",
+					col5 :  entry.item(i).getElementsByTagName("gsx:col5").item(0).textContent.trim() || "none",
+					col6 :  entry.item(i).getElementsByTagName("gsx:col6").item(0).textContent.trim() || "none",
+					col7 :  entry.item(i).getElementsByTagName("gsx:col7").item(0).textContent.trim() || "none",
+					col8 :  entry.item(i).getElementsByTagName("gsx:col8").item(0).textContent.trim() || "none",
+					col9 :  entry.item(i).getElementsByTagName("gsx:col9").item(0).textContent.trim() || "none",
+					col10 :  entry.item(i).getElementsByTagName("gsx:col10").item(0).textContent.trim() || "none",
+					col11 :  entry.item(i).getElementsByTagName("gsx:col11").item(0).textContent.trim() || "none",
+					col12 :  entry.item(i).getElementsByTagName("gsx:col12").item(0).textContent.trim() || "none",
+					col13 :  entry.item(i).getElementsByTagName("gsx:col13").item(0).textContent.trim() || "none",
 					col14 :  idtag+"xCoLoNx"+selfhref+"xCoLoNx"+edithref+"xCoLoNx"+selfhref.trim() || "none",
-					col15 :  entry.item(i).getElementsByTagName("gsx:col15").item(0).text.trim() || "none",
-					col16 :  entry.item(i).getElementsByTagName("gsx:col16").item(0).text.trim() || "none",		
+					col15 :  entry.item(i).getElementsByTagName("gsx:col15").item(0).textContent.trim() || "none",
+					col16 :  entry.item(i).getElementsByTagName("gsx:col16").item(0).textContent.trim() || "none",		
 				});	
 				dataModel.save();
 			}
@@ -664,7 +664,7 @@ Alloy.Globals.xmlToJson = function(xml) {
 				obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
 			}
 		}
-	} else if (xml.nodeType == 3) { // text
+	} else if (xml.nodeType == 3) { // textContent
 		obj = xml.nodeValue;
 	}
 
@@ -1256,7 +1256,7 @@ Alloy.Globals.saveHandler = function(type){
 			for (z=0;z<getvalue.length;z++){
 				var subject = getvalue[z];
 				if ( $.enterclient_table.data[0].rows[i].children[j].id == subject+"_tf") {					
-					 	eval("var "+subject+" = $.enterclient_table.data[0].rows[i].children[j].value || $.enterclient_table.data[0].rows[i].children[j].text || noentry;");		 
+					 	eval("var "+subject+" = $.enterclient_table.data[0].rows[i].children[j].value || $.enterclient_table.data[0].rows[i].children[j].textContent || noentry;");		 
 				};
 			}		
 		};
@@ -1293,7 +1293,7 @@ Alloy.Globals.submit = function(type,clientfirstname,clientlastname,clientcompan
 	    		var xml = Titanium.XML.parseString(this.responseText);
 	    		var entry = xml.documentElement.getElementsByTagName("entry");
 	    		var link = xml.documentElement.getElementsByTagName("link");
-	    		var idtag = xml.documentElement.getElementsByTagName("id").item(0).text;
+	    		var idtag = xml.documentElement.getElementsByTagName("id").item(0).textContent;
 	    		Alloy.Globals.Log("alloy.js::submit: number of link found: " +link+ " length: "+link.length);
 	    		for (i=0;i<link.length;i++){			
 	    			var listitem = link.item(i);
@@ -1323,8 +1323,8 @@ Alloy.Globals.submit = function(type,clientfirstname,clientlastname,clientcompan
 				+'<id>'+idtag+'</id>'
 				+'<updated>2015-05-16T08:01:19.680Z</updated>'
 				+'<category scheme=\'http://schemas.google.com/spreadsheets/2006\' term=\'http://schemas.google.com/spreadsheets/2006#list\'/>'
-				+'<title type=\'text\'>'+customerid+'</title>'
-				+'<content type=\'text\'>col2: '+clientfirstname+', col3: '+clientlastname+', col4: '+clientcompany+', col5: '+clientphone+', col6: '+clientemail+', col7: '+clientstreetaddress
+				+'<title type=\'textContent\'>'+customerid+'</title>'
+				+'<content type=\'textContent\'>col2: '+clientfirstname+', col3: '+clientlastname+', col4: '+clientcompany+', col5: '+clientphone+', col6: '+clientemail+', col7: '+clientstreetaddress
 				+', col8: '+clientcity+', col9: '+clientstate+', col10: '+country+', col11: NA, col12: NA, col13: NA, col14: '+captimestamp+', col15: none, col16: '+now+'</content>'
 				+'<link rel=\'self\' type=\'application/atom+xml\' href=\''+selfhref+'\'/>'
 				+'<link rel=\'edit\' type=\'application/atom+xml\' href=\''+edithref+'\'/>'
@@ -1409,7 +1409,7 @@ Alloy.Globals.submit = function(type,clientfirstname,clientlastname,clientcompan
 	    		var xml = Titanium.XML.parseString(this.responseText);
 	    		var entry = xml.documentElement.getElementsByTagName("entry");
 	    		var link = xml.documentElement.getElementsByTagName("link");
-	    		var idtag = xml.documentElement.getElementsByTagName("id").item(0).text;
+	    		var idtag = xml.documentElement.getElementsByTagName("id").item(0).textContent;
 	    		Alloy.Globals.Log("alloy.js::submit: number of link found: " +link+ " length: "+link.length);
 	    		for (i=0;i<link.length;i++){			
 	    			var listitem = link.item(i);
@@ -1439,7 +1439,7 @@ Alloy.Globals.submit = function(type,clientfirstname,clientlastname,clientcompan
 				+'<id>'+idtag+'</id>'
 				+'<updated>2015-05-16T08:01:19.680Z</updated>'
 				+'<category scheme=\'http://schemas.google.com/spreadsheets/2006\' term=\'http://schemas.google.com/spreadsheets/2006#list\'/>'
-				+'<title type=\'text\'>'+col1+'</title>'
+				+'<title type=\'textContent\'>'+col1+'</title>'
 				+'<content type=\'text\'>col2: '+col2+', col3: '+col3+', col4: '+col4+', col5: '+col5+', col6: '+col6+', col7: '+col7
 				+', col8: '+col8+', col9: '+col9+', col10: '+col10+', col11: NA, col12: NA, col13: NA, col14: '+col14+', col15: none, col16: '+col16+'</content>'
 				+'<link rel=\'self\' type=\'application/atom+xml\' href=\''+selfhref+'\'/>'
@@ -2990,7 +2990,7 @@ Alloy.Globals.updateExistingSpreadsheetAndDB = function(type,col1,col2,col3,col4
 	    	}     
 	    },
 	    onerror: function(e) {
-	    	Alloy.Globals.Log("alloy.js::Alloy.Globals.updateExistingSpreadsheetAndDB:error e: "+JSON.stringify(e));
+	    	///Alloy.Globals.Log("alloy.js::Alloy.Globals.updateExistingSpreadsheetAndDB:error e: "+JSON.stringify(e));
 	         alert("error:"+e.code+": Please connect to the network."); 
 	    }
 	});				

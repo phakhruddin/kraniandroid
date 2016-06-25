@@ -7,7 +7,7 @@
     <version>1.0</version>
     <publisher>dbayco inc.</publisher>
     <url>http://idevice.net</url>
-    <description>Krani</description>
+    <description>KRANI</description>
     <copyright>2016 by dbayco inc.</copyright>
     <icon>appicon.png</icon>
     <fullscreen>false</fullscreen>
@@ -51,7 +51,12 @@
             </dict>
         </plist>
     </ios>
-    <android xmlns:android="http://schemas.android.com/apk/res/android"/>
+    <android xmlns:android="http://schemas.android.com/apk/res/android">
+    <manifest>
+    	<!--uses-sdk android:minSdkVersion="14" android:targetSdkVersion="23"></uses-sdk-->
+         <application android:theme="@style/Theme.AppCompat.Translucent"></application>
+    </manifest>	
+    </android>
     <mobileweb>
         <precache/>
         <splash>
@@ -66,9 +71,8 @@
     </modules>
     <deployment-targets>
         <target device="android">true</target>
-        <target device="blackberry">false</target>
-        <target device="ipad">true</target>
-        <target device="iphone">true</target>
+        <target device="ipad">false</target>
+        <target device="iphone">false</target>
         <target device="mobileweb">true</target>
     </deployment-targets>
     <sdk-version>5.2.2.GA</sdk-version>

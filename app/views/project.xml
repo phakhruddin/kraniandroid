@@ -1,6 +1,12 @@
 <Alloy>
+<Collection src="joblog"/>
+<Collection src="joblogsid"/>
  <Tab id="tab_projectlist" title="projectlist">
   <Window id="projectlist_window" backgroundColor="white" title="Project List">
+  	<ActionBar id="actionbar" onHomeIconItemSelected="doBack"  displayHomeAsUp="true" />
+  	       <Menu>
+  	       	<MenuItem id="item1" title="Add" onClick="doAdd" />        
+        </Menu>
 	  <TableView id="projectlist_table" backgroundColor="transparent" dataCollection="project" search="search_history" 
 	  	dataTransform="transformFunction" filterAttribute="title" editable="true" moveable="true">
 		<SearchBar id="search_history" height="43" />

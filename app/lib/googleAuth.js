@@ -14,6 +14,7 @@
  * Check also https://code.google.com/apis/console/
  */
 
+
 var GoogleAuth = function(o) {
 	var _version = '0.3.2';
 	o = (o) ? o : {};
@@ -329,7 +330,9 @@ var GoogleAuth = function(o) {
 		return url;
 	}
 
+	
 	function isAuthorized(cbSuccess, cbError) {
+		var attemptcount = 0;
 		cbSuccess = (cbSuccess) ? cbSuccess : function() {
 		};
 		cbError = (cbError) ? cbError : function() {
@@ -337,8 +340,10 @@ var GoogleAuth = function(o) {
 		_prop = getProps();
 		log.debug('Properties: ' + JSON.stringify(_prop));
 		if (_prop.accessToken != null && _prop.accessToken != '') {
-			if (_prop.expiresIn < (new Date()).getTime()) {
-				refreshToken(cbSuccess, cbError);
+			if (_prop.expiresIn < (new Date()).getTime()) {	
+				log.info('GoogleAuth:Refreshing...: attemptcount: '+attemptcount);		
+				(attemptcount < 1)?refreshToken(cbSuccess, cbError):log.info('GoogleAuth:Refreshing...: exceed attemptcount: '+attemptcount);
+				var attemptcount = 1;
 			} else {
 				cbSuccess();
 			}

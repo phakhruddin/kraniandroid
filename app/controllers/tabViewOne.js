@@ -2,6 +2,9 @@ var count=7;
 var timeoutms = 10000; //10secs
 var i=0;
 
+
+
+
 function openNextTab(item){
 	var sid = Titanium.App.Properties.getString(item,"none");
 	Alloy.Globals.Log("tabViewOne::openNextTab::sid for "+ item +" : "+sid);
@@ -33,6 +36,7 @@ function checkUserLicense(name){
 
 
 function login(e) {
+	googleauthorizecount = 0;
 	Alloy.Globals.Log("index.js::login(e): " +JSON.stringify(e));
 	var buttonstate = e.source.title;
 	Alloy.Globals.Log("index.js::login(e): buttonstate: " +buttonstate);
@@ -70,9 +74,10 @@ function login(e) {
     	}, function() {
     		$.login_button.title="";	
 			$.tabviewone_window.add(loadingView);
-    		Alloy.Globals.Log('Authorized first, see next window: ');	
-    		Titanium.App.Properties.setString('needAuth',"true");
-    		Alloy.Globals.googleAuthSheet.authorize();
+    		Alloy.Globals.Log('tabViewOne.js:Authorized first, see next window: googleauthorizecount: '+googleauthorizecount);
+    		Titanium.App.Properties.setString('needAuth',"true");   		
+    		if ( googleauthorizecount != 1 ) { Alloy.Globals.googleAuthSheet.authorize();}
+    		var googleauthorizecount = 1;
 			setTimeout(function(){
 				Alloy.Globals.Log((new Date())+"tabViewOne::show back window");
 				//$.tabviewone_window.show();
@@ -261,7 +266,7 @@ var refreshButton = Titanium.UI.createButton({
    height: 80,
    color: "white",
    font: {
-   	fontSize:"36"
+   	fontSize:"24"
    }
 });
 refreshButton.addEventListener('click',function(e)
