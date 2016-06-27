@@ -365,9 +365,19 @@ function datepickertoggle(e){
 		viewjobloglabelbutton.color="gray";setTimeout(function(){viewjobloglabelbutton.color="#63D1F4";},100);
 		viewUpdateJobLog(e);
 	});
+	function closureTest(a,b,c){
+		Alloy.Globals.Log("project.js::closureTest: "+a);
+		b();
+		(c)?c():Alloy.Globals.Log("project.js::closureTest: no c ");
+	}
 	genreportinpdflabelbutton.addEventListener("click",function(e){
 		Alloy.Globals.Log("project.js::duedatelabelbutton:click: "+JSON.stringify(e));
 		genreportinpdflabelbutton.color="gray";setTimeout(function(){genreportinpdflabelbutton.color="#63D1F4";},100);
+		closureTest("Dothis",function(){
+			Alloy.Globals.Log("project.js::closureTest: AGAIN ");
+		});
+		Alloy.Globals.Log("project.js:genreportinpdflabelbutton:Alloy.Globals.submit():click: ");
+		Alloy.Globals.submit("joblog",'1F81cf3gXu_bxZRKp1QecqZW1qdwSLHTX9KURAL2_3-s');
 	});
 	datesview.add(nextapptdatelabelbutton);
 	datesview.add(nextapptdatelabel);
@@ -633,6 +643,7 @@ function datepickertoggle(e){
 			} else {
 				var fileexist = "true";
 				var sid = jsonlist.items[0].id;
+				eval(filename+"_sid = sid");
 				Alloy.Globals.Log("project.js::fileExist:: File exist. sid is: "+jsonlist.items[0].id+" Skipped.");
 				// load data START
 				var item = "joblog";	
@@ -661,7 +672,7 @@ function datepickertoggle(e){
 		Ti.App.Properties.removeProperty("sid"); var sid;
 		var kraniemailid=Titanium.App.Properties.getString('emailid');
 		var name = kraniemailid.split('@')[0].trim();
-		var projectparentid = Titanium.App.Properties.getString(name+"_project");		
+		projectparentid = Titanium.App.Properties.getString(name+"_project");	
 		var filename = 'project_'+projectid+'_'+firstname+'_'+lastname;
 		var parentid = Titanium.App.Properties.getString('parentid');	
 		var item = "joblog";					
@@ -700,9 +711,9 @@ function datepickertoggle(e){
 		var viewUpdateJobLogscrollView = Ti.UI.createScrollView({layout:'vertical',scrollType:"vertical"});
 		var viewUpdateJobLogwin = Titanium.UI.createWindow({
 	        title:"Job Log",
-	        backgroundColor: "white"
+	        backgroundColor: "#5C5C5C"
 		});
-		var joblogevenview = Ti.UI.createView({height:"5",backgroundColor:"#454545"});
+		
 		//viewUpdateJobLog: fetching data: START		
 		var content = [];
 		var joblog = Alloy.Collections.instance('joblog');
@@ -762,8 +773,9 @@ function datepickertoggle(e){
 	                height : Ti.UI.SIZE,
 	                width : Ti.UI.FILL
 	        });
-			var joblogoddview = Ti.UI.createView({height:"100",backgroundColor:"#FAFAFA",id:"joblogodd"+i});
-			
+			//var joblogoddview = Ti.UI.createView({height:"100",backgroundColor:"#FAFAFA"});
+			eval("var joblogoddview"+i+"= Ti.UI.createView({height:100,backgroundColor:'#FAFAFA',borderRadius:20,borderColor:'#B5A642',borderWidth:'0.1',width:'95%'})");
+			eval("var joblogevenview"+i+" = Ti.UI.createView({height:5,backgroundColor:'#5C5C5C'})");
 	        var selectbutton = Ti.UI.createImageView({
 	        	image:"/images/EditControl.png",
 	        	top: "50%",
@@ -771,17 +783,24 @@ function datepickertoggle(e){
 	        	height: "20",
 	        	width: "20"	     
 	        });
-         	joblogoddview.add(datelabel);
+/*         	joblogoddview.add(datelabel);
         	joblogoddview.add(employeelabel);
         	joblogoddview.add(blueline);
-        	joblogoddview.add(selectbutton);
+        	joblogoddview.add(selectbutton);*/
+        	eval("joblogoddview"+i+".add(datelabel)");
+        	eval("joblogoddview"+i+".add(employeelabel)");
+        	eval("joblogoddview"+i+".add(blueline)");
+        	eval("joblogoddview"+i+".add(selectbutton)");
+        	
         	
         	if ( notesbody != "none" ) {
-                joblogoddview.add(noteslabel);
+                //joblogoddview.add(noteslabel);
+                eval("joblogoddview"+i+".add(noteslabel)");
                 noteslabel.top = 50;
                 var noteslabelheight = ((Math.round(notesbody.split('').length/50)+(notesbody.split(/\r?\n|\r/).length))*14)+14;
                 //Alloy.Globals.Log("enterjobdetail.js::noteslabelheight: "+noteslabelheight+" notesbody count: "+notesbody.split(' ').length);
-                (i==(content.length-1))?joblogoddview.height = 180+noteslabelheight:joblogoddview.height = 60+noteslabelheight; //higher height because of footer
+                /////(i==(content.length-1))?joblogoddview.height = 180+noteslabelheight:joblogoddview.height = 60+noteslabelheight; //higher height because of footer
+                (i==(content.length-1))?eval("joblogoddview"+i+".height = 180+noteslabelheight"):eval("joblogoddview"+i+".height = 60+noteslabelheight"); //higher height because of footer
                 selectbutton.top="40";
             } else {
                 imagelabel.height = Ti.UI.SIZE;
@@ -790,19 +809,22 @@ function datepickertoggle(e){
             if (imageurl != "none") {
             	LoadRemoteImage(imagelabel,imageurl);
             	imagelabel.height="200";imagelabel.width="200";
-	        	joblogoddview.add(imagelabel);
-	        	joblogoddview.height = "220";  
+	        	////joblogoddview.add(imagelabel);
+	        	eval("joblogoddview"+i+".add(imagelabel)");
+	        	////joblogoddview.height = "220";  
+	        	eval("joblogoddview"+i+".height = 300");  
         	};
 	        if ( notesbody != "none" && imageurl != "none") {
                 imagelabel.top = 50;
                 noteslabel.top = 220;
-                joblogoddview.height = 200+60+noteslabelheight;
+                ////joblogoddview.height = 200+60+noteslabelheight;
+                eval("joblogoddview"+i+".height = 200+60+noteslabelheight");
 	        };
-    		viewUpdateJobLogscrollView.add(joblogoddview);
+    		////viewUpdateJobLogscrollView.add(joblogoddview);
+    		eval("viewUpdateJobLogscrollView.add(joblogoddview"+i+")");
+    		eval("viewUpdateJobLogscrollView.add(joblogevenview"+i+")");
 	        var jobcommentdata = [];			
 		}
-		viewUpdateJobLogscrollView.add(joblogevenview);
-		viewUpdateJobLogscrollView.add(joblogevenview);
 		
 		// footer view
 		var viewUpdateJobLogfooterButtonView = Ti.UI.createView({bottom:"0",height:"40",backgroundColor:"#2B2B2B"});
@@ -811,7 +833,7 @@ function datepickertoggle(e){
 		viewUpdateJobLogfooterButtonView.add(viewUpdateJobLogSavelabelbutton);
 		viewUpdateJobLogfooterButtonView.add(viewUpdateJobLogGenReportlabelbutton);
 		var viewUpdateJobLogfooterView = Ti.UI.createView({bottom:"40",height:"40",backgroundColor:"#333333"});
-		var viewUpdateJobLogfooterTextArea = Ti.UI.createTextArea({width:"85%",height:"30",backgroundColor:"white",borderRadius:"10",borderColor:"#ADADAD",color:"#3B3B3B"});
+		var viewUpdateJobLogfooterTextArea = Ti.UI.createTextArea({width:"95%",height:"30",backgroundColor:"white",borderRadius:"10",borderColor:"#ADADAD",color:"#3B3B3B"});
 		viewUpdateJobLogfooterTextArea.addEventListener("click",function(e){
 			Alloy.Globals.Log("project.js:: viewUpdateJobLogfooterTextArea: JSON.stringify(e): "+JSON.stringify(e));
 			(e.source.height < "31")?viewUpdateJobLogfooterTextAreaheight=100:viewUpdateJobLogfooterTextAreaheight=30;
@@ -821,24 +843,28 @@ function datepickertoggle(e){
 		viewUpdateJobLogfooterTextArea.addEventListener("blur",function(e){
 			Alloy.Globals.Log("project.js:: viewUpdateJobLogfooterTextArea: JSON.stringify(e): "+JSON.stringify(e));					
 			var notesbody = e.value;
-			Alloy.Globals.Log("project.js:: viewUpdateJobLogfooterTextArea: JSON.stringify(joblogoddview): B4 update: "+JSON.stringify(joblogoddview));
-			var initialheight = joblogoddview.height-120;
-			viewUpdateJobLogscrollView.remove(joblogoddview);				
+			Alloy.Globals.Log("project.js:: viewUpdateJobLogfooterTextArea: viewUpdateJobLogscrollView.children.length: B4 update: "+viewUpdateJobLogscrollView.children.length);
+			var i = viewUpdateJobLogscrollView.children.length;
 			viewUpdateJobLogSavelabelbutton.notes = notesbody;
-			joblogoddview.add(Ti.UI.createImageView({left:"20",top:initialheight+20,width:"85%",height:"3",image:"/images/blueline.png"}));
-			joblogoddview.add(Ti.UI.createLabel ({color : "orange",font : {fontSize : 10},right  : "20",top :initialheight,text : "employee"}));
-	    	joblogoddview.add(Ti.UI.createLabel ({color : "orange",font : {fontSize : 10},left  : "20",top :initialheight,text : "date"}));
-	    	joblogoddview.add(Ti.UI.createImageView({image:"/images/EditControl.png",top:initialheight+40,left: "90%",height: "20",width: "20"}));
-	        joblogoddview.add(Ti.UI.createLabel ({color : "#888",font: {fontSize: "12"},left  : "20",width:"300",top:initialheight+40,text : notesbody}));	        
+			eval("var joblogoddview"+i+"= Ti.UI.createView({height:100,backgroundColor:'#FAFAFA',borderRadius:20,borderColor:'#B5A642',borderWidth:'0.1',width:'95%'})");
+			eval("var joblogevenview"+i+" = Ti.UI.createView({height:5,backgroundColor:'#5C5C5C'})");
+			eval("joblogoddview"+i+".add(Ti.UI.createImageView({left:20,top:25,width:'85%',height:3,image:'/images/blueline.png'}))");
+			eval("joblogoddview"+i+".add(Ti.UI.createLabel ({color : 'orange',font : {fontSize : 10},right  : 20,top :5,text : 'employee'}))");
+	    	eval("joblogoddview"+i+".add(Ti.UI.createLabel ({color : 'orange',font : {fontSize : 10},left  : 20,top :5,text : 'date'}))");
+	    	eval("joblogoddview"+i+".add(Ti.UI.createImageView({image:'/images/EditControl.png',top:40,left: '90%',height: 20,width: 20}))");			
+	        eval("joblogoddview"+i+".add(Ti.UI.createLabel ({color:'#888',font:{fontSize:12},left:20,width:300,top:40,text:notesbody}))");	        
             var noteslabelheight = ((Math.round(notesbody.split('').length/50)+(notesbody.split(/\r?\n|\r/).length))*14)+14;
-      		joblogoddview.height = 260+initialheight+noteslabelheight;
-			viewUpdateJobLogscrollView.add(joblogoddview);
-			Alloy.Globals.Log("project.js:: viewUpdateJobLogfooterTextArea: JSON.stringify(joblogoddview): AFTER update: "+JSON.stringify(joblogoddview));
+            var viewheight = 180 + noteslabelheight;
+      		eval("joblogoddview"+i+".height = viewheight");
+			eval("viewUpdateJobLogscrollView.add(joblogoddview"+i+")");
+			eval("viewUpdateJobLogscrollView.add(joblogevenview"+i+")");
+			Alloy.Globals.Log("project.js:: viewUpdateJobLogfooterTextArea: viewUpdateJobLogscrollView.children.length: AFTER update: "+viewUpdateJobLogscrollView.children.length);
 		});
 		viewUpdateJobLogSavelabelbutton.addEventListener("click",function(e){
 			Alloy.Globals.Log("project.js:: viewUpdateJobLogSavelabelbutton: JSON.stringify(e): "+JSON.stringify(e));
 			setTimeout(function(){viewUpdateJobLogSavelabelbutton.color="#63D1F4";},100);
 			viewUpdateJobLogfooterTextArea.blur();
+			viewUpdateJobLogfooterTextArea.value="";
 		});
 		
 		// Save END
@@ -847,35 +873,44 @@ function datepickertoggle(e){
 		var viewUpdateJobLogCameralabelbutton = Ti.UI.createLabel({text:"Camera",left:"20",color:"#63D1F4"});
 		viewUpdateJobLogfooterButtonView.add(viewUpdateJobLogCameralabelbutton);
  
-		viewUpdateJobLogCameralabelbutton.addEventListener('click', function(){	
-			setTimeout(function(){viewUpdateJobLogCameralabelbutton.color="#63D1F4";},100);	   
+		viewUpdateJobLogCameralabelbutton.addEventListener('click', function(e){	
+			setTimeout(function(){viewUpdateJobLogCameralabelbutton.color="#63D1F4";},100);	 
+			var parentid = e.source.parentid;  
 		   //Activate camera
 		   Titanium.Media.showCamera({
 				success : function(event) {
 					//Holds the captured image
-					var capturedImg= event.media;			 
+					var capturedImg= event.media;
+					var image = capturedImg;		 
 					// Condition to check the selected media
 					if(event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {			 	 
 						//Add the image to window for displaying
-						Alloy.Globals.Log("project.js:: viewUpdateJobLogCameralabelbutton: JSON.stringify(joblogoddview): B4 update: "+JSON.stringify(joblogoddview));
-						var initialheight = joblogoddview.height-120;
-						viewUpdateJobLogscrollView.remove(joblogoddview);				
-						joblogoddview.add(Ti.UI.createImageView({left:"20",top:initialheight+20,width:"85%",height:"3",image:"/images/blueline.png"}));
-						joblogoddview.add(Ti.UI.createLabel ({color : "orange",font : {fontSize : 10},right  : "20",top :initialheight,text : "employee"}));
-				    	joblogoddview.add(Ti.UI.createLabel ({color : "orange",font : {fontSize : 10},left  : "20",top :initialheight,text : "date"}));
-				    	joblogoddview.add(Ti.UI.createImageView({image:"/images/EditControl.png",top:initialheight+150,left: "90%",height: "20",width: "20"}));
-				        joblogoddview.height = 260+initialheight+300;
-			      		joblogoddview.add(Titanium.UI.createImageView({
-							top : initialheight+40,
-							left     : 40,
-							width    : 300,
-							height   : 300,
-							image   : capturedImg   //Set captured image
-						}));
-						viewUpdateJobLogscrollView.add(joblogoddview);
-						Alloy.Globals.Log("project.js:: viewUpdateJobLogCameralabelbutton: JSON.stringify(joblogoddview): AFTER update: "+JSON.stringify(joblogoddview));						
-						//viewUpdateJobLogscrollView.add(joblogoddview);
+						Alloy.Globals.Log("project.js:: viewUpdateJobLogCameralabelbutton: viewUpdateJobLogscrollView.children.length: B4 update: "+viewUpdateJobLogscrollView.children.length);
+						var i = viewUpdateJobLogscrollView.children.length;
+						eval("var joblogoddview"+i+"= Ti.UI.createView({height:100,backgroundColor:'#FAFAFA',borderRadius:20,borderColor:'#B5A642',borderWidth:'0.1',width:'95%'})");
+						eval("var joblogevenview"+i+" = Ti.UI.createView({height:5,backgroundColor:'#5C5C5C'})");
+						eval("joblogoddview"+i+".add(Ti.UI.createImageView({left:20,top:25,width:'85%',height:3,image:'/images/blueline.png'}))");
+						eval("joblogoddview"+i+".add(Ti.UI.createLabel ({color : 'orange',font : {fontSize : 10},right  : 20,top :5,text : 'employee'}))");
+				    	eval("joblogoddview"+i+".add(Ti.UI.createLabel ({color : 'orange',font : {fontSize : 10},left  : 20,top :5,text : 'date'}))");
+				    	eval("joblogoddview"+i+".add(Ti.UI.createImageView({image:'/images/EditControl.png',top:155,left: '90%',height: 20,width: 20}))");
+				        eval("joblogoddview"+i+".height = 560");
+			      		eval("joblogoddview"+i+".add(Titanium.UI.createImageView({top:40,left:'5%',width:300,height:300,image: capturedImg }))");
+						eval("viewUpdateJobLogscrollView.add(joblogoddview"+i+")");
+						Alloy.Globals.Log("project.js:: viewUpdateJobLogCameralabelbutton: viewUpdateJobLogscrollView.children.length: AFTER update: "+viewUpdateJobLogscrollView.children.length);						
+						eval("viewUpdateJobLogscrollView.add(joblogevenview"+i+")");
 						Alloy.Globals.Log("project.js:: viewUpdateJobLogCameralabelbutton: load pics");
+                        Alloy.Globals.Log("project.js::beginning to upload to the cloud.");
+                        var date = new Date();
+						var imagefilename = filename+"_"+date.toString().replace(/ /g,'_');
+						Alloy.Globals.Log("project.js:: viewUpdateJobLogCameralabelbutton: image,imagefilename,parentid,"+image+","+imagefilename+","+projectparentid
+						+", "+filename+"_sid: " +eval(filename+"_sid"));
+						////Alloy.Globals.uploadPictoGoogle(image,imagefilename,projectparentid);
+						var col2=col3=col4=col6=col7=col8=col9=col10=col11=col12=col13=col14=col15=col16=existingedithref=existingselfhref=existingidtag='none';
+						var ssid = eval(filename+"_sid");
+						var func = function() {
+							Alloy.Globals.Log("project.js:: viewUpdateJobLogCameralabelbutton: execute func();");
+						}; 
+						Alloy.Globals.uploadPictoGoogle(image,imagefilename,projectparentid,'4','joblog',date,col2,col3,col4,'employee',col6,col7,col8,col9,ssid,col11,col12,col13,col14,col15,Date.now(),existingedithref,existingselfhref,existingidtag,func);
 					}
 				},
 				cancel : function() {
@@ -888,7 +923,6 @@ function datepickertoggle(e){
 		});
 		//camera END
 		
-		viewUpdateJobLogscrollView.add(joblogevenview);
 		viewUpdateJobLogwin.add(viewUpdateJobLogscrollView);
 		
 		viewUpdateJobLogfooterView.add(viewUpdateJobLogfooterTextArea);

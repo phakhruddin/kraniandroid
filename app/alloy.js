@@ -1272,136 +1272,15 @@ Alloy.Globals.saveHandler = function(type){
 	///Alloy.Globals.Log('submit('+clientnumber+','+name+','+customerno+','+total+','+bal+','+paid+','+lastpaiddate+','+followupdate+','+clientphone+','+clientemail+','+duedate+','
 	///+currency+','+status+')');
  }; 
-
-/*
-Alloy.Globals.submit = function(type,clientfirstname,clientlastname,clientcompany,clientphone,clientemail,clientstreetaddress,clientcity,clientstate,country,status,notes,percentcompletion,nextappt,datedue,customerid) {	
- 	//var spreadsheet_id = '1-Wz7Apn4AvVpfqcNyMgfqyKA8OAoLNy5Bl0d_jQ9IZk';
-    var spreadsheet_id = Titanium.App.Properties.getString(type);
-    var existingedithref = Titanium.App.Properties.getString('edithref');
-    var edithref = Titanium.App.Properties.getString('edithref');
-   /// var existingedithref = edithref;
-    var idtag = Titanium.App.Properties.getString('idtag');
-    //var edithref = existingedithref;
-    var selfhref = Titanium.App.Properties.getString('selfhref');
-    var now = Date.now();
- 	var captimestamp = now;
-    Alloy.Globals.Log("alloy.js::Alloy.Globals.submit::existing edit href is: "+existingedithref+' idtag :'+idtag);
-	var xhr =  Titanium.Network.createHTTPClient({
-	    onload: function() {
-	    	try {
-	    		Alloy.Globals.Log(this.responseText);
-	    		var xml = Titanium.XML.parseString(this.responseText);
-	    		var entry = xml.documentElement.getElementsByTagName("entry");
-	    		var link = xml.documentElement.getElementsByTagName("link");
-	    		var idtag = xml.documentElement.getElementsByTagName("id").item(0).textContent;
-	    		Alloy.Globals.Log("alloy.js::submit: number of link found: " +link+ " length: "+link.length);
-	    		for (i=0;i<link.length;i++){			
-	    			var listitem = link.item(i);
-	    			if (listitem.getAttribute("rel") == "edit"){ var edithref = listitem.getAttribute("href");}
-	    			if (listitem.getAttribute("rel") == "self"){ var selfhref = listitem.getAttribute("href");}
-	    		}
-	    		Titanium.App.Properties.setString('edithref',edithref);
-	    		Titanium.App.Properties.setString('idtag',idtag);
-	    		Titanium.App.Properties.setString('selfhref',selfhref);
-	    		Alloy.Globals.Log("alloy.js::Alloy.Globals.submit : self href is : "+selfhref+" edit href is: "+edithref);
-	    		Alloy.Globals.Log("alloy.js::Alloy.Globals.submit : idtag is : "+idtag);
-	    	} catch(e){
-	    		Alloy.Globals.Log("Alloy.Globals.submit ::cathing e: "+JSON.stringify(e));
-	    	}     
-	    },
-	    onerror: function(e) {
-	    	Alloy.Globals.Log("Alloy.Globals.submit ::error e: "+JSON.stringify(e));
-	        alert("error:"+e.code+": Please connect to the network."); 
-	    }
-	});
-	eval("var "+type+" = Alloy.Collections.instance('"+type+"')");
-	//var clients = Alloy.Collections.instance('client');
-	if (existingedithref) {
-			Alloy.Globals.Log("alloy.js::Alloy.Globals.submit::PUT on existing edit href is: "+existingedithref);
-			xhr.open("PUT", existingedithref);
-			var xmldatastring = '<entry xmlns=\'http://www.w3.org/2005/Atom\' xmlns:gsx=\'http://schemas.google.com/spreadsheets/2006/extended\'>'
-				+'<id>'+idtag+'</id>'
-				+'<updated>2015-05-16T08:01:19.680Z</updated>'
-				+'<category scheme=\'http://schemas.google.com/spreadsheets/2006\' term=\'http://schemas.google.com/spreadsheets/2006#list\'/>'
-				+'<title type=\'textContent\'>'+customerid+'</title>'
-				+'<content type=\'textContent\'>col2: '+clientfirstname+', col3: '+clientlastname+', col4: '+clientcompany+', col5: '+clientphone+', col6: '+clientemail+', col7: '+clientstreetaddress
-				+', col8: '+clientcity+', col9: '+clientstate+', col10: '+country+', col11: NA, col12: NA, col13: NA, col14: '+captimestamp+', col15: none, col16: '+now+'</content>'
-				+'<link rel=\'self\' type=\'application/atom+xml\' href=\''+selfhref+'\'/>'
-				+'<link rel=\'edit\' type=\'application/atom+xml\' href=\''+edithref+'\'/>'
-				+'<gsx:col1>'+customerid+'</gsx:col1><gsx:col2>'+clientfirstname+'</gsx:col2><gsx:col3>'
-				+clientlastname+'</gsx:col3><gsx:col4>'+clientcompany+'</gsx:col4><gsx:col5>'
-				+clientphone+'</gsx:col5><gsx:col6>'+clientemail+'</gsx:col6><gsx:col7>'+clientstreetaddress+'</gsx:col7><gsx:col8>'+clientcity+'</gsx:col8>'
-				+'<gsx:col9>'+clientstate+'</gsx:col9><gsx:col10>'+country+'</gsx:col10><gsx:col11>NA</gsx:col11><gsx:col12>NA</gsx:col12><gsx:col13>NA</gsx:col13><gsx:col14>'+customerid+'</gsx:col14>'
-				+'<gsx:col15>'+notes+'</gsx:col15><gsx:col16>'+customerid+'</gsx:col16></entry>';
-			Alloy.Globals.Log('xmldatastring existing to PUT: '+xmldatastring);
-			eval("type.fetch()");
-			//clients.fetch();
-			Alloy.Globals.Log("alloy.js::Alloy.Globals.submit:: update DB with customerid :" +customerid);
-				clients.get(customerid).set({
-					col1: 	customerid.toString().trim(),
-					col2:	clientfirstname.trim(),
-					col3:	clientlastname.trim(),
-					col4:	clientcompany.trim(),
-					col5:	clientphone.trim(),
-					col6:	clientemail.trim(),
-					col7:	clientstreetaddress.trim(),
-					col8:	clientcity.trim(),
-					col9:	clientstate.trim(),
-					col10:	country.trim()
-				}).save();
-			alert('Modified & Saved Successfully!');
-		} else {
-			var customerid = now;
-			$.save_button.titleid = customerid; //feed id the save button of the customer id.
-			var xmldatastring = '<entry xmlns=\'http://www.w3.org/2005/Atom\' xmlns:gsx=\'http://schemas.google.com/spreadsheets/2006/extended\'>'
-				+'<gsx:col1>'+customerid+'</gsx:col1><gsx:col2>'+clientfirstname+'</gsx:col2><gsx:col3>'
-				+clientlastname+'</gsx:col3><gsx:col4>'+clientcompany+'</gsx:col4><gsx:col5>'
-				+clientphone+'</gsx:col5><gsx:col6>'+clientemail+'</gsx:col6><gsx:col7>'+clientstreetaddress+'</gsx:col7><gsx:col8>'+clientcity+'</gsx:col8>'
-				+'<gsx:col9>'+clientstate+'</gsx:col9><gsx:col10>'+country+'</gsx:col10><gsx:col11>NA</gsx:col11><gsx:col12>NA</gsx:col12><gsx:col13>NA</gsx:col13><gsx:col14>'+customerid+'</gsx:col14>'
-				+'<gsx:col15>'+notes+'</gsx:col15><gsx:col16>'+customerid+'</gsx:col16></entry>';
-				Alloy.Globals.Log('xmldatastring to POST: '+xmldatastring);
-			xhr.open("POST", 'https://spreadsheets.google.com/feeds/list/'+spreadsheet_id+'/od6/private/full');
-			Alloy.Globals.Log("alloy.js::Alloy.Globals.submit:: add DB with customerid :" +customerid);
-			var dataModel = Alloy.createModel('client',{
-					col1: 	customerid.toString().trim(),
-					col2:	(clientfirstname == " ")?'none':clientfirstname.trim(),
-					col3:	(clientlastname == " ")?'none':clientlastname.trim(),
-					col4:	(clientcompany == " ")?'none':clientcompany.trim(),
-					col5:	(clientphone == " ")?'none':clientphone.trim(),
-					col6:	(clientemail == " ")?'none':clientemail.trim(),
-					col7:	(clientstreetaddress == " ")?'none':clientstreetaddress.trim(),
-					col8:	(clientcity == " ")?'none':clientcity.trim(),
-					col9:	(clientstate == " ")?'none':clientstate.trim(),
-					col10:	(country == " ")?'none':country.trim(),
-					col11: "none",
-					col12: "none",
-					col13: "none",
-					col14: "none",
-					col15: "none",
-					col16: "none"
-				});			
-				dataModel.save();
-			alert('Saved Successfully!');
-		} 
-	xhr.setRequestHeader("Content-type", "application/atom+xml");
-	xhr.setRequestHeader("Authorization", 'Bearer '+ googleAuth.getAccessToken());
-	xhr.send(xmldatastring);
- }; */
  
- Alloy.Globals.submit = function(type,spreadsheet_id,col1,col2,col3,col4,col5,col6,col7,col8,col9,col10,col11,col12,col13,col14,col15,col16) {	
- 	Alloy.Globals.Log("alloy.js::Alloy.Globals.submit::executed with: type:"+type+',col1:'+col1+',col2'+col2+',col3:'+col3);
- 	if (! spreadsheet_id) {
- 		var spreadsheet_id = Titanium.App.Properties.getString(type);
+ Alloy.Globals.submit = function(type,ssid,col1,col2,col3,col4,col5,col6,col7,col8,col9,col10,col11,col12,col13,col14,col15,col16,existingedithref,existingselfhref,existingidtag) {	
+ 	Alloy.Globals.Log("alloy.js::Alloy.Globals.submit::executed with: type:"+type+',col1:'+col1+',col2:'+col2+',col3:'+col3+',col4:'+col4);
+	if (! ssid) {
+ 		var ssid = Titanium.App.Properties.getString(type);
  	};
-    var existingedithref = Titanium.App.Properties.getString('edithref');
-    var edithref = Titanium.App.Properties.getString('edithref');
-   /// var existingedithref = edithref;
-    var idtag = Titanium.App.Properties.getString('idtag');
-    //var edithref = existingedithref;
-    var selfhref = Titanium.App.Properties.getString('selfhref');
     var now = Date.now();
  	var captimestamp = now;
-    Alloy.Globals.Log("alloy.js::Alloy.Globals.submit::existing edit href is: "+existingedithref+' idtag :'+idtag);
+    Alloy.Globals.Log("alloy.js::Alloy.Globals.submit::existing edit href is: "+existingedithref+' existingidtag :'+existingidtag);
 	var xhr =  Titanium.Network.createHTTPClient({
 	    onload: function() {
 	    	try {
@@ -1457,8 +1336,12 @@ Alloy.Globals.submit = function(type,clientfirstname,clientlastname,clientcompan
 			alert('Modified & Saved Successfully!');
 		} else {
 			var col16 = now;
-			var col2="<![CDATA["+col2+"]]>"; 
-			var col3 = "<![CDATA["+col3+"]]>";
+			////var col2="<![CDATA["+col2+"]]>"; 
+			////var col3 = "<![CDATA["+col3+"]]>";
+			var col1=(col1)?"<![CDATA["+col1+"]]>":'none';var col2=(col2)?"<![CDATA["+col2+"]]>":'none';var col3=(col3)?col3:'none';var col4=(col4)?"<![CDATA["+col4+"]]>":'none';var col5=(col5)?col5:'none';var col6=(col6)?col6:'none';
+			var col7=(col7)?col7:'none';var col8=(col8)?col8:'none';var col9=(col9)?col9:'none';var col10=(col10)?col10:'none';var col11=(col11)?col11:'none';
+			var col12=(col12)?col12:'none';var col13=(col13)?col13:'none';var col14=(col14)?col14:'none';var col15=(col15)?col15:'none';var col16=(col16)?col16:'none';
+			///var col1=col2=col3=col4=col5=col6=col7=col8=col9=col10=col11=col12=col13=col14=col15=col16='none'; 
 			var xmldatastring = '<entry xmlns=\'http://www.w3.org/2005/Atom\' xmlns:gsx=\'http://schemas.google.com/spreadsheets/2006/extended\'>'
 				+'<gsx:col1>'+col1+'</gsx:col1><gsx:col2>'+col2+'</gsx:col2><gsx:col3>'
 				+col3+'</gsx:col3><gsx:col4>'+col4+'</gsx:col4><gsx:col5>'
@@ -1466,8 +1349,8 @@ Alloy.Globals.submit = function(type,clientfirstname,clientlastname,clientcompan
 				+'<gsx:col9>'+col9+'</gsx:col9><gsx:col10>'+col10+'</gsx:col10><gsx:col11>NA</gsx:col11><gsx:col12>NA</gsx:col12><gsx:col13>NA</gsx:col13><gsx:col14>'+col14+'</gsx:col14>'
 				+'<gsx:col15>'+col15+'</gsx:col15><gsx:col16>'+col16+'</gsx:col16></entry>';
 			Alloy.Globals.Log('xmldatastring to POST: '+xmldatastring);
-			xhr.open("POST", 'https://spreadsheets.google.com/feeds/list/'+spreadsheet_id+'/od6/private/full');
-			Alloy.Globals.Log("alloy.js::Alloy.Globals.submit: post done on spreadsheet_id: "+spreadsheet_id);
+			xhr.open("POST", 'https://spreadsheets.google.com/feeds/list/'+ssid+'/od6/private/full');
+			Alloy.Globals.Log("alloy.js::Alloy.Globals.submit: post done on ssid: "+ssid);
 			Alloy.Globals.Log("alloy.js::Alloy.Globals.submit:: add DB with col16 :" +col16+'col1:'+col1+',col2'+col2+',col3:'+col3);
         	///eval("var dataModel = Alloy.createModel('"+type+"',{col1:col1.trim(),col2:col2.trim(),col3:col3.trim(),col4:col4.trim(),col5:col5.trim(),col6:col6.trim(),col7:col7.trim(),col8:col8.trim(),col9:col9.trim(),col10:col10.trim(),col11:col11.trim(),col12:col12.trim(),col13:col13.trim(),col14:col14.trim(),col15:col15.trim(),col16:col16.trim()})");			
 			///dataModel.save();
@@ -1753,23 +1636,23 @@ Alloy.Globals.submit = function(type,clientfirstname,clientlastname,clientcompan
 	    try {
 	    		Alloy.Globals.Log("alloy.js::Alloy.Globals.shareAnyonePermission::response is: "+this.responseText);
 	    	} catch(e){
-				Alloy.Globals.Log("cathing e: "+JSON.stringify(e));
+				Alloy.Globals.Log("Alloy.Globals.shareAnyonePermission:cathing e: "+JSON.stringify(e));
 			}
 		}
 		});
 	xhr.onerror = function(e){
-		alert("error:"+e.code+": Please connect to the network."); 
+		alert("Alloy.Globals.shareAnyonePermission:error:"+e.code+": Please connect to the network."); 
 		Alloy.Globals.Log("alloy.js:Alloy.Globals.shareAnyonePermission:: error is: "+JSON.stringify(e));
 	};
 	xhr.open("POST", 'https://www.googleapis.com/drive/v2/files/'+sid+'/permissions');	
-	///xhr.setRequestHeader("Content-type", "application/json");
+	xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
     Alloy.Globals.Log("Alloy.Globals.shareAnyonePermission::shareAnyonePermission::json post: "+jsonpost);
 	xhr.send(jsonpost);
 };
 
 
- Alloy.Globals.uploadPictoGoogle = function(image,filename,parentid,position,type,col1,col2,col3,col4,col5,col6,col7,col8,col9,col10,col11,col12,col13,col14,col15,col16){
+ Alloy.Globals.uploadPictoGoogle = function(image,filename,parentid,position,type,col1,col2,col3,col4,col5,col6,col7,col8,col9,col10,col11,col12,col13,col14,col15,col16,func){
 	Alloy.Globals.Log("Alloy.Globals.uploadPictoGoogle::uploadPictoGoogle::create ss with filename: "+filename);
 	//var base64Data = Ti.Utils.base64encode(image);
 	var base64Data = Ti.Utils.base64encode(image);
@@ -1811,14 +1694,15 @@ Alloy.Globals.submit = function(type,clientfirstname,clientlastname,clientcompan
 	    				eval("var col"+position+" = webcontentlink");
 	    				var ssidsourcename = filename.split("_")[0]+"_"+filename.split("_")[1]+"_"+filename.split("_")[2];
 	    				var ssidsourcenametofind = type+'_'+ssidsourcename+"_sid";
-	    				var ssid = Titanium.App.Properties.getString(ssidsourcenametofind);
+	    				var ssid = (col10 != 'none')?col10:Titanium.App.Properties.getString(ssidsourcenametofind); //col10 is ssid
 	    				Alloy.Globals.Log("alloy.js:Alloy.Globals.uploadPictoGoogle:b4 execute Alloy.Globals.submit, ssid for Titanium.App.Properties.getString("+ssidsourcenametofind+") : "+ssid);
 	    				if (type) {
 	    					Alloy.Globals.Log("alloy.js:Alloy.Globals.uploadPictoGoogle:b4 execute Alloy.Globals.submit, ssid is : "+ssid);
 	    					Alloy.Globals.submit(type,ssid,col1,col2,col3,col4,col5,col6,col7,col8,col9,col10,col11,col12,col13,col14,col15,col16);
 	    				} else {
 	    					Alloy.Globals.Log("alloy.js:Alloy.Globals.uploadPictoGoogle: Plain upload, no spreadsheet registration for link, ssid is : "+ssid);
-	    				}	    				
+	    				}
+	    				(func)?func():Alloy.Globals.Log("alloy.js:Alloy.Globals.uploadPictoGoogle:no additional function call"); 				
 			    	} catch(e){
 			    		Alloy.Globals.Log("Alloy.Globals.uploadPictoGoogle::uploadPictoGoogle::cathing e: "+JSON.stringify(e));
 			    	} 
@@ -1826,7 +1710,7 @@ Alloy.Globals.submit = function(type,clientfirstname,clientlastname,clientcompan
 			    },
 			    onerror: function(e) {
 			    	Alloy.Globals.Log("Alloy.Globals.uploadPictoGoogle::uploadPictoGoogle::error e: "+JSON.stringify(e));
-			        alert("error:"+e.code+": Please connect to the network.");  
+			        alert("error:Alloy.Globals.uploadPictoGoogle:"+e.code+": Please connect to the network.");  
 			    }
 			});
 			xhr.open("POST", url);
@@ -2369,7 +2253,7 @@ Alloy.Globals.checkInitialFolderExistAfterLogin = function(name,parentid){
 					}
 				});
 				xhr.onerror = function(e){
-					alert("error:"+e.code+": Please connect to the network."); 
+					alert("checkInitialFolderExistAfterLogin:error:"+e.code+": Please connect to the network."); 
 					Alloy.Globals.Log("alloy::checkInitialFolderExistAfterLogin::Unable to checkInitialFolderExistAfterLogin with "+foldername+". error is: "+JSON.stringify(e));
 				};
 				xhr.open("POST", 'https://www.googleapis.com/drive/v2/files');	
@@ -2385,7 +2269,7 @@ Alloy.Globals.checkInitialFolderExistAfterLogin = function(name,parentid){
 			}
 		});
 		xhr0.onerror = function(e){
-			alert("error:"+e.code+": Please connect to the network."); 
+			alert("checkInitialFolderExistAfterLogin:error:"+e.code+": Please connect to the network."); 
 			Alloy.Globals.Log("alloy::checkFolderexist::Unable to checkInitialFolderExistAfterLogin with "+foldername+" error code is: "+JSON.stringify(e));
 		};	
 	var rawquerystring = '?q=title%3D\''+foldername+'\'';
@@ -2445,7 +2329,7 @@ Alloy.Globals.createInitialFolder = function(name,parentid){
 					}
 				});
 				xhr.onerror = function(e){
-					alert("error:"+e.code+": Please connect to the network."); 
+					alert("Alloy.Globals.createInitialFolder:error:"+e.code+": Please connect to the network."); 
 					Alloy.Globals.Log("alloy::Alloy.Globals.createInitialFolder::Unable to createInitialFolder with "+foldername+" error is: "+JSON.stringify(e));
 				};
 				xhr.open("POST", 'https://www.googleapis.com/drive/v2/files');	
