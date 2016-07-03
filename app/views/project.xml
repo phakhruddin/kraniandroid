@@ -9,7 +9,7 @@
         </Menu>
 	  <TableView id="projectlist_table" backgroundColor="transparent" dataCollection="project" search="search_history" 
 	  	dataTransform="transformFunction" filterAttribute="title" editable="true" moveable="true">
-		<SearchBar id="search_history" height="43" />
+		<SearchBar id="search_history" height="43" backgroundColor="#212121" />
 		  <TableViewRow id="projectlist_row" height="110" backgroundColor="transparent" opacity="0"  color="transparent" title="{title}">
 		  	<Label color="#330" top="5" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" text="{custom}"/>
 		  	<Label id="label_sub1" color="#333"  textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="30" text="{name}"/>

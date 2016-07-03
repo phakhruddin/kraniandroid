@@ -950,7 +950,7 @@ Alloy.Globals.uploadFile = function(file,filename,parentid) {
         parts.push('--' + bound + '--');
  		var url = "https://www.googleapis.com/upload/drive/v2/files?uploadType=multipart";
  		var xhr =  Titanium.Network.createHTTPClient({
-		    onload: function() {
+		    onload: function(e) {
 		    	try {
 		    		Alloy.Globals.Log(this.responseText); 
 		    		var json = JSON.parse(this.responseText);
@@ -959,6 +959,7 @@ Alloy.Globals.uploadFile = function(file,filename,parentid) {
 		    		Titanium.App.Properties.setString('webcontentlink',webcontentlink);
 	    			Alloy.Globals.Log("alloy.js::Alloy.Globals.uploadFile::id is: "+id+" webcontentlink: "+webcontentlink);
 		    		Alloy.Globals.shareAnyonePermission(id);
+		    		Ti.Platform.openURL("https://docs.google.com/gview?embedded=true&url=" + Ti.Network.encodeURIComponent(webcontentlink));
 		    	} catch(e){
 		    		Alloy.Globals.Log("Alloy.Globals.uploadFile::cathing e: "+JSON.stringify(e));
 		    	}     
@@ -971,7 +972,7 @@ Alloy.Globals.uploadFile = function(file,filename,parentid) {
 		xhr.open("POST", url);
 		xhr.setRequestHeader("Content-type", "multipart/mixed; boundary=" + bound);
 		xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
-		xhr.setRequestHeader("Content-Length", "2000000");
+		////xhr.setRequestHeader("Content-Length", "2000000");
 		xhr.send(parts.join("\r\n"));
 		Alloy.Globals.Log('done POSTed');
 };
@@ -1341,7 +1342,6 @@ Alloy.Globals.saveHandler = function(type){
 			var col1=(col1)?"<![CDATA["+col1+"]]>":'none';var col2=(col2)?"<![CDATA["+col2+"]]>":'none';var col3=(col3)?col3:'none';var col4=(col4)?"<![CDATA["+col4+"]]>":'none';var col5=(col5)?col5:'none';var col6=(col6)?col6:'none';
 			var col7=(col7)?col7:'none';var col8=(col8)?col8:'none';var col9=(col9)?col9:'none';var col10=(col10)?col10:'none';var col11=(col11)?col11:'none';
 			var col12=(col12)?col12:'none';var col13=(col13)?col13:'none';var col14=(col14)?col14:'none';var col15=(col15)?col15:'none';var col16=(col16)?col16:'none';
-			///var col1=col2=col3=col4=col5=col6=col7=col8=col9=col10=col11=col12=col13=col14=col15=col16='none'; 
 			var xmldatastring = '<entry xmlns=\'http://www.w3.org/2005/Atom\' xmlns:gsx=\'http://schemas.google.com/spreadsheets/2006/extended\'>'
 				+'<gsx:col1>'+col1+'</gsx:col1><gsx:col2>'+col2+'</gsx:col2><gsx:col3>'
 				+col3+'</gsx:col3><gsx:col4>'+col4+'</gsx:col4><gsx:col5>'
@@ -3399,3 +3399,15 @@ Alloy.Globals.LicenseCheckNested = function(name,name1){
 		xhr1.send();
 		Alloy.Globals.Log("alloy.js::Alloy.Globals.LicenseCheck: execute GET https://www.googleapis.com/drive/v2/file/"+rawquerystring1);
 };
+
+Alloy.Globals.LoadRemoteImage = function (obj,url) {
+	   var xhr = Titanium.Network.createHTTPClient();	
+		xhr.onload = function()
+		{
+		 Alloy.Globals.Log('Alloy.Globals.LoadRemoteImage:image data='+this.responseData);
+		 obj.image=this.responseData;		 
+		};
+		xhr.open('GET',url);		
+		xhr.send();
+	};
+	

@@ -1,7 +1,7 @@
 <Alloy platform="android">
 	<Collection src="client"/>
 	<TabGroup>
-		<ActionBar id="actionbarid" backgroundImage="/images/krani-android-bar-white.jpg"/>
+		<ActionBar id="actionbarid"/>
 	    <Require src="tabViewOne"/>
     </TabGroup>
 </Alloy>

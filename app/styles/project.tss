@@ -1,6 +1,11 @@
 ".container": {
 	backgroundColor:"black"
 },
+"SearchBar": {
+	font: {
+		color: "black"
+	},
+},
 "TableViewRow": {
 	width: Ti.UI.SIZE,
 	height: "36"

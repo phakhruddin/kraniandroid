@@ -1,0 +1,18 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 0.1
+apiversion: 2
+description: Module to view pdf inside app in android without using intents to open external application
+author: Ishan Singh
+license: Specify your license
+copyright: Copyright (c) 2014 by Your Company
+
+
+# these should not be edited
+name: androidpdf
+moduleid: com.ishan.androidpdf
+guid: 91e5ee9d-b041-4ccc-b6a7-79f8f1e85f4e
+platform: android
+minsdk: 3.2.2.GA

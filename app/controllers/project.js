@@ -132,16 +132,82 @@ function doBack(e) {
 function doAdd(e) {
 	Alloy.Globals.Log("project.js::doAdd: "+JSON.stringify(e));
 	Alloy.Globals.Log("project.js::doAdd. $.projectlist_table: "+JSON.stringify($.projectlist_table));
-	//$.projectlist_table.setData([]);
-	$.projectlist_window.remove($.projectlist_table);
-	$.projectlist_window.close();
-	for (var i = $.projectlist_table.data[0].rows.length-1; i >= 0; i--) {
-	       $.projectlist_table.deleteRow(i);
+	var win = Titanium.UI.createWindow({
+        title:"Add Project",
+        backgroundColor:'#DBDBDB'
+    });
+	var clientheaderview = Ti.UI.createView({top:"0",height:"30",backgroundColor:"#3B3B3B"});clientheaderview.add(Ti.UI.createLabel({text:"Client",left:"20"}));
+	var clientview = Ti.UI.createView({top:"30",height:"70",backgroundColor:"#4D4D4D"});
+	var selectclientlabelbutton = Ti.UI.createLabel({text:"Select Client >",left:"35%",color:"#63D1F4"});clientview.add(selectclientlabelbutton);
+	var jobitemheaderview = Ti.UI.createView({top:"100",height:"30",backgroundColor:"#3B3B3B"});jobitemheaderview.add(Ti.UI.createLabel({text:"Item & Description",left:"20"}));
+	var jobdescrview = Ti.UI.createView({top:"130",height:"140",backgroundColor:"#AAAAAA"});
+	var jobdescrprojlabel = Ti.UI.createLabel({text:"Project Name: ",top:"10",left:"20",color:"black",font:{fontSize:"12"}});
+	var jobdescrprojTextField = Ti.UI.createTextField({top:"5",right:"10",borderRadius:"0.25",color:"gray",font:{fontSize:"12"},width:"60%"});
+	jobdescrview.add(jobdescrprojlabel);jobdescrview.add(jobdescrprojTextField);
+	var jobdescrlabel = Ti.UI.createLabel({text:"Description: ",top:"38",left:"20",color:"black",font:{fontSize:"12"}});
+	var jobdescrTextArea = Ti.UI.createTextArea({right:"10",height:"50", top:"66",borderRadius:"0.25",color:"gray",borderColor:"black",borderWidth:"0.1",font:{fontSize:"12"},width:"90%"});
+	jobdescrview.add(jobdescrlabel);jobdescrview.add(jobdescrTextArea);
+	var jobitemsheaderview = Ti.UI.createView({top:"270",height:"30",backgroundColor:"#3B3B3B"});jobitemsheaderview.add(Ti.UI.createLabel({text:"Line items: Click to add ",left:"20"}));
+	var jobitemsaddicon = Ti.UI.createImageView({right:"30",height:"30",width:"30",image:"/images/ic_add_circle_outline_white_24dp.png"});
+
+	jobitemsheaderview.add(jobitemsaddicon);
+	win.add(clientheaderview);
+	win.add(clientview);
+	win.add(jobitemheaderview);
+	win.add(jobdescrview);
+	win.add(jobitemsheaderview);	
+	
+	var projectDetailscrollView = Ti.UI.createScrollView({layout:'vertical',scrollType:"vertical",top:"300"});
+	
+		
+	/*function addlistitemrow() {
+		var jobitemsview = Ti.UI.createView({height:"300",backgroundColor:"#DBDBDB"});
+		var lineitemlabel = Ti.UI.createLabel({text:"Line Item : ",top:"10",left:"20",color:"black",font:{fontSize:"12"}});
+		var lineitemTextField = Ti.UI.createTextField({top:"0",left:"100",borderRadius:"0.25",color:"gray",font:{fontSize:"12"},width:"60%"});
+		var qtylabel = Ti.UI.createLabel({text:"Qty : ",top:"36",left:"20",color:"black",font:{fontSize:"12"}});
+		var qtyTextField = Ti.UI.createTextField({top:"26",left:"50",borderRadius:"0.25",color:"gray",font:{fontSize:"12"},width:"20%"});
+		var pricelabel = Ti.UI.createLabel({text:"Price : ",top:"36",left:"50%",color:"black",font:{fontSize:"12"}});
+		var priceTextField = Ti.UI.createTextField({top:"26",left:"60%",borderRadius:"0.25",color:"gray",font:{fontSize:"12"},width:"20%"});
+		jobitemsview.add(lineitemlabel);
+		jobitemsview.add(lineitemTextField);
+		jobitemsview.add(qtylabel);
+		jobitemsview.add(qtyTextField);
+		jobitemsview.add(pricelabel);
+		jobitemsview.add(priceTextField);
+		projectDetailscrollView.add(jobitemsview);	
+	}*/
+	var i=0;
+	function addlistitemrow(i) {
+		Alloy.Globals.Log("project.js::doAdd:: projectDetailscrollView.children.length: B4 update: "+projectDetailscrollView.children.length);
+		eval("var jobitemsview"+i+"= Ti.UI.createView({height:'60',backgroundColor:'#DBDBDB'})");
+		eval("var lineitemlabel"+i+" = Ti.UI.createLabel({text:'Line Item : ',top:10,left:'20',color:'black',font:{fontSize:'12'}})");
+		eval("var lineitemTextField"+i+" = Ti.UI.createTextField({top:0,left:'100',borderRadius:'0.25',color:'gray',font:{fontSize:'12'},width:'60%'})");
+		eval("var qtylabel"+i+" = Ti.UI.createLabel({text:'Qty : ',top:36,left:'20',color:'black',font:{fontSize:'12'}})");
+		eval("var qtyTextField"+i+" = Ti.UI.createTextField({top:26,left:'50',borderRadius:'0.25',color:'gray',font:{fontSize:'12'},width:'20%'})");
+		eval("var pricelabel"+i+" = Ti.UI.createLabel({text:'Price : ',top:36,left:'50%',color:'black',font:{fontSize:'12'}})");
+		eval("var priceTextField"+i+" = Ti.UI.createTextField({top:26,left:'60%',borderRadius:'0.25',color:'gray',font:{fontSize:'12'},width:'20%'})");
+		eval("jobitemsview"+i+".add(lineitemlabel"+i+");jobitemsview"+i+".add(lineitemTextField"+i+")");
+		eval("jobitemsview"+i+".add(qtylabel"+i+");jobitemsview"+i+".add(qtyTextField"+i+")");
+		eval("jobitemsview"+i+".add(pricelabel"+i+");jobitemsview"+i+".add(priceTextField"+i+")");
+		eval("projectDetailscrollView.add(jobitemsview"+i+")");	
+		eval("jobitemsaddicon.rowcount=i");
+		Alloy.Globals.Log("project.js::doAdd:: projectDetailscrollView.children.length: After update at i:  "+i+" : "+projectDetailscrollView.children.length);
+		win.remove(projectDetailscrollView);
+		win.add(projectDetailscrollView);	
 	}
-	$.projectlist_table.setData([]);
-	Alloy.Globals.Log("project.js::doAdd. $.projectlist_table: after clear"+JSON.stringify($.projectlist_table));
-	var clientController = Alloy.createController('projectdetail');
-	clientController.openMainWindow($.tab_projectlist);
+	
+	
+	addlistitemrow(i);
+	jobitemsaddicon.addEventListener("click",function(e){jobitemsaddicon.image="/images/ic_add_circle_black_24dp.png";		
+		Alloy.Globals.Log("project.js::doAdd: jobitemsaddicon.addEventListener: JSON.stringify(e) "+JSON.stringify(e));
+		var i = e.source.rowcount;
+		setTimeout(function(){jobitemsaddicon.image="/images/ic_add_circle_outline_white_24dp.png";},100);
+		i++; addlistitemrow(i);
+		Alloy.Globals.Log("project.js::doAdd: jobitemsaddicon.addEventListener: i "+i);
+	});
+	//Alloy.Globals.Log("project.js::doAdd: JSON.stringify(projectDetailscrollView) "+JSON.stringify(projectDetailscrollView));
+	//win.add(projectDetailscrollView);
+	win.open();	
 }
 
 function nextapptdateActionDone(e) {
@@ -370,15 +436,211 @@ function datepickertoggle(e){
 		b();
 		(c)?c():Alloy.Globals.Log("project.js::closureTest: no c ");
 	}
+	
+	
+	
+	
 	genreportinpdflabelbutton.addEventListener("click",function(e){
-		Alloy.Globals.Log("project.js::duedatelabelbutton:click: "+JSON.stringify(e));
-		genreportinpdflabelbutton.color="gray";setTimeout(function(){genreportinpdflabelbutton.color="#63D1F4";},100);
+		Alloy.Globals.Log("project.js::genreportinpdflabelbutton:click: "+JSON.stringify(e));
+		genreportinpdflabelbutton.color="gray";genreportinpdflabelbutton.text="Generating report ...";
+		//setTimeout(function(){genreportinpdflabelbutton.color="#63D1F4";},100);
 		closureTest("Dothis",function(){
 			Alloy.Globals.Log("project.js::closureTest: AGAIN ");
 		});
-		Alloy.Globals.Log("project.js:genreportinpdflabelbutton:Alloy.Globals.submit():click: ");
-		Alloy.Globals.submit("joblog",'1F81cf3gXu_bxZRKp1QecqZW1qdwSLHTX9KURAL2_3-s');
+		////Alloy.Globals.Log("project.js:genreportinpdflabelbutton:Alloy.Globals.submit():click: ");
+		////Alloy.Globals.submit("joblog",'1F81cf3gXu_bxZRKp1QecqZW1qdwSLHTX9KURAL2_3-s');
+		//PDF creator START	
+		var strVarItems="";
+		var joblog  = Alloy.Collections.instance('joblog');
+	    joblog.fetch();
+	    Alloy.Globals.Log("projectdetail.js::JSON stringify joblog data on emailpdf: "+JSON.stringify(joblog));
+	    var jobitemjson = joblog.toJSON();
+	    Alloy.Globals.Log("projectdetail.js::jobitemjson.length: "+jobitemjson.length);
+	    for (j=0;j<jobitemjson.length;j++){
+	    	//if (jobitemjson[j].col6 == "report"){
+    		if (jobitemjson[j].col6){
+				Alloy.Globals.Log("projectdetail.js::emailpdf:: adhocs jobitemjson:  col1 : "+jobitemjson[j].col1+" : "+jobitemjson[j].col2+" : "+jobitemjson[j].col5);
+				var picurl = jobitemjson[j].col4;
+				strVarItems += "		<br><table width=\"100%\" class=\"jobitem\">";
+				if (jobitemjson[j].col2 != "none"){strVarItems += "						<td width=\"20%\">"+jobitemjson[j].col1+"<\/td>";};
+				if (picurl != "none"){
+					var pic2 = "file:///data/data/com.krani/app_appdata/tempurfile.jpg";
+					//var pic = "http://www.tizag.com/pics/htmlT/sunset.gif";
+					var pic = 'https://s31.postimg.org/ie12g0fln/project_1446778387026_Dana_Lee_Thu_Nov_05_2015_1.png';
+					strVarItems += "				<tbody>";
+					strVarItems += "					<tr>";
+					strVarItems += "						<td width=\"150\">"+jobitemjson[j].col1+"<\/td>";
+					strVarItems += "						<td><img alt=\"\" src=\""+pic+"\"><input type=\"hidden\" title=\"image\" accept=\"image\/*\"><\/td>";
+					strVarItems += "					<\/tr>";
+				} else {
+					strVarItems += "						<td>"+jobitemjson[j].col2+"<\/td>";
+					strVarItems += "					<\/tr>";
+				}
+				strVarItems += "				<\/tbody>";
+				strVarItems += "			<\/table>";
+	    	}
+	    }
+		
+		
+		var coAddress = "1125 Bluemound Rd., Brookfield, WI 53222";
+		var coPhone = "262-290-3141";
+		var coFax = "262-290-3142";
+		var coEmail = "sales@jackmowinc.com";
+		var logourl = 'https://docs.google.com/uc?id=0B8NAtyyp6PTGdkNYaGRma3VtUlE&export=download';
+		var custphone = phone;
+		var strVar='';
+		strVar += '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
+		strVar += "	<head>";
+		strVar += "		<meta charset=\"utf-8\">";
+		strVar += "		<title>Project Report<\/title>";
+		strVar += "<style>";
+		strVar += "table.header th { text-align: center; text-transform: uppercase; background: #000; color: #FFF;font-size: 300% }";
+		strVar += "h1.header { text-align: center; text-transform: uppercase; font-size: 125% ; letter-spacing: 10px;}";
+		strVar += "table.customer td{border:0;border-width: 1px;}";
+		strVar += "table.summary {align: left;border-width: 0px;}";
+		strVar += "table.jobitem th,td {align: left;border-width: 0px;}";
+		strVar += "th,td {text-align:left;border-width: 0px;}";
+		strVar += "table.summary th,td { padding: 0.5em; position: relative; text-align: left; }";
+		strVar += "table.summary th,td { border-radius: 0.50em;}";
+		strVar += "table.item th{text-align:center;border-width: 1px; padding: 0.5em; position: relative;border-radius: 0.25em; border-style: solid;background:gray;color:white;}";
+		strVar += "</style>";
+		strVar += "	<\/head>";
+		strVar += "	<body>";
+		strVar += "			<table width=\"100%\" class=\"header\">";
+		strVar += "			<tr><th style=\"font-size:200%\">Project Report<\/th></tr>";
+		strVar += "			<\/table>";
+		strVar += "			<br><span><img width=\"100\" height=\"100\" align=\"right\" alt=\"\" src=\""+logourl+"\"><input type=\"hidden\" accept=\"image\/*\"><\/span>";
+		strVar += "				<p>"+coName+"<br>";
+		strVar += "				"+coAddress+"<br>";
+		strVar += "				"+coPhone+"<br>";
+		strVar += "				"+coEmail+"<\/p>";
+		strVar += "			<h1 class=\"header\">Customer<\/h1><br>";
+		strVar += "			<table width=\"100%\" align=\"left\" class=\"customer\" >";
+		strVar += "				<tr>";
+		strVar += "					<th ><span >"+((firstname == "none")?"":firstname)+" "+((lastname == "none")?"":lastname)+"<\/span><\/th>";
+		strVar += "					<th><span >Project Name<\/span><\/th>";
+		strVar += "					<th><span >"+projectname+"<\/span><\/th>";
+		strVar += "				<\/tr>";
+		strVar += "				<tr>";
+		strVar += "					<th><span >"+((address == "none")?"":address)+"<\/span><\/th>";
+		strVar += "					<th><span >Date<\/span><\/th>";
+		strVar += "					<th><span >"+(new Date()).toString().slice(4,16)+"<\/span><\/th>";
+		strVar += "				<\/tr>";
+		strVar += "				<tr>";
+		strVar += "					<th><span >"+((city == "none")?"":city)+", "+((state == "none")?"":state)+"<\/span><\/th>";
+		strVar += "					<th><span >Project #<\/span><\/th>";
+		strVar += "					<th><span><\/span><span>"+projectid+"<\/span><\/th>";
+		strVar += "				<\/tr>";
+		strVar += "				<tr>";
+		strVar += "					<th><span >"+((custphone == "none")?"":custphone)+"<\/span><\/th>";
+		strVar += "				<\/tr>";
+		strVar += "				<tr>";
+		strVar += "					<th><span >"+((email == "none")?"":email)+"<\/span><\/th>";
+		strVar += "				<\/tr>";
+		strVar += "			<\/table><br><br>";
+		strVar += "			<table width=\"100%\" class=\"item\">";
+		strVar += "				<thead>";
+		strVar += "					<tr>";
+		strVar += "						<th><span >Date<\/span><\/th>";
+		strVar += "						<th><span >Description<\/span><\/th>";
+		strVar += "					<\/tr>";
+		strVar += "				<\/thead>";
+		strVar += strVarItems;
+		strVar += "	<\/table>";
+		strVar += "	<\/body>";
+		strVar += "<\/html>";
+
+		var pdfCreator = require('com.pablog178.pdfcreator.android');	
+	
+	    pdfCreator.addEventListener("error", function(_evt){
+	    	Alloy.Globals.Log("project.js::pdfCreator:: on error: _evt: " +_evt);
+	        //An error has ocurred
+	    });	
+	   
+	    // Generate a PDF based on HTML	    
+	      
+	    pdfCreator.addEventListener("complete", function (_evt) {
+	        //Handle the PDF created
+	        Alloy.Globals.Log("project.js::pdfCreator::after complete: _evt: " +JSON.stringify(_evt));
+	        genreportinpdflabelbutton.color="#63D1F4";genreportinpdflabelbutton.text="Generate Report in PDF > ";
+	        ////var pdfUrl = "http://www.irs.gov/pub/irs-pdf/fw4.pdf";
+			////Ti.Platform.openURL("https://docs.google.com/gview?embedded=true&url=" + Ti.Network.encodeURIComponent(pdfUrl));		
+			var pdfemaildialog = Ti.UI.createAlertDialog({
+				cancel: 1,
+				buttonNames: ['NO', 'YES'],
+				message: 'Would you like to email the PDF?',
+				title: 'email PDF'
+			});
+			pdfemaildialog.addEventListener('click', function(e){
+				Alloy.Globals.Log("project.js::pdfCreator::pdfemaildialog: JSON.stringify(e) :"+JSON.stringify(e));
+				Alloy.Globals.Log("project.js::pdfCreator:: pdfemaildialog: e.source.data :"+e.source.data);
+				
+				var pdfFile = e.source.pdfFile; 
+				Alloy.Globals.Log("project.js::pdfCreator::pdfemaildialog: pdfFile: " +JSON.stringify(pdfFile));
+				/*
+				var pdffilename = e.source.pdffilename; 
+				var name = e.source.name;
+				var parentid = e.source.parentid;
+				var appfilepath = e.source.appfilepath;*/
+				Alloy.Globals.Log("project.js::pdfCreator::pdfemaildialog: b4 dialog launched: pdffilename: "+pdffilename);
+				if (e.index == 1 ) {
+					Alloy.Globals.Log("project.js::pdfCreator::pdfemaildialog: emailing pdffilename :"+pdffilename);
+					pdfemaildialog.hide();
+				    var emailDialog = Ti.UI.createEmailDialog();  
+					emailDialog.addAttachment(pdfFile);
+			 		emailDialog.open(); 				
+				} else {				
+					Alloy.Globals.Log("project.js::pdfCreator::pdfemaildialog: Cancelled : just open:");
+					try{
+					    Ti.Android.currentActivity.startActivity(Ti.Android.createIntent({
+					        action: Ti.Android.ACTION_VIEW,
+					        type: 'application/pdf',
+					        data: appfilepath
+					    }));
+					} catch(e) {
+					    Ti.API.info('error trying to launch activity, e = '+JSON.stringify(e));
+					    Alloy.Globals.Log('project.js::pdfCreator:No PDF apps installed!');			
+					}					
+					Alloy.Globals.Log("project.js::pdfCreator:Alloy.Globals.uploadFile(pdfFile,"+pdffilename+","+parentid+")");
+					Alloy.Globals.uploadFile('hello.pdf',pdffilename,parentid);		
+					pdfemaildialog.hide();			
+				} 	
+			});			
+			var pdfFile = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, _evt.filename);pdfemaildialog.pdfFile=pdfFile;
+			Alloy.Globals.Log("project.js::pdfCreator:: pdfFile: " +JSON.stringify(pdfFile));
+			var date = new Date();var dateinsert = date.getFullYear()+""+(date.getMonth()+1)+""+date.getDate()+""+date.getHours();
+     	 	pdffilename = projectid+"_"+firstname+"_"+lastname+"_"+dateinsert;pdfemaildialog.pdffilename=pdffilename;
+     	 	var kraniemailid = Titanium.App.Properties.getString('kraniemailid');
+		 	var name = kraniemailid.split('@')[0].trim();pdfemaildialog.name=name;
+     	 	var parentid = Titanium.App.Properties.getString(name+"_project");pdfemaildialog.parentid=parentid;
+			var appfilepath = pdfFile.nativePath;pdfemaildialog.appfilepath=appfilepath;
+ 
+ 			pdfemaildialog.show();
+
+			/*
+			var win = Ti.UI.createWindow({ backgroundColor : 'white' });
+			var androidpdf = require('com.ishan.androidpdf');
+			Ti.API.info("module is => " + androidpdf);
+			androidpdf.openPDF({ 'fileName' : 'hello' });
+			win.open();*/
+	    }); 
+	    
+	    Alloy.Globals.Log("project.js::pdfCreator::strVar: " +strVar);
+	    pdfCreator.generatePDFWithHTML({
+	        ////html : '<html><body><h1>Hello World!</h1></body></html>',
+	        html : strVar,
+	        filename : 'hello.pdf'
+	    });	
+	    
+	    
+	    //PDF creator end.
 	});
+	/*
+	genreportinpdflabelbutton.addEventListener("doubleclick",function(e){
+		Alloy.Globals.Log("project.js::duedatelabelbutton:doubleclick: "+JSON.stringify(e));
+		genreportinpdflabelbutton.color="gray";setTimeout(function(){genreportinpdflabelbutton.color="#63D1F4";},100);
+		Alloy.Globals.Log("project.js:genreportinpdflabelbutton:doubleclick:generatePDFwithWebView(): ");generatePDFwithWebView();	
+	});*/
 	datesview.add(nextapptdatelabelbutton);
 	datesview.add(nextapptdatelabel);
 	datesview.add(duedatelabelbutton);
@@ -938,6 +1200,9 @@ function datepickertoggle(e){
 		});
 		
 	}
+	
+
+	
 	
 	// ScrollView Window
 	projectDetailscrollView.add(headerview);

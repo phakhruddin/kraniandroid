@@ -703,6 +703,7 @@ function emailpdf(firstname,lastname,address,city,state,phone,email,invoicenumbe
 	strVar += "	<\/body>";
 	strVar += "<\/html>";
    
+    console.log("invoicedetail.js: strVar: "+strVar);
  	html2pdf.setHtmlString(strVar); 
  
 }
