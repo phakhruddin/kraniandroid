@@ -1,11 +1,17 @@
 var args = arguments[0] || {};
 exports.openMainWindow = function(_tab) {
   _tab.open($.projectlist_window);
-  Ti.API.info("This is child widow projectlist.js" +_tab);
-  	$.projectlist_table.search = $.search_history;
-	Alloy.Collections.project.fetch();	
-
+  Alloy.Globals.Log("This is child widow project.js" +_tab);
+  
+ 
+  $.projectlist_table.search = $.search_history;
+	$.search_history.visible=false;//$.item2.seachhistory=false;
+  	
+	Alloy.Collections.project.fetch();		
+	Alloy.Globals.Log("project.js: JSON.stringify($.search_history): "+JSON.stringify($.search_history));
 };
+
+
 
 var clientController;
 
@@ -41,6 +47,15 @@ function transformFunction(model) {
 	} else transform.datedue = "due date: ";
 	
 	return transform;
+}
+
+function doSearch(e){
+	Alloy.Globals.Log("project.js::doSearch : "+JSON.stringify(e));
+	Alloy.Globals.Log("project.js::doSearch : JSON.stringify($.search_history) "+JSON.stringify($.search_history));
+	var searchstatus = $.search_history.visible;
+	Alloy.Globals.Log("project.js::doSearch : searchstatus "+searchstatus);
+	if ($.search_history.visible) {$.search_history.visible=false;} else {$.search_history.visible=true;}
+	Alloy.Globals.Log("project.js::doSearch : $.search_history.visible: "+$.search_history.visible);
 }
 
 function addHandler(e) {
@@ -130,52 +145,88 @@ function doBack(e) {
 	Alloy.Globals.Log("project.js::doMenuClick: "+JSON.stringify(e));
 }
 function doAdd(e) {
+  	
 	Alloy.Globals.Log("project.js::doAdd: "+JSON.stringify(e));
 	Alloy.Globals.Log("project.js::doAdd. $.projectlist_table: "+JSON.stringify($.projectlist_table));
 	var win = Titanium.UI.createWindow({
         title:"Add Project",
         backgroundColor:'#DBDBDB'
     });
+    var jobitemheaderviewtop=100;var jobitemheaderviewshrinktop=30;var clientviewheight=70;jobdescrviewheight=140;
 	var clientheaderview = Ti.UI.createView({top:"0",height:"30",backgroundColor:"#3B3B3B"});clientheaderview.add(Ti.UI.createLabel({text:"Client",left:"20"}));
 	var clientview = Ti.UI.createView({top:"30",height:"70",backgroundColor:"#4D4D4D"});
-	var selectclientlabelbutton = Ti.UI.createLabel({text:"Select Client >",left:"35%",color:"#63D1F4"});clientview.add(selectclientlabelbutton);
-	var jobitemheaderview = Ti.UI.createView({top:"100",height:"30",backgroundColor:"#3B3B3B"});jobitemheaderview.add(Ti.UI.createLabel({text:"Item & Description",left:"20"}));
-	var jobdescrview = Ti.UI.createView({top:"130",height:"140",backgroundColor:"#AAAAAA"});
+	var selectclientlabelbutton = Ti.UI.createLabel({text:"Select Client >",left:"35%",color:"#63D1F4"});clientview.add(selectclientlabelbutton);	
+	var jobitemheaderview = Ti.UI.createView({
+		top:parseFloat(clientview.top)+parseFloat(clientview.height),
+		height:"30",backgroundColor:"#3B3B3B"
+		});jobitemheaderview.add(Ti.UI.createLabel({text:"Item & Description",left:"20"}));
+	var jobdescrview = Ti.UI.createView({
+		top:parseFloat(jobitemheaderview.top)+parseFloat(jobitemheaderview.height),
+		height:"140",backgroundColor:"#AAAAAA"
+	});
 	var jobdescrprojlabel = Ti.UI.createLabel({text:"Project Name: ",top:"10",left:"20",color:"black",font:{fontSize:"12"}});
 	var jobdescrprojTextField = Ti.UI.createTextField({top:"5",right:"10",borderRadius:"0.25",color:"gray",font:{fontSize:"12"},width:"60%"});
+	jobdescrprojTextField.addEventListener("blur",function(){
+		Alloy.Globals.Log("project.js::doAdd:jobdescrprojTextField.blur ");
+		Titanium.UI.Android.hideSoftKeyboard();
+	});jobdescrprojTextField.blur();
 	jobdescrview.add(jobdescrprojlabel);jobdescrview.add(jobdescrprojTextField);
 	var jobdescrlabel = Ti.UI.createLabel({text:"Description: ",top:"38",left:"20",color:"black",font:{fontSize:"12"}});
-	var jobdescrTextArea = Ti.UI.createTextArea({right:"10",height:"50", top:"66",borderRadius:"0.25",color:"gray",borderColor:"black",borderWidth:"0.1",font:{fontSize:"12"},width:"90%"});
-	jobdescrview.add(jobdescrlabel);jobdescrview.add(jobdescrTextArea);
-	var jobitemsheaderview = Ti.UI.createView({top:"270",height:"30",backgroundColor:"#3B3B3B"});jobitemsheaderview.add(Ti.UI.createLabel({text:"Line items: Click to add ",left:"20"}));
+	var jobdescrTextArea = Ti.UI.createTextArea({right:"10",height:"100", top:"56",borderRadius:"0.25",color:"gray",borderColor:"black",borderWidth:"0.1",font:{fontSize:"10"},width:"90%"});
+	jobdescrTextArea.addEventListener("blur",function(){
+		Alloy.Globals.Log("project.js::doAdd:jobdescrTextArea.blur ");
+		Titanium.UI.Android.hideSoftKeyboard();
+	});jobdescrTextArea.blur();
+	selectclientlabelbutton.addEventListener("click",function(e){
+		selectclientlabelbutton.color="gray";
+		setTimeout(function(){selectclientlabelbutton.color="#63D1F4";},100);
+		jobdescrTextArea.blur();jobdescrprojTextField.blur();
+		});
+
+	var jobitemsheaderview = Ti.UI.createView({
+		top:parseFloat(jobitemheaderview.top)+parseFloat(jobitemheaderview.height)+parseFloat(jobdescrview.height),
+		height:"30",backgroundColor:"#3B3B3B"
+		});jobitemsheaderview.add(Ti.UI.createLabel({text:"Line items: Click to add ",left:"20"}));
 	var jobitemsaddicon = Ti.UI.createImageView({right:"30",height:"30",width:"30",image:"/images/ic_add_circle_outline_white_24dp.png"});
+
+	jobdescrview.add(jobdescrlabel);jobdescrview.add(jobdescrTextArea);
 
 	jobitemsheaderview.add(jobitemsaddicon);
 	win.add(clientheaderview);
 	win.add(clientview);
 	win.add(jobitemheaderview);
 	win.add(jobdescrview);
-	win.add(jobitemsheaderview);	
+	win.add(jobitemsheaderview);
 	
-	var projectDetailscrollView = Ti.UI.createScrollView({layout:'vertical',scrollType:"vertical",top:"300"});
+	var projectDetailscrollView = Ti.UI.createScrollView({
+		layout:'vertical',scrollType:"vertical",
+		top:parseFloat(jobitemsheaderview.top)+parseFloat(jobitemsheaderview.height)
+		});
+	function rearrangeView() {
+		jobitemheaderview.top=parseFloat(clientview.top)+parseFloat(clientview.height);
+		jobdescrview.top=parseFloat(jobitemheaderview.top)+parseFloat(jobitemheaderview.height);
+		jobitemsheaderview.top=parseFloat(jobitemheaderview.top)+parseFloat(jobitemheaderview.height)+parseFloat(jobdescrview.height);
+		projectDetailscrollView.top=parseFloat(jobitemsheaderview.top)+parseFloat(jobitemsheaderview.height);
+		Alloy.Globals.Log("project.js::doAdd:rearrangeView pos: jobitemheaderview.top, jobitemsheaderview.top, projectDetailscrollView.top : "+jobitemheaderview.top+", "+jobitemsheaderview.top+", "+projectDetailscrollView.top);
+
+	}
 	
-		
-	/*function addlistitemrow() {
-		var jobitemsview = Ti.UI.createView({height:"300",backgroundColor:"#DBDBDB"});
-		var lineitemlabel = Ti.UI.createLabel({text:"Line Item : ",top:"10",left:"20",color:"black",font:{fontSize:"12"}});
-		var lineitemTextField = Ti.UI.createTextField({top:"0",left:"100",borderRadius:"0.25",color:"gray",font:{fontSize:"12"},width:"60%"});
-		var qtylabel = Ti.UI.createLabel({text:"Qty : ",top:"36",left:"20",color:"black",font:{fontSize:"12"}});
-		var qtyTextField = Ti.UI.createTextField({top:"26",left:"50",borderRadius:"0.25",color:"gray",font:{fontSize:"12"},width:"20%"});
-		var pricelabel = Ti.UI.createLabel({text:"Price : ",top:"36",left:"50%",color:"black",font:{fontSize:"12"}});
-		var priceTextField = Ti.UI.createTextField({top:"26",left:"60%",borderRadius:"0.25",color:"gray",font:{fontSize:"12"},width:"20%"});
-		jobitemsview.add(lineitemlabel);
-		jobitemsview.add(lineitemTextField);
-		jobitemsview.add(qtylabel);
-		jobitemsview.add(qtyTextField);
-		jobitemsview.add(pricelabel);
-		jobitemsview.add(priceTextField);
-		projectDetailscrollView.add(jobitemsview);	
-	}*/
+	clientheaderview.addEventListener("click",function(){
+		jobdescrTextArea.blur();jobdescrprojTextField.blur();
+		clientview.height=70;
+		rearrangeView();
+		});
+	jobitemheaderview.addEventListener("click",function(){
+		jobdescrTextArea.blur();jobdescrprojTextField.blur();
+		jobdescrview.height=140;
+		rearrangeView();
+		});
+	jobitemsheaderview.addEventListener("click",function(){
+		clientview.height=0;
+		jobdescrview.height=0;
+		rearrangeView();
+	});
+	
 	var i=0;
 	function addlistitemrow(i) {
 		Alloy.Globals.Log("project.js::doAdd:: projectDetailscrollView.children.length: B4 update: "+projectDetailscrollView.children.length);
@@ -183,9 +234,9 @@ function doAdd(e) {
 		eval("var lineitemlabel"+i+" = Ti.UI.createLabel({text:'Line Item : ',top:10,left:'20',color:'black',font:{fontSize:'12'}})");
 		eval("var lineitemTextField"+i+" = Ti.UI.createTextField({top:0,left:'100',borderRadius:'0.25',color:'gray',font:{fontSize:'12'},width:'60%'})");
 		eval("var qtylabel"+i+" = Ti.UI.createLabel({text:'Qty : ',top:36,left:'20',color:'black',font:{fontSize:'12'}})");
-		eval("var qtyTextField"+i+" = Ti.UI.createTextField({top:26,left:'50',borderRadius:'0.25',color:'gray',font:{fontSize:'12'},width:'20%'})");
+		eval("var qtyTextField"+i+" = Ti.UI.createTextField({top:26,left:'50',keyboardType:Ti.UI.KEYBOARD_NUMBER_PAD,returnKeyType:Ti.UI.RETURNKEY_DONE,borderRadius:'0.25',color:'gray',font:{fontSize:'12'},width:'20%'})");
 		eval("var pricelabel"+i+" = Ti.UI.createLabel({text:'Price : ',top:36,left:'50%',color:'black',font:{fontSize:'12'}})");
-		eval("var priceTextField"+i+" = Ti.UI.createTextField({top:26,left:'60%',borderRadius:'0.25',color:'gray',font:{fontSize:'12'},width:'20%'})");
+		eval("var priceTextField"+i+" = Ti.UI.createTextField({top:26,left:'60%',keyboardType:Ti.UI.KEYBOARD_DECIMAL_PAD,returnKeyType:Ti.UI.RETURNKEY_DONE,borderRadius:'0.25',color:'gray',font:{fontSize:'12'},width:'20%'})");
 		eval("jobitemsview"+i+".add(lineitemlabel"+i+");jobitemsview"+i+".add(lineitemTextField"+i+")");
 		eval("jobitemsview"+i+".add(qtylabel"+i+");jobitemsview"+i+".add(qtyTextField"+i+")");
 		eval("jobitemsview"+i+".add(pricelabel"+i+");jobitemsview"+i+".add(priceTextField"+i+")");
