@@ -2,14 +2,14 @@
 <Collection src="client"/>
   <Tab id="tab_clientlist" title="clientlist">
 	  <Window id="clientlist_window" backgroundColor="white" title="clientlist List">
-	  	<ActivityIndicator id="activityIndicator" style="Ti.UI.iPhone.ActivityIndicatorStyle.DARK" message="Loading.."/>	
-	  <RightNavButton platform="ios">
-	   <Button systemButton="Ti.UI.iPhone.SystemButton.ADD" onClick="addHandler" /> 
-	</RightNavButton>
-	<Widget id="ptr" src="nl.fokkezb.pullToRefresh" onRelease="myRefresher">
+ 		<ActionBar id="actionbar" onHomeIconItemSelected="doBack"  displayHomeAsUp="true" />
+  	       <Menu>
+  	       	<MenuItem id="item1" title="Add" onClick="doAdd" />   
+  	       	<MenuItem id="item2" title="Search" onClick="doSearch" />     
+        </Menu>
 	  	<TableView id="clientlist_table"  backgroundColor="transparent" dataCollection="client" search="search_history" 
 	  		dataTransform="transformFunction" filterAttribute="title" editable="true" moveable="true">
-		  	<SearchBar id="search_history" height="43" />
+		  	<SearchBar id="search_history" height="43" backgroundColor="#212121" />
 				<TableViewRow id="clientlist_row" height="75" backgroundColor="transparent" opacity="0" color="transparent" title="{title}">
 					<Label id="label_header" color="#333" color="gray" top="10" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" text="{custom}"/>
 					<Label id="label_sub1" color="{labelcolor}"  textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="30" text="{phone}"/>
@@ -17,7 +17,6 @@
 					<Label  id="label_sub3" color="#333"  textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="60" text="{address}"/>
 				</TableViewRow>
 		</TableView>
-		</Widget>
 	  </Window>
   </Tab>
 </Alloy>

@@ -4,8 +4,7 @@ exports.openMainWindow = function(_tab) {
   Alloy.Globals.Log("This is child widow project.js" +_tab);
   
  
-  $.projectlist_table.search = $.search_history;
-	$.search_history.visible=false;//$.item2.seachhistory=false;
+
   	
 	Alloy.Collections.project.fetch();		
 	Alloy.Globals.Log("project.js: JSON.stringify($.search_history): "+JSON.stringify($.search_history));
@@ -104,6 +103,9 @@ $.projectlist_table.addEventListener("click", function(e){
 		///var clientController = Alloy.createController('projectdetail');
 		////clientController.openMainWindow($.tab_projectlist);
 });
+
+$.projectlist_table.search = $.search_history;
+$.search_history.visible=false;//$.item2.seachhistory=false;
 
 function pulledEvent(e){
 	Alloy.Globals.Cleanup();

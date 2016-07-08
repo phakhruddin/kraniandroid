@@ -1,62 +1,55 @@
 var args = arguments[0] || {};
 exports.openMainWindow = function(_tab) {
   _tab.open($.clientlist_window);
-  Ti.API.info("This is child widow client.js" +JSON.stringify(_tab));
-//  	var activity = $.index.getActivity();
-//	activity.invalidateOptionsMenu(); //force reload of menus	
-	$.activityIndicator.show();
+  Ti.API.info("This is child widow client.js"+_tab);
 	$.clientlist_table.search = $.search_history;
 	Alloy.Collections.client.fetch();	
-	setTimeout(function(){
-        $.activityIndicator.hide();
-    }, 10);
-   
-    $.clientlist_window.addEventListener("close", function(e){
-    	Alloy.Globals.Log("client.js::openMainWindow:: closing clientlist_window JSON.stringify(e) : "+JSON.stringify(e));
-    	_tab.from=e.source.id;
-    	Alloy.Globals.Log("client.js::openMainWindow:: closing clientlist_window info on _tab : "+JSON.stringify(_tab));
-    });
 };
+
+function doAdd(){
+	var win = Titanium.UI.createWindow({
+        title:"Add Client",
+        backgroundColor:'#DBDBDB'
+    });
+	var firstnameTextField = Ti.UI.createTextField({hintText:"Firstname", top:"10",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(firstnameTextField);
+	var lastnameTextField = Ti.UI.createTextField({hintText:"Lastname",top:"40",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(lastnameTextField);
+	var phoneTextField = Ti.UI.createTextField({hintText:"phone",keyboardType:Ti.UI.KEYBOARD_NUMBER_PAD,returnKeyType:Ti.UI.RETURNKEY_DONE,top:"70",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(phoneTextField);
+	var emailTextField = Ti.UI.createTextField({hintText:"email",top:"100",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(emailTextField);
+	var streetaddrTextField = Ti.UI.createTextField({hintText:"street address",top:"130",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(streetaddrTextField);
+	var cityTextField = Ti.UI.createTextField({hintText:"city",top:"160",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(cityTextField);
+	var stateTextField = Ti.UI.createTextField({hintText:"state",top:"190",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(stateTextField);
+	var companyTextField = Ti.UI.createTextField({hintText:"company",top:"220",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});	win.add(companyTextField);
+	var savelabelbutton = Ti.UI.createLabel({text:"Save",top:"260",right:"20",color:"#63D1F4"});win.add(savelabelbutton);
+	win.open();
+	
+};
+function doSearch(e){
+	Alloy.Globals.Log("client.js::doSearch : "+JSON.stringify(e));
+	Alloy.Globals.Log("client.js::doSearch : JSON.stringify($.search_history) "+JSON.stringify($.search_history));
+	var searchstatus = $.search_history.visible;
+	Alloy.Globals.Log("client.js::doSearch : searchstatus "+searchstatus);
+	if ($.search_history.visible) {$.search_history.visible=false;} else {$.search_history.visible=true;}
+	Alloy.Globals.Log("client.js::doSearch : $.search_history.visible: "+$.search_history.visible);
+}
+function doBack(){};
 
 //action taken when window is closed.
 
-
 Alloy.Globals.Log("client.js::JSON.stringify(args): " +JSON.stringify(args));
 
-function showIndicator(e){
-    $.activityIndicator.show();
-    // do some work that takes 6 seconds
-    // ie. replace the following setTimeout block with your code
-    setTimeout(function(){
-        e.source.close();
-        $.activityIndicator.hide();
-    }, 6000);
+$.clientlist_table.search = $.search_history;
+$.search_history.visible=false;//$.item2.seachhistory=false;
+
+function openClientDetail(title){
+	Alloy.Globals.Log("clientlist_table:openClientDetail: JSON.stringify(title) " +JSON.stringify(title));
 }
 
-$.ptr.refresh();
 
-Alloy.Globals.Log("args sourcecall detected is: " +args.sourcecall);
-if (args.sourcecall) {
-	$.clientlist_window.addEventListener("click", function(e){
-		Alloy.Globals.openDetail(e);
-		var title = e.row.title;
-		var clientController = Alloy.createController(args.sourcecall,{
-			clienttitle: title,
-			title:title
-		});
-		clientController.openMainWindow($.tab_clientlist);
+$.clientlist_table.addEventListener("click", function(e){
+	Alloy.Globals.Log("clientlist_table e : " +JSON.stringify(e));
+	Alloy.Globals.Log("clientlist_table e.rowData.title : " +e.rowData.title);
+	openClientDetail(e.rowData.title);
 });
-} else {
-	$.clientlist_window.addEventListener("click", function(e){
-		Alloy.Globals.openDetail(e);
-		var title = e.row.title;
-		var clientController = Alloy.createController('clientdetail',{
-			title: title
-		});
-		clientController.openMainWindow($.tab_clientlist);
-		//Alloy.Globals.createController('clientdetail','tab_client')
-	});
-}
 
 
 function transformFunction(model) {
@@ -70,112 +63,8 @@ function transformFunction(model) {
 	transform.labelcolor = (transform.col5.length != 10)?"red":"#330"; //alert user to fix the phone number
 	return transform;
 }
-
-
-function menuItemLogout_click() {
-		googleAuth.deAuthorize();
-		//googleAuth.refreshToken();
-		$.table.setData([]);
-}
 	
-function menuItemSync_click() {
-		Ti.API.info('Authorized: ' + googleAuth.isAuthorized());
-		googleAuth.isAuthorized(function() {
-			Ti.API.info('Access Token: ' + googleAuth.getAccessToken());
-			//empty table view
-			$.table.setData([]);
-			var xhrList = Ti.Network.createHTTPClient({
-				// function called when the response data is available
-				onload : function(e) {
-					try {
-						var resp = JSON.parse(this.responseText);
-						for (var i = 0; i < resp.items.length; i++) {
-							//GET DATA FOR LIST
-							var xhrTasks = Ti.Network.createHTTPClient({
-								// function called when the response data is available
-								onload : function(e) {
-									var resp = JSON.parse(this.responseText);
-									for (var j = 0; j < resp.items.length; j++) {
-										if (resp.items[j].title != '') {
-											var row = Titanium.UI.createTableViewRow({
-												title : resp.items[j].title
-											});
-											$.table.appendRow(row);
-										}
-									}
-								},
-								// function called when an error occurs, including a timeout
-								onerror : function(e) {
-									Titanium.UI.createAlertDialog({
-										title : 'Error',
-										message : 'Can\'t load tasks for list ' + resp[i].title
-									});
-								},
-								timeout : 5000
-							});
-							xhrTasks.open("GET", 'https://www.googleapis.com/tasks/v1/lists/' + resp.items[i].id + '/tasks?access_token=' + googleAuth.getAccessToken());
-							xhrTasks.send();
-						}
-					} catch(e) {
-						Titanium.UI.createAlertDialog({
-							title : 'Error',
-							message : 'Can\'t load tasks for list' 
-						});
-						Ti.API.error('RESPONSE: '+JSON.stringify(e));
-					}
-				},
-				// function called when an error occurs, including a timeout
-				onerror : function(e) {
-					Titanium.UI.createAlertDialog({
-						title : 'Error',
-						message : 'Can\'t load tasklists'
-					});
-					Ti.API.error('HTTP: '+JSON.stringify(e));
-				},
-				timeout : 5000
-			});
-			xhrList.open("GET", 'https://www.googleapis.com/tasks/v1/users/@me/lists?access_token=' + googleAuth.getAccessToken());
-			xhrList.send();
-		}, function() {
-			Ti.API.info('Authorize google account...');
-			googleAuth.authorize();
-		});
-}
 
-function addHandler(e) {
-	Alloy.Globals.Log("clientlist addHandler e : "+JSON.stringify(e));
-		//Alloy.Globals.openDetail(e);
-		//var title = e.row.title;
-		var clientController = Alloy.createController('enterclient');
-		clientController.openMainWindow($.tab_clientlist);
-}
-
-function myRefresher(e) {
-	Alloy.Globals.Log("refreshing after pull : " +JSON.stringify(e));
-    Alloy.Collections.client.fetch({
-        success: e.hide,
-        error: e.hide
-    });
-}
-
-exports.logfromSource = function(e){
-	Alloy.Globals.Log("logfromSource::source is client.js JSON.stringify(e):"+JSON.stringify(e));
-};
-
-function logfromSource0(e) {
-	Alloy.Globals.Log("logfromSource0::source is client.js (e) :"+e);
-}
-
-function pulledEvent(e){
-	Alloy.Globals.Cleanup();
-	var item = "client";
-	var sid = Titanium.App.Properties.getString(item,"none");
-	Alloy.Globals.Log("client.js::pulledEvent::sid for Alloy.Globals.getPrivateData("+ item +" , "+sid+" )");
-	Alloy.Globals.getPrivateData(sid,item);
-	Alloy.Globals.Log("client.js:pulledEvent:use in callback: Alloy.Collections.client.fetch()");
-	Alloy.Collections.client.fetch();	
-}
-	
 $.clientlist_table.addEventListener("delete", function(e){
 	Alloy.Globals.Log("client.js::$.clientlist_table delete: "+JSON.stringify(e));
 	var urls = e.row.title.split(':')[13].replace(/yCoLoNy/g,':').replace(/xCoLoNx/g,',');

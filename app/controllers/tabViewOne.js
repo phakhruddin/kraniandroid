@@ -314,3 +314,10 @@ $.project.addEventListener ("click", function(e){
 	var item = e.row.id;
 	openNextTab(item);
 });
+
+$.client.addEventListener ("click", function(e){
+	Alloy.Globals.openDetail(e);
+	var item = e.row.id;
+	openNextTab(item);
+});
+

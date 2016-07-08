@@ -713,13 +713,13 @@ function transformFunction(model) {
 	transform.searchitems = transform.custom+":"+transform.name+":"+transform.col3+":"+transform.client+":"+transform.startyear+":"+transform.startmonth+":"+transform.startday+":"+transform.col1;
 	//check status
 	if (transform.col15 == "submitted"){
-		transform.img ="proposalsubmitted.gif";
+		transform.img ="/images/proposalsubmitted.gif";
 	} else {
-		transform.img ="proposalpending.gif";
+		transform.img ="/images/proposalpending.gif";
 	}
 	//match day
 	///Alloy.Globals.Log("startday : "+startday);
-	transform.imgday = startday+".png";
+	transform.imgday = "/images/"+startday+".png";
 	
 	return transform;
 }

@@ -1,8 +1,0 @@
-".container": {
-    backgroundColor:"black"
-},
-
-".picker": {
-    width: '90%',
-    top: '25dp'
-}
