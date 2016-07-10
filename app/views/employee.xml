@@ -2,16 +2,17 @@
 <Collection src="labor"/>
 <Tab id="tab_two" title="Tech Loc" icon="standing39.png">
   <Window id="employee_window" backgroundColor="white" title="Staff">
-  	<RightNavButton platform="ios">
-	   <Button id="toggle_button" systemButton="Ti.UI.iPhone.SystemButton.PLAIN" title="Toggle" onClick="toggle" /> 
-	</RightNavButton>
+  	<ActionBar id="actionbar" onHomeIconItemSelected="doBack"  displayHomeAsUp="true" />
+       	<Menu>
+  	       	<MenuItem id="toggle_button" title="Toggle" icon='Ti.Android.R.drawable.ic_menu_rotate' showAsAction="Ti.Android.SHOW_AS_ACTION_ALWAYS" onClick="toggle"/>     
+        </Menu>
 	<TableView id="employee_table" backgroundColor="transparent" dataCollection="labor" search="search_history" dataTransform="transformFunction" filterAttribute="title">
 	  <SearchBar id="search_history" height="47" />
 		<TableViewRow id="employee_row" height="75" backgroundColor="transparent" opacity="0" color="transparent" title="{title}">
 			<Label id="label_header" color="#333" color="gray" top="10" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" text="{custom}"/>
 			<Label id="label_sub1" color="{labelcolor}"  textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="30" text="{phone}"/>
 			<Label  id="label_sub2" color="orange"  textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="45" text="{email}"/>
-			<Button  image="EditControl.png" id="unchecked_button" height="30" width="30" top="20" right="30"/>
+			<Button  image="/images/EditControl.png" id="unchecked_button" height="30" width="30" top="20" right="30"/>
 		</TableViewRow>
 	</TableView>
   </Window>

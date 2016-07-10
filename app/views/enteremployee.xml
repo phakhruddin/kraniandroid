@@ -2,9 +2,10 @@
 <Model src="dummy" />
 <Tab id="enteremployee_tab">
   <Window id="enteremployee_window" backgroundColor="white" title="employee Entry">
-  	<RightNavButton platform="ios">
-	   <Button id="save_button" systemButton="Ti.UI.iPhone.SystemButton.SAVE" onClick="saveHandler" /> 
-	</RightNavButton>
+ 	  	<ActionBar id="actionbar" onHomeIconItemSelected="doBack"  displayHomeAsUp="true" />
+       	<Menu>
+  	       	<MenuItem id="save_button" title="Save" icon='Ti.Android.R.drawable.ic_menu_save' showAsAction="Ti.Android.SHOW_AS_ACTION_ALWAYS" onClick="saveHandler"/>     
+        </Menu>
 	  <TableView id="enteremployee_table" backgroundColor="transparent" separatorColor="transparent" >
 	  	<TableViewRow id="existing" borderColor="white" backgroundColor="#80c342" height="30" opacity="1" Title="Existing">
 	  		<Label id="titleinvoiceinput_label" color="white" left="20" text="employee Details"/>

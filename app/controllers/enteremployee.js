@@ -1,7 +1,7 @@
 var args = arguments[0] || {};
 exports.openMainWindow = function(_tab) {
   _tab.open($.enteremployee_window);
-  Alloy.Globals.Log("This is child widow enteremployee.js" +JSON.stringify(_tab));
+  Alloy.Globals.Log("This is child widow enteremployee.js" +JSON.stringify($.enteremployee_window));
    (Alloy.Globals.googleAuthSheet.getAccessToken()) || Alloy.Globals.googleAuthSheet.Authorize();
 };
 
@@ -16,7 +16,7 @@ if (args.callbackFunction){
 if (args.title) {
 	Alloy.Globals.Log("enteremployee.js::detected vars:JSON.stringify(vars):: "+JSON.stringify(args));
 	var data = args.title.split(':');
-	var employeeid = data[0];
+	employeeid = data[0];
 	var firstname = data[1];$.employeefirstname_tf.value=firstname;
 	var lastname = data[2];$.employeelastname_tf.value=lastname;
 	var fullname = firstname+" "+lastname;
@@ -34,12 +34,13 @@ if (args.title) {
 	var idtag = (data[13])?data[13].replace(/xCoLoNx/g,',').split(',')[0].replace('yCoLoNy',':'):"none";
 	var selfhref = (data[13])?data[13].replace(/xCoLoNx/g,',').split(',')[1].replace('yCoLoNy',':'):"none";
 	var edithref = (data[13])?data[13].replace(/xCoLoNx/g,',').split(',')[2].replace('yCoLoNy',':'):"none";
-
+	//$.save_button.itemid = employeeid;
 	Alloy.Globals.Log("enteremployee.js::idtag :"+idtag+" edithref: "+edithref+" selfhref: "+selfhref);
 	//var employeeid = args.employeeid;
 	var employees = Alloy.Collections.instance('labor');
 	employees.fetch();	
-	$.save_button.titleid = employeeid;
+	//$.save_button.titleid = employeeid;
+	
 	
 	var theemployee = employees.where({col1:employeeid}); //FILTER
 	if (theemployee.length > 0 ){
@@ -65,6 +66,8 @@ Alloy.Globals.Log("employeedetail.js:: existing edithref: " +edithref);
 (selfhref)?Titanium.App.Properties.setString('selfhref',selfhref):Ti.App.Properties.removeProperty('selfhref');
 (idtag)?Titanium.App.Properties.setString('idtag',idtag):Ti.App.Properties.removeProperty('idtag');
 Alloy.Globals.Log("employeedetail.js:: existing Titanium.App.Properties.getString('edithref'): " +Titanium.App.Properties.getString('edithref'));
+
+function doBack(){};
 
 function addRows(){
  Alloy.Globals.Log("JSON stringify e : " +JSON.stringify(e));
@@ -119,7 +122,7 @@ Titanium.App.Properties.setInt('count',count);
 	Alloy.Globals.Log("enteremployee.js::saveHandler:: detect array NON DYN variable: "+employeefirstname+","+employeelastname+","+employeephone+","+employeeemail+","+employeestreetaddress
 	+","+employeecity+","+employeestate+","+employeejobtitle+","+notes);
 	var name = employeefirstname+' '+employeelastname;
-	var employeeid = (e.source.titleid)?e.source.titleid:Date.now();
+	var employeeid = (e.source.itemid)?e.source.itemid:Date.now();
 	var lat="42.961409";
  	var lon="-88.223041";
  	var country = "USA"; var none="none";
@@ -213,7 +216,7 @@ Titanium.App.Properties.setInt('count',count);
 			Alloy.Globals.Log("enteremployee.js::submit::POST on new: "+ employeeid+","+employeefirstname+","+employeelastname+","+employeejobtitle+","+employeephone+","+employeeemail+","+lat+","+lon+","
 			+employeestreetaddress+","+employeecity+","+employeestate+","+country+","+notes+","+employeeid);
 			var employeeid = now;
-			$.save_button.titleid = employeeid; //feed id the save button of the customer id.
+			//$.save_button.itemid = employeeid; //feed id the save button of the customer id.
 			var xmldatastring = '<entry xmlns=\'http://www.w3.org/2005/Atom\' xmlns:gsx=\'http://schemas.google.com/spreadsheets/2006/extended\'>'
 				+'<gsx:col1>'+employeeid+'</gsx:col1><gsx:col2>'+employeefirstname+'</gsx:col2><gsx:col3>'
 				+employeelastname+'</gsx:col3><gsx:col4>'+employeejobtitle+'</gsx:col4><gsx:col5>'

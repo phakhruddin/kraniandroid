@@ -321,3 +321,12 @@ $.client.addEventListener ("click", function(e){
 	openNextTab(item);
 });
 
+$.location.addEventListener ("click", function(e){
+	Alloy.Globals.openDetail(e);
+	var item = "labor";;
+	var sid = Titanium.App.Properties.getString(item,"none");
+	Alloy.Globals.getPrivateData(sid,item);
+  	var tabViewOneChildController = Alloy.createController("location");
+  	tabViewOneChildController.openMainWindow($.tab_one);	
+});
+

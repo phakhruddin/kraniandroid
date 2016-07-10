@@ -20,9 +20,9 @@ function doAdd(){
 	var stateTextField = Ti.UI.createTextField({hintText:"state",top:"190",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(stateTextField);
 	var companyTextField = Ti.UI.createTextField({hintText:"company",top:"220",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});	win.add(companyTextField);
 	var savelabelbutton = Ti.UI.createLabel({text:"Save",top:"260",right:"20",color:"#63D1F4"});win.add(savelabelbutton);
-	win.open();
-	
+	win.open();	
 };
+
 function doSearch(e){
 	Alloy.Globals.Log("client.js::doSearch : "+JSON.stringify(e));
 	Alloy.Globals.Log("client.js::doSearch : JSON.stringify($.search_history) "+JSON.stringify($.search_history));
@@ -89,3 +89,53 @@ $.clientlist_table.addEventListener("delete", function(e){
 	Alloy.Globals.Log("client.js::$.clientlist_table delete: DONE: DELETE "+existingurlsedithref);
 	pulledEvent();
 });
+
+function doRow(e){
+	Alloy.Globals.Log("client.js::doRow click: "+JSON.stringify(e));
+	var win = Titanium.UI.createWindow({title:"Client Details",backgroundColor:'#F5F5F5'});
+	var activity = win.activity;	
+	var subject = ['firstname','lastname','company','phone','email','streetaddr','city','state','country'];
+	for (i=0;i<subject.length;i++){
+		eval(subject[i]+" =  e.rowData.title.split(':')["+parseFloat(i+1)+"].trim()");
+		Alloy.Globals.Log("client.js::doRow array: "+firstname);
+		eval("var "+subject[i]+"label = Ti.UI.createLabel({text:"+subject[i]+",top:14,color:'#3B3B3B',font:{fontSize:'14'},textAlign:'Ti.UI.TEXT_ALIGNMENT_CENTER'})");
+		eval("var view = Titanium.UI.createView({top:parseFloat(40)*parseFloat("+i+"),height:'39',width:'95%',layout:'vertical',backgroundColor:'#FAFAFA',borderColor:'#EDEDED',borderRadius:'10',borderWidth:'0.1'})");
+		eval("view.add("+subject[i]+"label)");
+		win.add(view);
+	}	
+	
+	var firstnameTextField = Ti.UI.createTextField({hintText:firstname,color:"black",font:{fontSize:"14"},width:"95%"});
+	//var ffirstnamelabel = Ti.UI.createLabel({text:'firstname',textAlign:'Ti.UI.TEXT_ALIGNMENT_CENTER', color:"#3B3B3B",font:{fontSize:"14"}});view.add(ffirstnamelabel);
+	activity.onCreateOptionsMenu = function(e){
+	  var menu = e.menu;
+  	  var menuItem2 = menu.add({
+	    title: "Item 2",
+	    icon:  Ti.Android.R.drawable.ic_menu_save,
+	    showAsAction: Ti.Android.SHOW_AS_ACTION_ALWAYS
+	  });
+	  var menuItem1 = menu.add({
+	    title: "Item 1",
+	    icon:  Ti.Android.R.drawable.ic_menu_edit,
+	    showAsAction: Ti.Android.SHOW_AS_ACTION_ALWAYS
+	  });
+	  menuItem1.addEventListener("click", function(e) {
+	    Alloy.Globals.Log("client.js::doRow: menuItem: I was clicked");
+	    Alloy.Globals.Log("client.js::doRow: JSON.stringify(win): "+JSON.stringify(win));
+	    for (i=0;i<subject.length;i++){
+		    Alloy.Globals.Log("client.js::doRow array: menuItem1 "+subject[i]+" is: "+eval(subject[i]));
+		    eval(subject[i]+"label.hide()");
+		    eval("var "+subject[i]+"TextField = Ti.UI.createTextField({hintText:"+subject[i]+",color:'black',font:{fontSize:'14'},width:'95%'})");
+		    //firstnameTextField.addEventListener('blur',function(f){var newfirstname=f.value;menuItem2.newfirstname=newfirstname;});
+		    eval(""+subject[i]+"TextField.addEventListener('change',function(f){var new"+subject[i]+"=f.value;menuItem2.new"+subject[i]+"=new"+subject[i]+";})");// menuItem2.newfirstname=erica
+		    eval("var view = Titanium.UI.createView({top:parseFloat(40)*parseFloat("+i+"),height:'39',width:'95%',layout:'vertical',backgroundColor:'gray',borderColor:'#EDEDED',borderRadius:'10',borderWidth:'0.1'})");  
+	    	eval("view.add("+subject[i]+"TextField)");
+			win.add(view);
+		}
+	  });
+	  menuItem2.addEventListener("click",function(e){
+	  	 Alloy.Globals.Log("client.js::doRow array: menuItem2: JSON.stringify(e)  "+JSON.stringify(e));
+	  });
+	};	
+	win.open();
+	
+}

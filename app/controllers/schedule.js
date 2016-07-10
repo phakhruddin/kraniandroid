@@ -636,6 +636,18 @@ var googleAuthCalendar = new GoogleAuth({
 	quiet: false
 });
 
+$.search_history.visible=false;
+function doSearch(e){
+	Alloy.Globals.Log("schedule.js::doSearch : "+JSON.stringify(e));
+	Alloy.Globals.Log("schedule.js::doSearch : JSON.stringify($.search_history) "+JSON.stringify($.search_history));
+	var searchstatus = $.search_history.visible;
+	Alloy.Globals.Log("schedule.js::doSearch : searchstatus "+searchstatus);
+	if ($.search_history.visible) {$.search_history.visible=false;} else {$.search_history.visible=true;}
+	Alloy.Globals.Log("schedule.js::doSearch : $.search_history.visible: "+$.search_history.visible);
+}
+
+function doBack(e){};
+
 function createEventFuture() {
 	Alloy.Globals.createController('createevent',$.schedule_tab);
 }

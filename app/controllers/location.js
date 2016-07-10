@@ -1,11 +1,12 @@
 var args = arguments[0] || {};
 exports.openMainWindow = function(_tab) {
   _tab.open($.labor_window);
-  Ti.API.info("This is child widow checking _tab : " +JSON.stringify(_tab));
+  Ti.API.info("This is child widow checking _tab : " +_tab);
    	$.labor_table.search = $.search_history;
 	Alloy.Collections.labor.fetch();	
   
 };
+$.search_history.visible=false;//$.item2.seachhistory=false;
 
 function rowAction(e){
 		Alloy.Globals.Log("location.js::rowAction:: JSON.stringify(e): "+JSON.stringify(e));
@@ -21,14 +22,14 @@ function rowAction(e){
 		var longitude = title.split(':')[8].trim().toString();
 		
 		switch(e.source.image) {
-	    case "EditControl.png":
-	        e.source.image="EditControlSelected.png";
+	    case "/images/EditControl.png":
+	        e.source.image="/images/EditControlSelected.png";
 	        setTimeout(function(){
 	    		addLabor(e);      		
 	    	},500);   	 
 	        break;
-	    case "EditControlSelected.png": 
-	    	e.source.image="EditControl.png";
+	    case "/images/EditControlSelected.png": 
+	    	e.source.image="/images/EditControl.png";
 	        break;
 	    default:
 	
@@ -39,7 +40,7 @@ function rowAction(e){
 				left: 300,
 				height : 30,
 				width : 30,
-				image : "check70.png"
+				image : "/images/check70.png"
 			});
 			
 			if (args.source == "settings"){
@@ -148,20 +149,20 @@ function editEmployee(e){
 	Alloy.Globals.Log("location.js::editEmployee:JSON.stringify(e): "+JSON.stringify(e));	
 }
 
-$.sortview.hide();
-$.location_tab.addEventListener("focus",function(){
-	$.sortview.show();
-});
-$.labor_table.addEventListener("scroll",function(){
-	$.sortview.hide();
-	$.location_tab.addEventListener("singletap",function(){$.sortview.show();});
-});
-
 function pulledEvent(e){
 	Alloy.Globals.Cleanup();
 	Alloy.Globals.Log("location.js:pulledEvent:use in callback: Alloy.Collections.labor.fetch()");
 	Alloy.Collections.labor.fetch();
 }
 
+function doSearch(e){
+	Alloy.Globals.Log("client.js::doSearch : "+JSON.stringify(e));
+	Alloy.Globals.Log("client.js::doSearch : JSON.stringify($.search_history) "+JSON.stringify($.search_history));
+	var searchstatus = $.search_history.visible;
+	Alloy.Globals.Log("client.js::doSearch : searchstatus "+searchstatus);
+	if ($.search_history.visible) {$.search_history.visible=false;} else {$.search_history.visible=true;}
+	Alloy.Globals.Log("client.js::doSearch : $.search_history.visible: "+$.search_history.visible);
+}
+function doBack(){};
 
 

@@ -4,7 +4,12 @@
 	<Model src="dummy" />
 	<Tab id="schedule_tab" title="SCHEDULE" icon="calendar112.png">
   <Window id="schedule_window" backgroundColor="white" title="Schedule">
+  	  	<ActionBar id="actionbar" onHomeIconItemSelected="doBack"  displayHomeAsUp="true" />
+       	<Menu>
+  	       	<MenuItem id="item1" title="Search" icon='Ti.Android.R.drawable.ic_menu_search' showAsAction="Ti.Android.SHOW_AS_ACTION_ALWAYS" onClick="doSearch"/>     
+        </Menu>
 	 	<ListView id="schedule_list" height="Ti.UI.Size" defaultItemTemplate="template">
+ 		<SearchBar id="search_history" barColor="gray" />
 		<Templates>
 			<ItemTemplate name="template" backgroundColor="white" height="118" onClick="selectItem" >
 				<Label id="label_header" color="gray"  left="80" top="10" bindId="info"/>
@@ -14,7 +19,6 @@
 				<Label id="label_sub1" color="#333"  left="80" top="68" bindId="client"/>
 				<Label id="label_sub3" color="#333"  left="80" top="84" bindId="address"/>
 				<ImageView bindId="imgday" id="iconday" height="80" width="80" left="5" top="1"/>
-				<Button id="next_button" bindId="all" image="light_info.png" right="30" top="45" width="20" height="20" onClick="doClick"/>
 			</ItemTemplate>
 		</Templates>
 		<ListSection id="schedule_section" headerTitle="{dummy.HeaderTitle}" dataCollection="schedule" dataTransform="transformFunction">
