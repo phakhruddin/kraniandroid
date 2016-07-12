@@ -11,7 +11,7 @@ $.search_history.visible=false;//$.item2.seachhistory=false;
 function rowAction(e){
 		Alloy.Globals.Log("location.js::rowAction:: JSON.stringify(e): "+JSON.stringify(e));
 		
-			Alloy.Globals.openDetail(e);
+		Alloy.Globals.openDetail(e);
 		var title = e.row.title;
 	
 		Ti.API.info('input details : '+title);
@@ -119,6 +119,20 @@ function updateLoc() {
 	Alloy.Globals.CheckLoc();
 }
 
+function doAdd(){
+	var win = Titanium.UI.createWindow({title:"Add Employee",backgroundColor:'#DBDBDB'});
+	var firstnameTextField = Ti.UI.createTextField({hintText:"Firstname", top:"10",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(firstnameTextField);
+	var lastnameTextField = Ti.UI.createTextField({hintText:"Lastname",top:"40",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(lastnameTextField);
+	var phoneTextField = Ti.UI.createTextField({hintText:"phone",keyboardType:Ti.UI.KEYBOARD_NUMBER_PAD,returnKeyType:Ti.UI.RETURNKEY_DONE,top:"70",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(phoneTextField);
+	var emailTextField = Ti.UI.createTextField({hintText:"email",top:"100",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(emailTextField);
+	var streetaddrTextField = Ti.UI.createTextField({hintText:"street address",top:"130",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(streetaddrTextField);
+	var cityTextField = Ti.UI.createTextField({hintText:"city",top:"160",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(cityTextField);
+	var stateTextField = Ti.UI.createTextField({hintText:"state",top:"190",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(stateTextField);
+	var companyTextField = Ti.UI.createTextField({hintText:"company",top:"220",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});	win.add(companyTextField);
+	var savelabelbutton = Ti.UI.createLabel({text:"Save",top:"260",right:"20",color:"#63D1F4"});win.add(savelabelbutton);
+	win.open();	
+};
+
 function addLabor(e){
 	Alloy.Globals.Log("location.js::addLabor:JSON.stringify(e): "+JSON.stringify(e));
 	var item = "labor";
@@ -164,5 +178,53 @@ function doSearch(e){
 	Alloy.Globals.Log("client.js::doSearch : $.search_history.visible: "+$.search_history.visible);
 }
 function doBack(){};
+
+function doRow(e){
+	Alloy.Globals.Log("location.js::doRow click: "+JSON.stringify(e));
+	var win = Titanium.UI.createWindow({title:"Client Details",backgroundColor:'#F5F5F5'});
+	var activity = win.activity;	
+	var subject = ['firstname','lastname','employeejobtitle','phone','email','streetaddr','city','state','country'];
+	for (i=0;i<subject.length;i++){
+		eval(subject[i]+" =  e.rowData.title.split(':')["+parseFloat(i+1)+"].trim()");
+		Alloy.Globals.Log("location.js::doRow array: "+firstname);
+		eval("var "+subject[i]+"label = Ti.UI.createLabel({text:"+subject[i]+",top:14,color:'#3B3B3B',font:{fontSize:'14'},textAlign:'Ti.UI.TEXT_ALIGNMENT_CENTER'})");
+		eval("var view = Titanium.UI.createView({top:parseFloat(40)*parseFloat("+i+"),height:'39',width:'95%',layout:'vertical',backgroundColor:'#FAFAFA',borderColor:'#EDEDED',borderRadius:'10',borderWidth:'0.1'})");
+		eval("view.add("+subject[i]+"label)");
+		win.add(view);
+	}	
+	activity.onCreateOptionsMenu = function(e){
+	  var menu = e.menu;
+  	  var menuItem2 = menu.add({
+	    title: "Item 2",
+	    icon:  Ti.Android.R.drawable.ic_menu_save,
+	    showAsAction: Ti.Android.SHOW_AS_ACTION_ALWAYS
+	  });
+	  var menuItem1 = menu.add({
+	    title: "Item 1",
+	    icon:  Ti.Android.R.drawable.ic_menu_edit,
+	    showAsAction: Ti.Android.SHOW_AS_ACTION_ALWAYS
+	  });
+	  menuItem1.addEventListener("click", function(e) {
+	    Alloy.Globals.Log("location.js::doRow: menuItem: I was clicked");
+	    Alloy.Globals.Log("location.js::doRow: JSON.stringify(win): "+JSON.stringify(win));
+	    for (i=0;i<subject.length;i++){
+		    Alloy.Globals.Log("location.js::doRow array: menuItem1 "+subject[i]+" is: "+eval(subject[i]));
+		    eval(subject[i]+"label.hide()");
+		    eval("var "+subject[i]+"TextField = Ti.UI.createTextField({hintText:"+subject[i]+",color:'black',font:{fontSize:'14'},width:'95%'})");
+		    //firstnameTextField.addEventListener('blur',function(f){var newfirstname=f.value;menuItem2.newfirstname=newfirstname;});
+		    eval(""+subject[i]+"TextField.addEventListener('change',function(f){var new"+subject[i]+"=f.value;menuItem2.new"+subject[i]+"=new"+subject[i]+";})");// menuItem2.newfirstname=erica
+		    eval("var view = Titanium.UI.createView({top:parseFloat(40)*parseFloat("+i+"),height:'39',width:'95%',layout:'vertical',backgroundColor:'gray',borderColor:'#EDEDED',borderRadius:'10',borderWidth:'0.1'})");  
+	    	eval("view.add("+subject[i]+"TextField)");
+			win.add(view);
+		}
+	  });
+	  menuItem2.addEventListener("click",function(e){
+	  	 Alloy.Globals.Log("location.js::doRow array: menuItem2: JSON.stringify(e)  "+JSON.stringify(e));
+	  });
+	};	
+	win.open();
+	
+}
+
 
 

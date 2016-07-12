@@ -330,3 +330,25 @@ $.location.addEventListener ("click", function(e){
   	tabViewOneChildController.openMainWindow($.tab_one);	
 });
 
+function showFutureMenu(response) {
+	if(response == "yes") {
+		//$.table.appendRow($.futuremenu);
+		//$.table.appendRow($.supplier);
+		//$.table.appendRow($.inventory);
+		//$.table.appendRow($.report);			
+	} else {
+		//$.table.deleteRow($.report);
+		//$.table.deleteRow($.inventory);
+		//$.table.deleteRow($.supplier);
+		//$.table.deleteRow($.futuremenu);	
+	}	
+}
+showFutureMenu("no");
+$.settings.addEventListener ("click", function(e){
+	Alloy.Globals.openDetail(e);
+	var tabViewOneController = Alloy.createController("settings",{
+		metadata: "from tabviewOne",
+		callbackFunction: showFutureMenu
+	});
+	tabViewOneController.openMainWindow($.tab_one);	
+});

@@ -1,33 +1,34 @@
 <Alloy>
 	<Tab id="tab_settings">
   <Window id="settings_window" backgroundColor="white" title="Settings">
- 	  <TableView id="settings_table" backgroundColor="transparent" separatorStyle="Ti.UI.iPhone.TableViewSeparatorStyle.NONE">
+ 	  <!--TableView id="settings_table" backgroundColor="transparent">
  	  	<TableViewSection headerTitle="Debug">
 		 <TableViewRow id="row_mindebug" Title="Min Debug">
 			 <Label id="label_mindebug" color="#333" top="5" left="20" text="Minimum Debug">OFFLINE MODE</Label>
 			 <Label id="label_mindebug1" color="gray" top="30" left="20" text="FG LOC">Turn on/off offline mode</Label>
-		     <Switch id="switch_mindebug" right="20" titleOff="OFF" titleOn="ON" value=false/>
+		     <Switch id="switch_mindebug" borderColor="#63D1F4" borderRadius="10" borderWidth="0.5" right="20" titleOff="OFF" titleOn="ON" value=false/>
 		 </TableViewRow>
 		 <TableViewRow id="row_maxdebug" Title="max Debug">
 			 <Label id="label_maxdebug" color="#333" top="5" left="20" text="maximum Debug">Turn ON Maximum Debug</Label>
 			 <Label id="label_maxdebug1" color="gray" top="30" left="20" text="FG LOC">Maximum debug</Label>
-		     <Switch id="switch_maxdebug" right="20" titleOff="OFF" titleOn="ON" value=false/>
+		     <Switch id="switch_maxdebug" borderColor="#63D1F4" borderRadius="10" borderWidth="0.5"  right="20" titleOff="OFF" titleOn="ON" value=false/>
 		 </TableViewRow>
 		 <TableViewRow id="row_emailsupport">
-			 <Button id="button_emailsupport" top="5" systemButton="Ti.UI.iPhone.SystemButton.PLAIN" left="20" title="Submit Log to Support" onClick="sendSupportEmail" />
-			 <Label id="label_sub1" left="20" color="gray" top="35" text="Please turn on Maximum Debug First"></Label>
+			 <Button id="button_emailsupport" top="0" left="10" backgroundColor="white" color="white" image="/images/email.png" height="60" width="50" onClick="sendSupportEmail" />
+			 <Label id="label_header" left="51" color="#333" top="10" text="Submit Log to support"/>
+			 <Label id="label_sub1" left="20" color="gray" top="35" text="Please turn on maximum debug first"></Label>
 		 </TableViewRow>
 		 </TableViewSection>
-		 <TableViewSection headerTitle="Profiles">
+	 	<TableViewSection headerTitle="Profiles">
 		 <TableViewRow height="40">
 		 		<Label id="currency_label" left="20" text="Currency:"></Label>
  	  			<TextField id="currency_tf" width="200" left="100" hintText="USD" value="" onBlur="currencyAction"/>
  	  		</TableViewRow>
 		 <TableViewRow id="row_empselect" Title="employee seletion">
-			 <Button id="button_empselect" systemButton="Ti.UI.iPhone.SystemButton.PLAIN" left="20" title="Select Employee >"/>
+			 <Button id="button_empselect" left="20" title="Select Employee >"/>
 		 </TableViewRow>
 		 </TableViewSection>
-		 	  	<TableViewSection headerTitle="Please enter if not present"/>
+ 	  	<TableViewSection headerTitle="Please enter if not present"/>
  	  	<TableViewSection headerTitle="Company Name">
 	  		<TableViewRow height="40">
  	  			<TextField id="companygmail_tf"  width="320" left="20" hintText="" keyboardType="Titanium.UI.KEYBOARD_EMAIL" onReturn="coGmail"/>
@@ -44,27 +45,13 @@
  	  			<TextField id="city_tf" left="20" width="160" value="" onBlur="coCity" />
  	  			<TextField id="state_tf" left="200"  width="70" value="" onBlur="coState" />
  	  			<TextField id="zipcode_tf" left="280"  width="90" value="" onBlur="coZip" keyboardType="Ti.UI.KEYBOARD_DECIMAL_PAD" >
-        		<KeyboardToolbar id="ktb_textarea">
-	    			<Toolbar>
-	    				<Items>
-	    					<Button id="donebutton" title="DONE" onClick="zipBlur" />
-	    				</Items>
-	    			</Toolbar>
-        		</KeyboardToolbar>	
  	  		</TextField>
  	  		</TableViewRow>
   		</TableViewSection>
   		<TableViewSection headerTitle="Company Contact">
 	  		<TableViewRow height="40">
  	  			<TextField id="companyphone_tf" width="300" left="20" value="" keyboardType="Titanium.UI.KEYBOARD_PHONE_PAD" onBlur="coPhone">
- 	  				<KeyboardToolbar id="ktb_textarea">
-	    			<Toolbar>
-	    				<Items>
-	    					<Button id="phonedonebutton" title="DONE" onClick="phoneBlur"/>
-	    				</Items>
-	    			</Toolbar>
-        		</KeyboardToolbar>
- 	  			</TextField>
+  	  			</TextField>
  	  		</TableViewRow>
  	  		</TableViewSection>
  	  	<TableViewSection headerTitle="Logo">
@@ -79,18 +66,56 @@
 		 </TableViewRow>
 		  <TableViewRow/>
   		</TableViewSection>
-	  </TableView>
-		<Toolbar id="jobdetailtoolbar" platform="ios" bottom="0" borderTop="true" borderBottom="false">
-			<Items id="itemjobdetail">
-				<FlexSpace/>
-				<Label text="Add Logo" color="orange"/>
-				<Button systemButton="ACTION" onClick="uploadFile"/>
-				<Button systemButton="CAMERA" onClick="takePic"/>
-			 	<FlexSpace/> 
-			 	<FlexSpace/>
-			 	<Button systemButton="DISCLOSURE"/>          	
-			</Items>
-		</Toolbar>   
+	  </TableView-->
+	  <ScrollView id="scrollView" layout='vertical' scrollType="vertical" >
+	  	<View id="row_mindebug" height="50" Title="Min Debug">
+			 <Label id="label_mindebug" color="#333" top="5" left="20" text="Minimum Debug">OFFLINE MODE</Label>
+			 <Label id="label_mindebug1" color="gray" top="30" left="20" text="FG LOC">Turn on/off offline mode</Label>
+		     <Switch id="switch_mindebug" borderColor="#63D1F4"  top="5"  borderRadius="10" borderWidth="0.5" right="20" titleOff="OFF" titleOn="ON" value=false/>
+	  	</View>  
+		 <View id="row_maxdebug" height="50" Title="max Debug">
+			 <Label id="label_maxdebug" color="#333" top="5" left="20" text="maximum Debug">Turn ON Maximum Debug</Label>
+			 <Label id="label_maxdebug1" color="gray" top="30" left="20" text="FG LOC">Maximum debug</Label>
+		     <Switch id="switch_maxdebug" top="5" borderColor="#63D1F4" borderRadius="10" borderWidth="0.5"  right="20" titleOff="OFF" titleOn="ON" value=false/>
+		 </View>
+ 		 <View id="row_emailsupport" height="70">
+			 <Button id="button_emailsupport" top="0" right="10" backgroundColor="white" color="white" image="/images/email.png" height="60" width="60" onClick="sendSupportEmail" />
+			 <Label id="label_header" left="20" color="#333" top="10" text="Submit Log to support"/>
+			 <Label id="label_sub1" left="20" color="gray" top="35" text="Please turn on maximum debug first"></Label>
+		 </View>
+ 		 <View height="40" backgroundColor="#3B3B3B">
+		 		<Label id="currency_label" left="20" text="Currency:"></Label>
+ 	  			<TextField id="currency_tf" width="200" left="100" hintText="USD" value="" onBlur="currencyAction"/>
+  		</View>
+		 <View id="row_empselect" Title="employee selection" height="50" backgroundColor="#3B3B3B">
+			 <Button id="button_empselect" left="20" title="Select Employee >"/>
+		 </View>
+  		<View height="40" backgroundColor="#3B3B3B">
+ 	  			<TextField id="companygmail_tf"  width="320" left="20" hintText="" keyboardType="Titanium.UI.KEYBOARD_EMAIL" onReturn="coGmail"/>
+  		</View>
+  		<View height="40" backgroundColor="#3B3B3B">
+  			<TextField id="companyname_tf" width="320" left="20" onBlur="coName" />
+  		</View>
+  		<View height="40" backgroundColor="#3B3B3B">
+  			<TextField id="streetaddress_tf" width="320" left="20" hintText="Address: 2855 W Bluemound Dr" value="" onBlur="coStreetAddress"/>
+  		</View>
+  		<View height="40" backgroundColor="#3B3B3B">
+  			<TextField id="city_tf" left="20" width="140" value="" onBlur="coCity" />
+  			<TextField id="state_tf" left="180"  width="70" hintText="State" value="" onBlur="coState" />
+  			<TextField id="zipcode_tf" left="260"  width="80" value="" onBlur="coZip" keyboardType="Ti.UI.KEYBOARD_DECIMAL_PAD" />
+  		</View>
+ 		<View height="40"  backgroundColor="#3B3B3B">
+  			<TextField id="companyphone_tf" width="300" left="20" value="" keyboardType="Titanium.UI.KEYBOARD_PHONE_PAD" onBlur="coPhone">
+  			</TextField>
+  		</View>
+		 <View id="row_futuremenu" height="50" Title="Future Features">
+			 <Label id="label_futuremenu" color="#333" top="5" left="20" text="Future Features">Turn ON Future Features</Label>
+			 <Label id="label_futuremenu1" color="gray" top="30" left="20" text="FG LOC">Future Feature</Label>
+		     <Switch id="switch_futuremenu" right="20" borderColor="#63D1F4" borderRadius="10" borderWidth="0.5" titleOff="OFF" titleOn="ON" value=false />
+		 </View>
+  		<View id="logo_row" height="200"></View>
+	  	 <View height="50"/>
+	  </ScrollView>
   </Window>
   </Tab>
 </Alloy>
