@@ -352,3 +352,14 @@ $.settings.addEventListener ("click", function(e){
 	});
 	tabViewOneController.openMainWindow($.tab_one);	
 });
+
+$.invoicelistlist.addEventListener ("click", function(e){
+	Alloy.Globals.openDetail(e);
+ 	var item = 'invoice';
+	var sid = Titanium.App.Properties.getString(item,"none");
+	Alloy.Globals.Log("tabviewone.js::sid for "+ item +" : "+sid);
+	Alloy.Globals.getPrivateData(sid,item);
+	var scheduleController = Alloy.createController("invoicelistlist");
+ 	scheduleController.openMainWindow($.tab_one);
+});
+

@@ -10,7 +10,7 @@
 	  	<TableViewSection  headerTitle="Summary">
 		  <TableViewRow id="invoicenumber_row" color="gray" Title="Summary" height="100">
 		  	  <Label id="invoicenumber" color="#404040" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="10" text="{dummy.invoicenumber}" />
-	   		  <Label id="header" color="#404040" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="25" text="{dummy.firstname} {dummy.lastname}" />
+	   		  <Label id="header" color="#404040" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="25" text="{dummy.firstname} {dummy.lastname}" font="{fontSize:30}"/>
 	   		  <Label id="customernumber" color="gray" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="65" text="Cust no: {dummy.customernumber}" />
 	   	  </TableViewRow>
 	  </TableViewSection>

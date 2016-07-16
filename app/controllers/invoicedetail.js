@@ -1,7 +1,7 @@
 var args = arguments[0] || {};
 exports.openMainWindow = function(_tab) {
   _tab.open($.invoicedetail_window);
-  Ti.API.info("invoicedetail.js::This is child widow checking _tab on : " +JSON.stringify(_tab));
+  Ti.API.info("invoicedetail.js::This is child widow checking _tab on : " +_tab);
   Ti.API.info("invoicedetail.js:: input details : "+JSON.stringify(args));
   prefetchPayment(); //prefetch payment to get existing sid or to create new
   prefetchinvoicesent();
@@ -1347,18 +1347,3 @@ function myRefresher() {
 	  prefetchPayment(); //prefetch payment to get existing sid or to create new
 	  prefetchinvoicesent();
 }
-
-
-var refresh = Ti.UI.createRefreshControl({
-    tintColor:'orange'
-});
-
-$.invoicedetail_table.refreshControl=refresh;
-
-refresh.addEventListener('refreshstart',function(){
-	setTimeout(function(){
-        Alloy.Globals.Log('invoicedetail.js::refresh::start ');
-        myRefresher();
-        refresh.endRefreshing();
-    }, 2000);
-});

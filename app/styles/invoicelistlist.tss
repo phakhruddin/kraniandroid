@@ -24,10 +24,6 @@
 	bottom: 0,
 	layout: 'horizontal'
 }
-"#list": {
-	top: 0,
-	bottom: '50dp'
-},
 "#button": {
 	height: '50dp',
 	width: '25%',
@@ -53,5 +49,34 @@
 "#label_sub3": {
 	font: {
 		fontSize: "10"
+	}
+},"#header": {
+	color: 'blue',
+	font: {
+		fontSize: '30',
+		fontStyle: 'bold'
+	}
+},
+"#noaction_button": {
+	font: {fontSize: '20',fontFamily:'Helvetica',fontStyle: 'bold'}
+},
+"#customernumber" : {
+	font: {
+		fontSize: '12',
+	}
+},
+"#invoice_button" : {
+	font: {
+		fontSize: '18',
+	}
+},
+"#duedate_button" : {
+	font: {
+		fontSize: '18',
+	}
+},
+"#duedate_label" : {
+	font: {
+		fontSize: '18',
 	}
 }
