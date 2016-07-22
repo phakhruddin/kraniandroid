@@ -7,10 +7,41 @@ exports.openMainWindow = function(_tab) {
 };
 
 function doAdd(){
+	var submit = false;
 	var win = Titanium.UI.createWindow({
         title:"Add Client",
         backgroundColor:'#DBDBDB'
     });
+    var savedata = {col1:"",col2:"",col3:"",col4:"",col5:"",col6:"",col7:"",col8:"",col9:"",col10:"",col11:"",col12:"",col13:"",col14:"",col15:"",col16:""};
+    var activity = win.activity;
+    var proceedtosave=1; //always set to go ahead and save
+    activity.onCreateOptionsMenu = function(e){
+      Alloy.Globals.Log("client.js::activity: JSON.stringify(e)  "+JSON.stringify(e));
+	  var menu = e.menu;
+	  var menuItem2 = menu.add({
+	    title: "Item 2",
+	    icon:  Ti.Android.R.drawable.ic_menu_save,
+	    showAsAction: Ti.Android.SHOW_AS_ACTION_ALWAYS
+	  });
+	  
+	  menuItem2.addEventListener("click",function(e){
+  		Alloy.Globals.Log("client.js::doRow array: menuItem2: JSON.stringify(e)  "+JSON.stringify(e));
+  		Alloy.Globals.Log("client.js::doRow array: menuItem2: JSON.stringify(savedata)  "+JSON.stringify(savedata));		
+  		if (!firstnameTextField.value) {
+  			var empty = "Firstname"; proceedtosave = 0;
+  			} else if (!emailTextField.value) {
+  				var empty = "Email"; proceedtosave = 0;
+  				} else {proceedtosave = 1;}
+  					
+  		Alloy.Globals.Log('client.js:: after Check proceedtosave: '+proceedtosave);
+  		if (proceedtosave != "0") {
+  			Alloy.Globals.submit("client","",savedata.col1,savedata.col2,savedata.col3,savedata.col4,savedata.col5,savedata.col6,savedata.col7,savedata.col8,savedata.col9,savedata.col10,savedata.col11,savedata.col12,savedata.col13,savedata.col14,savedata.col15,savedata.col16);
+  			var submit = true;
+		} else {
+			alert(empty+" is missing");
+		}		
+	  });
+  	};
 	var firstnameTextField = Ti.UI.createTextField({hintText:"Firstname", top:"10",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(firstnameTextField);
 	var lastnameTextField = Ti.UI.createTextField({hintText:"Lastname",top:"40",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(lastnameTextField);
 	var phoneTextField = Ti.UI.createTextField({hintText:"phone",keyboardType:Ti.UI.KEYBOARD_NUMBER_PAD,returnKeyType:Ti.UI.RETURNKEY_DONE,top:"70",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(phoneTextField);
@@ -19,7 +50,55 @@ function doAdd(){
 	var cityTextField = Ti.UI.createTextField({hintText:"city",top:"160",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(cityTextField);
 	var stateTextField = Ti.UI.createTextField({hintText:"state",top:"190",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(stateTextField);
 	var companyTextField = Ti.UI.createTextField({hintText:"company",top:"220",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});	win.add(companyTextField);
-	var savelabelbutton = Ti.UI.createLabel({text:"Save",top:"260",right:"20",color:"#63D1F4"});win.add(savelabelbutton);
+	var countryTextField = Ti.UI.createTextField({hintText:"Country",top:"250",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(countryTextField);
+	
+	firstnameTextField.addEventListener("blur",function(e){
+		savedata.col2=e.value;
+		Alloy.Globals.Log("client.js::doAdd: firstnameTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+	});
+	lastnameTextField.addEventListener("blur",function(e){
+		savedata.col3=e.value;
+		Alloy.Globals.Log("client.js::doAdd: lastnameTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+	});
+	companyTextField.addEventListener("blur",function(e){
+		savedata.col4=e.value;
+		Alloy.Globals.Log("client.js::doAdd: companyTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+	});
+	phoneTextField.addEventListener("blur",function(e){
+		savedata.col5=e.value;
+		Alloy.Globals.Log("client.js::doAdd: phoneTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+	});
+	emailTextField.addEventListener("blur",function(e){
+		savedata.col6=e.value;
+		Alloy.Globals.Log("client.js::doAdd: emailTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+	});
+	streetaddrTextField.addEventListener("blur",function(e){
+		savedata.col7=e.value;
+		Alloy.Globals.Log("client.js::doAdd: streetaddrTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+	});
+	cityTextField.addEventListener("blur",function(e){
+		savedata.col8=e.value;
+		Alloy.Globals.Log("client.js::doAdd: cityTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+	});
+	stateTextField.addEventListener("blur",function(e){
+		savedata.col9=e.value;
+		Alloy.Globals.Log("client.js::doAdd: stateTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+	});
+	countryTextField.addEventListener("blur",function(e){
+		savedata.col9=e.value;
+		Alloy.Globals.Log("client.js::doAdd: countryTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+	});
+	savedata.col11=savedata.col12=savedata.col13=savedata.col15="NA";
+	savedata.col1=savedata.col14=savedata.col16=Date.now();
+	
+	
+	//var savelabelbutton = Ti.UI.createLabel({text:"Save",top:"260",right:"20",color:"#63D1F4"});win.add(savelabelbutton);
+	win.addEventListener("close",function(){
+		Alloy.Globals.Log("client.js::doAdd : submit "+submit);
+		if (submit) {
+			Alloy.Globals.Log("client.js::doAdd : submit is true: refresh data ");
+		}
+	});
 	win.open();	
 };
 

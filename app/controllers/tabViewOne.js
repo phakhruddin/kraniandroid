@@ -330,6 +330,17 @@ $.location.addEventListener ("click", function(e){
   	tabViewOneChildController.openMainWindow($.tab_one);	
 });
 
+$.proposallistlist.addEventListener ("click", function(e){
+	Alloy.Globals.openDetail(e);
+	var item = 'proposal';
+	var sid = Titanium.App.Properties.getString(item,"none");
+	Alloy.Globals.Log("tabviewone.js::sid for "+ item +" : "+sid);
+	Alloy.Globals.getPrivateData(sid,item);
+	var scheduleController = Alloy.createController("proposallistlist");
+ 	scheduleController.openMainWindow($.tab_one);
+});
+
+
 function showFutureMenu(response) {
 	if(response == "yes") {
 		//$.table.appendRow($.futuremenu);

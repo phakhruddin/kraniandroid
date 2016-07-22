@@ -1,48 +1,28 @@
 <Alloy>
-	<Model src="dummy"/>
+<Model src="dummy"/>
  <Tab id="tab_proposallist" title="proposal">
-  <Window id="proposallist_window"  title="proposal">
-	<RightNavButton platform="ios">
-	   <Button systemButton="Ti.UI.iPhone.SystemButton.ADD" onClick="addHandler" /> 
-	</RightNavButton>
-	<Widget id="ptr" src="nl.fokkezb.pullToRefresh" onRelease="myRefresher">
-	<ListView id="proposallist_list" height="Ti.UI.Size" defaultItemTemplate="template" onDelete="deleteItem">
-		<SearchBar barColor="gray" />
-		<HeaderView>
-                <View backgroundColor="#DDD" height="Ti.UI.SIZE">
-                    <Label>proposals</Label>
-                </View>>
-            </HeaderView>
+  <Window id="proposallist_window"  backgroundColor="#212121" height="Titanium.UI.FILL" title="proposal">
+  	<ActionBar id="actionbar" onHomeIconItemSelected="doBack"  displayHomeAsUp="true" />
+   	<Menu>
+       	<MenuItem id="item1" title="Add" icon='Ti.Android.R.drawable.ic_menu_add' showAsAction="Ti.Android.SHOW_AS_ACTION_ALWAYS" onClick="doAdd"/>  
+       	<MenuItem id="item2" title="Search" icon='Ti.Android.R.drawable.ic_menu_search' showAsAction="Ti.Android.SHOW_AS_ACTION_ALWAYS" onClick="doSearch"/>    
+    </Menu>
+	<ListView id="proposallist_list" defaultItemTemplate="template" onDelete="deleteItem">
+		<SearchBar id="search_history" height="43" backgroundColor="#212121"/>
 		<Templates>
-			<ItemTemplate id="proposallist_template" name="template" backgroundColor="white" height="65" onClick="doClick">
+			<ItemTemplate id="proposallist_template" name="template" backgroundColor="white" height="100" onClick="openproposalDetail">
 				<Label id="label_header" color="#333"  left="20" top="10" bindId="info"   />
 				<Label id="label_sub1" color="#330"  left="20" top="35" bindId="proposalnumber"/>
 				<Label id="label_sub1" color="#330"  left="50%" top="35" bindId="total"/>				
 				<ImageView bindId="img" id="icon" height="10" width="20%" left="75%" top="45"/>
-				<Button id="next_button" bindId="all" image="light_info.png" right="20" top="15" width="20" height="20"/>
 			</ItemTemplate>
 		</Templates>
-		<ListSection id="proposallist_section" headerTitle="proposal List" dataCollection="proposal" dataTransform="transformFunction" >
-			<ListItem id="proposal_listitem" all:text="{title}" all:input="{title}" info:text="{custom}" info:input="{title}" total:text="{total}" total:input="{title}" 
-				bal:text="{bal}" bal:input="{title}" paid:text="{paid}" paid:input="{title}" status:text="{status}" status:input="{title}" img:image="{img}" img:input="{title}"
-				proposalnumber:text="{proposalnumber}" proposalnumber:input="{title}" canEdit="true" canMove="true"/>
+		<ListSection id="proposallist_section" dataCollection="proposal" dataTransform="transformFunction" >
+			<ListItem id="proposal_listitem" all:text="{title}" info:text="{custom}" total:text="{total}" 
+				bal:text="{bal}"  paid:text="{paid}" status:text="{status}" img:image="{img}"
+				proposalnumber:text="{proposalnumber}" searchableText="{title}"/>
 		</ListSection>
-			<FooterView>
-                <View backgroundColor="#DDD" height="50">
-                </View>>
-            </FooterView>
    </ListView>
-  </Widget>
-     <Toolbar id="sortview" platform="ios" bottom="0" borderTop="true" borderBottom="false">
-            <Items >
-            	<FlexSpace/>
-            	<FlexSpace/>
-            	<Button id="All" title="All" style="Ti.UI.iPhone.SystemButtonStyle.PLAIN" onClick="buttonAction" />
-            	<Button id="Submitted"  title="Submitted" style="Ti.UI.iPhone.SystemButtonStyle.PLAIN" onClick="buttonAction"  />            	
-            	<Button id="Pending"  title="Pending" style="Ti.UI.iPhone.SystemButtonStyle.PLAIN" onClick="buttonAction"  />
-            	<FlexSpace/>
-            </Items>
-        </Toolbar>
   </Window>
     </Tab>
 </Alloy>

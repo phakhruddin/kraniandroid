@@ -1346,7 +1346,7 @@ Alloy.Globals.saveHandler = function(type){
 				+'<gsx:col1>'+col1+'</gsx:col1><gsx:col2>'+col2+'</gsx:col2><gsx:col3>'
 				+col3+'</gsx:col3><gsx:col4>'+col4+'</gsx:col4><gsx:col5>'
 				+col5+'</gsx:col5><gsx:col6>'+col6+'</gsx:col6><gsx:col7>'+col7+'</gsx:col7><gsx:col8>'+col8+'</gsx:col8>'
-				+'<gsx:col9>'+col9+'</gsx:col9><gsx:col10>'+col10+'</gsx:col10><gsx:col11>NA</gsx:col11><gsx:col12>NA</gsx:col12><gsx:col13>NA</gsx:col13><gsx:col14>'+col14+'</gsx:col14>'
+				+'<gsx:col9>'+col9+'</gsx:col9><gsx:col10>'+col10+'</gsx:col10><gsx:col11>'+col11+'</gsx:col11><gsx:col12>'+col12+'</gsx:col12><gsx:col13>'+col13+'</gsx:col13><gsx:col14>'+col14+'</gsx:col14>'
 				+'<gsx:col15>'+col15+'</gsx:col15><gsx:col16>'+col16+'</gsx:col16></entry>';
 			Alloy.Globals.Log('xmldatastring to POST: '+xmldatastring);
 			xhr.open("POST", 'https://spreadsheets.google.com/feeds/list/'+ssid+'/od6/private/full');

@@ -154,10 +154,80 @@ function doAdd(e) {
         title:"Add Project",
         backgroundColor:'#DBDBDB'
     });
+    var savedata = {col1:"",col2:"",col3:"",col4:"",col5:"",col6:"",col7:"",col8:"",col9:"",col10:"",col11:"",col12:"",col13:"",col14:"",col15:"",col16:""};
+    var activity = win.activity;
+    var proceedtosave=1;
+    activity.onCreateOptionsMenu = function(e){
+      Alloy.Globals.Log("project.js::activity: JSON.stringify(e)  "+JSON.stringify(e));
+	  var menu = e.menu;
+	  var menuItem2 = menu.add({
+	    title: "Item 2",
+	    icon:  Ti.Android.R.drawable.ic_menu_save,
+	    showAsAction: Ti.Android.SHOW_AS_ACTION_ALWAYS
+	  });
+	  
+	  menuItem2.addEventListener("click",function(e){
+  		Alloy.Globals.Log("project.js::doRow array: menuItem2: JSON.stringify(e)  "+JSON.stringify(e));
+  		Alloy.Globals.Log("project.js::doRow array: menuItem2: JSON.stringify(savedata)  "+JSON.stringify(savedata));		
+  		(!jobdescrTextArea.value)?proceedtosave = 0:proceedtosave = 1;
+  		(!jobdescrprojTextField.value)?proceedtosave = 0:proceedtosave = 1;
+  		Alloy.Globals.Log('project.js:: after Check proceedtosave: '+proceedtosave);
+  		if (proceedtosave != "0") {
+  			Alloy.Globals.submit("project","",savedata.col1,savedata.col2,savedata.col3,savedata.col4,savedata.col5,savedata.col6,savedata.col7,savedata.col8,savedata.col9,savedata.col10,savedata.col11,savedata.col12,savedata.col13,savedata.col14,savedata.col15,savedata.col16);
+		} else {
+			alert("Please fill in all value for the RED below.");
+		}		
+	  });
+  	};
+
+    
     var jobitemheaderviewtop=100;var jobitemheaderviewshrinktop=30;var clientviewheight=70;jobdescrviewheight=140;
 	var clientheaderview = Ti.UI.createView({top:"0",height:"30",backgroundColor:"#3B3B3B"});clientheaderview.add(Ti.UI.createLabel({text:"Client",left:"20"}));
 	var clientview = Ti.UI.createView({top:"30",height:"70",backgroundColor:"#4D4D4D"});
-	var selectclientlabelbutton = Ti.UI.createLabel({text:"Select Client >",left:"35%",color:"#63D1F4"});clientview.add(selectclientlabelbutton);	
+	var selectclientlabelbutton = Ti.UI.createLabel({text:"Select Client >",left:"35%",color:"#63D1F4"});clientview.add(selectclientlabelbutton);
+	
+	selectclientlabelbutton.addEventListener("click",function(e){
+		// checking clients.
+		Alloy.Globals.Log("project.js:: JSON.stringify(e): "+JSON.stringify(e));
+		var clients = Alloy.Collections.instance('client');
+		clients.fetch();
+		var clients = clients.toJSON();
+		Alloy.Globals.Log("project.js:: clients.length: "+clients.length);	
+		Alloy.Globals.Log("project.js:: JSON.stringify(clients): "+JSON.stringify(clients));
+		var win = Titanium.UI.createWindow({title:"Select Client", backgroundColor: "white"});	
+		var scrollView = Ti.UI.createScrollView({scrollType:"vertical"});
+		if(clients.length > 0){
+			for (i=0;i<clients.length;i++){
+				Alloy.Globals.Log("project.js:: JSON.stringify(clients[i]) : "+JSON.stringify(clients[i]));
+				var firstname = clients[i].col2; var lastname = clients[i].col3;
+				var data = [];
+				for (j=0;j<Object.keys(clients[i]).length;j++){var entry = eval("clients[i].col"+(j+1));data.push(entry);}  // data[0], data[1]
+				var view = Titanium.UI.createView({top:30*i,height:'29',width:'95%',layout:'vertical',backgroundColor:'#FAFAFA',borderColor:'#EDEDED',borderRadius:'10',borderWidth:'0.1'});
+				var clientlabel = Ti.UI.createLabel({text:firstname+" "+lastname,color:'#3B3B3B',font:{fontSize:'14'},textAlign:'Ti.UI.TEXT_ALIGNMENT_CENTER',id:clients[i].col1,data:data});
+				clientlabel.addEventListener("click",function(e){
+					var proposal = Alloy.Collections.instance('proposal');
+					proposal.fetch();	
+					Alloy.Globals.Log("project.js:: doAdd: clientlabel.click :JSON.stringify(e): "+JSON.stringify(e));
+					Alloy.Globals.Log("project.js:: doAdd: clientlabel.click :JSON.stringify(proposal): "+JSON.stringify(proposal));
+					var customerid = e.source.data[0];var firstname = e.source.data[1];var lastname = e.source.data[2];
+					selectclientlabelbutton.text = firstname+" "+lastname;
+					savedata.col11="Not Started";savedata.col14="None";savedata.col15='[{"nextapptdate"cOlOn"1/1/2000","duedate"cOlOn"1/1/2000","lastpaiddate"cOlOn"1/1/2000"}]';
+					savedata.col16=Date.now();savedata.col13=customerid;savedata.col2=firstname;savedata.col3=lastname;
+					for (k=3;k<10;k++){k1=k+1;eval("savedata.col"+k1+"=e.source.data["+k+"]"); }
+					Alloy.Globals.Log("project.js:: After: savedata: JSON.stringify(savedata) : "+JSON.stringify(savedata));
+					win.close();
+				});
+				view.add(clientlabel);
+				scrollView.add(view);		
+			}		
+		} else {
+			alert("could not locate "+firstname+" "+lastname+" . Please try again.");
+		}		
+		win.add(scrollView);
+		win.open();
+	});
+		
+		
 	var jobitemheaderview = Ti.UI.createView({
 		top:parseFloat(clientview.top)+parseFloat(clientview.height),
 		height:"30",backgroundColor:"#3B3B3B"
@@ -166,17 +236,23 @@ function doAdd(e) {
 		top:parseFloat(jobitemheaderview.top)+parseFloat(jobitemheaderview.height),
 		height:"140",backgroundColor:"#AAAAAA"
 	});
-	var jobdescrprojlabel = Ti.UI.createLabel({text:"Project Name: ",top:"10",left:"20",color:"black",font:{fontSize:"12"}});
+	var jobdescrprojlabel = Ti.UI.createLabel({text:"Project Name: ",top:"10",left:"20",color:"red",font:{fontSize:"12"}});
 	var jobdescrprojTextField = Ti.UI.createTextField({top:"5",right:"10",borderRadius:"0.25",color:"gray",font:{fontSize:"12"},width:"60%"});
-	jobdescrprojTextField.addEventListener("blur",function(){
+	jobdescrprojTextField.addEventListener("blur",function(e){
 		Alloy.Globals.Log("project.js::doAdd:jobdescrprojTextField.blur ");
+		jobdescrprojlabel.color='black';
+		savedata.col1=e.value;
+		Alloy.Globals.Log("project.js::doAdd: jobdescrprojTextField: JSON.stringify(savedata)  "+JSON.stringify(savedata));
 		Titanium.UI.Android.hideSoftKeyboard();
 	});jobdescrprojTextField.blur();
 	jobdescrview.add(jobdescrprojlabel);jobdescrview.add(jobdescrprojTextField);
-	var jobdescrlabel = Ti.UI.createLabel({text:"Description: ",top:"38",left:"20",color:"black",font:{fontSize:"12"}});
+	var jobdescrlabel = Ti.UI.createLabel({text:"Description: ",top:"38",left:"20",color:"red",font:{fontSize:"12"}});
+	var item=[{'descr':""}];
 	var jobdescrTextArea = Ti.UI.createTextArea({right:"10",height:"100", top:"56",borderRadius:"0.25",color:"gray",borderColor:"black",borderWidth:"0.1",font:{fontSize:"10"},width:"90%"});
-	jobdescrTextArea.addEventListener("blur",function(){
-		Alloy.Globals.Log("project.js::doAdd:jobdescrTextArea.blur ");
+	jobdescrTextArea.addEventListener("blur",function(){	
+		item[0].descr = jobdescrTextArea.value;
+		jobdescrlabel.color="black";
+		Alloy.Globals.Log("project.js::doAdd:jobdescrTextArea.blur: JSON.stringify(item):  "+JSON.stringify(item));
 		Titanium.UI.Android.hideSoftKeyboard();
 	});jobdescrTextArea.blur();
 	selectclientlabelbutton.addEventListener("click",function(e){
@@ -229,16 +305,60 @@ function doAdd(e) {
 		rearrangeView();
 	});
 	
+	function shiftrowup(shrink){
+		Alloy.Globals.Log("project.js::doAdd::lineitemTFONFocus: b4 SIZE: JSON.stringify(clientview): "+eval("JSON.stringify(clientview)"));
+		clientview.height=parseFloat(clientview.height)-parseFloat(shrink);
+		Alloy.Globals.Log("project.js::doAdd::lineitemTFONFocus: after SIZE: JSON.stringify(clientview): "+eval("JSON.stringify(clientview)"));
+		jobitemheaderview.top=parseFloat(jobitemheaderview.top)-parseFloat(shrink);
+		jobdescrview.top=parseFloat(jobdescrview.top)-parseFloat(shrink);
+		jobitemsheaderview.top=parseFloat(jobitemsheaderview.top)-parseFloat(shrink);
+		projectDetailscrollView.top=parseFloat(projectDetailscrollView.top)-parseFloat(shrink);	
+	};	
+	
 	var i=0;
 	function addlistitemrow(i) {
 		Alloy.Globals.Log("project.js::doAdd:: projectDetailscrollView.children.length: B4 update: "+projectDetailscrollView.children.length);
 		eval("var jobitemsview"+i+"= Ti.UI.createView({height:'60',backgroundColor:'#DBDBDB'})");
-		eval("var lineitemlabel"+i+" = Ti.UI.createLabel({text:'Line Item : ',top:10,left:'20',color:'black',font:{fontSize:'12'}})");
+		eval("var lineitemlabel"+i+" = Ti.UI.createLabel({text:'Line Item : ',top:10,left:'20',color:'red',font:{fontSize:'12'}})");
 		eval("var lineitemTextField"+i+" = Ti.UI.createTextField({top:0,left:'100',borderRadius:'0.25',color:'gray',font:{fontSize:'12'},width:'60%'})");
-		eval("var qtylabel"+i+" = Ti.UI.createLabel({text:'Qty : ',top:36,left:'20',color:'black',font:{fontSize:'12'}})");
+		eval("lineitemTextField"+i+".position=i");
+		function lineitemTFONFocus(e){
+			Alloy.Globals.Log("project.js::doAdd::lineitemTFONFocus:JSON.stringify(e): "+JSON.stringify(e));
+			shiftrowup(20);
+		}
+		function lineitemTFONBlur(e){
+			Alloy.Globals.Log("project.js::doAdd::lineitemTFONBlur:JSON.stringify(e): "+JSON.stringify(e));
+			item.push({'lineitem':e.value,'qty':"0",'price':"0"});
+			Alloy.Globals.Log("project.js::doAdd::lineitemTFONBlur:JSON.stringify(item): "+JSON.stringify(item));
+			var notes = JSON.stringify(item).toString().replace(/:/g,'cOlOn');
+			Alloy.Globals.Log("project.js::doAdd:lineitemTFONBlur:jobitem with cOlOn: notes "+notes);
+			savedata.col12=notes;
+			Alloy.Globals.Log("project.js::doAdd:lineitemTFONBlur:jobitem with cOlOn:JSON.stringify(savedata) "+JSON.stringify(savedata) );
+		}
+		function qtyTFONBlur(e){
+			Alloy.Globals.Log("project.js::doAdd::qtyTFONBlur:JSON.stringify(e): "+JSON.stringify(e));
+			Alloy.Globals.Log("project.js::doAdd::qtyTFONBlur:JSON.stringify(item): "+JSON.stringify(item));
+			var notes = JSON.stringify(item).toString().replace(/:/g,'cOlOn');
+			Alloy.Globals.Log("project.js::doAdd:qtyTFONBlur: jobitem with cOlOn: notes "+notes);
+			savedata.col12=notes;
+			Alloy.Globals.Log("project.js::doAdd:qtyTFONBlur:jobitem with cOlOn:JSON.stringify(savedata) "+JSON.stringify(savedata) );
+		}
+		function priceTFONBlur(e){
+			Alloy.Globals.Log("project.js::doAdd::priceTFONBlur:JSON.stringify(e): "+JSON.stringify(e));
+			Alloy.Globals.Log("project.js::doAdd::priceTFONBlur:JSON.stringify(item): "+JSON.stringify(item));
+			var notes = JSON.stringify(item).toString().replace(/:/g,'cOlOn');
+			Alloy.Globals.Log("project.js::doAdd:priceTFONBlur: jobitem with cOlOn: notes "+notes);
+			savedata.col12=notes;
+			Alloy.Globals.Log("project.js::doAdd:priceTFONBlur:jobitem with cOlOn:JSON.stringify(savedata) "+JSON.stringify(savedata) );
+		}
+		eval("lineitemTextField"+i+".addEventListener('focus',function(e){lineitemTFONFocus(e);})");
+		eval("lineitemTextField"+i+".addEventListener('blur',function(e){lineitemlabel"+i+".color='black';lineitemTFONBlur(e);})");
+		eval("var qtylabel"+i+" = Ti.UI.createLabel({text:'Qty : ',top:36,left:'20',color:'red',font:{fontSize:'12'}})");
 		eval("var qtyTextField"+i+" = Ti.UI.createTextField({top:26,left:'50',keyboardType:Ti.UI.KEYBOARD_NUMBER_PAD,returnKeyType:Ti.UI.RETURNKEY_DONE,borderRadius:'0.25',color:'gray',font:{fontSize:'12'},width:'20%'})");
-		eval("var pricelabel"+i+" = Ti.UI.createLabel({text:'Price : ',top:36,left:'50%',color:'black',font:{fontSize:'12'}})");
+		eval("qtyTextField"+i+".addEventListener('blur',function(e){if (e.value) {qtylabel"+i+".color='black';item[i+1].qty=e.value;var proceedtosave=1;} else {var proceedtosave=0;};qtyTFONBlur(e);})");
+		eval("var pricelabel"+i+" = Ti.UI.createLabel({text:'Price : ',top:36,left:'50%',color:'red',font:{fontSize:'12'}})");
 		eval("var priceTextField"+i+" = Ti.UI.createTextField({top:26,left:'60%',keyboardType:Ti.UI.KEYBOARD_DECIMAL_PAD,returnKeyType:Ti.UI.RETURNKEY_DONE,borderRadius:'0.25',color:'gray',font:{fontSize:'12'},width:'20%'})");
+		eval("priceTextField"+i+".addEventListener('change',function(e){if (e.value) {item[i+1].price=e.value;pricelabel"+i+".color='black';var proceedtosave=1;} else {var proceedtosave=0;};priceTFONBlur(e);})");
 		eval("jobitemsview"+i+".add(lineitemlabel"+i+");jobitemsview"+i+".add(lineitemTextField"+i+")");
 		eval("jobitemsview"+i+".add(qtylabel"+i+");jobitemsview"+i+".add(qtyTextField"+i+")");
 		eval("jobitemsview"+i+".add(pricelabel"+i+");jobitemsview"+i+".add(priceTextField"+i+")");
@@ -246,7 +366,7 @@ function doAdd(e) {
 		eval("jobitemsaddicon.rowcount=i");
 		Alloy.Globals.Log("project.js::doAdd:: projectDetailscrollView.children.length: After update at i:  "+i+" : "+projectDetailscrollView.children.length);
 		win.remove(projectDetailscrollView);
-		win.add(projectDetailscrollView);	
+		win.add(projectDetailscrollView);
 	}
 	
 	
@@ -260,6 +380,9 @@ function doAdd(e) {
 	});
 	//Alloy.Globals.Log("project.js::doAdd: JSON.stringify(projectDetailscrollView) "+JSON.stringify(projectDetailscrollView));
 	//win.add(projectDetailscrollView);
+	
+	//populate jobitem with cOlOn
+	
 	win.open();	
 }
 
@@ -292,6 +415,7 @@ function nextapptdateActionDone(e) {
 }
 
 function openProjectDetail(title) {	
+	
 	var tr = Titanium.UI.create2DMatrix();
 	tr = tr.rotate(90);
 	var drop_button = Titanium.UI.createButton({
