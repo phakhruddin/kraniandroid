@@ -1315,25 +1315,35 @@ Alloy.Globals.saveHandler = function(type){
 	if (existingedithref) {
 			Alloy.Globals.Log("alloy.js::Alloy.Globals.submit::PUT on existing edit href is: "+existingedithref);
 			xhr.open("PUT", existingedithref);
+			/////var col1="none";var col2="none";var col3="none";var col4="none";var col5="none";var col6="none";var col7="none";var col8="none";var col9="none";var col10="none";
+			/////var col11="none";var col12="none";var col13="none";var col14="none";var col15="none";var col16="none";
+			var col1=(col1)?"<![CDATA["+col1+"]]>":'none';var col2=(col2)?"<![CDATA["+col2+"]]>":'none';var col3=(col3)?col3:'none';var col4=(col4)?"<![CDATA["+col4+"]]>":'none';var col5=(col5)?col5:'none';var col6=(col6)?col6:'none';
+			var col7=(col7)?col7:'none';var col8=(col8)?col8:'none';var col9=(col9)?col9:'none';var col10=(col10)?col10:'none';var col11=(col11)?col11:'none';
+			var col12=(col12)?col12:'none';var col13=(col13)?col13:'none';var col14=(col14)?col14:'none';var col15=(col15)?col15:'none';var col16=(col16)?col16:'none';
+			var scheme = "http://schemas.google.com/spreadsheets/2006";
+			var term = "http://schemas.google.com/spreadsheets/2006#list";
 			var xmldatastring = '<entry xmlns=\'http://www.w3.org/2005/Atom\' xmlns:gsx=\'http://schemas.google.com/spreadsheets/2006/extended\'>'
-				+'<id>'+idtag+'</id>'
+				+'<id>'+existingidtag+'</id>'
 				+'<updated>2015-05-16T08:01:19.680Z</updated>'
-				+'<category scheme=\'http://schemas.google.com/spreadsheets/2006\' term=\'http://schemas.google.com/spreadsheets/2006#list\'/>'
-				+'<title type=\'textContent\'>'+col1+'</title>'
+				+'<category scheme=\''+scheme+'\' term=\''+term+'\'/>'
+				+'<title type=\'text\'>'+col1+'</title>'
 				+'<content type=\'text\'>col2: '+col2+', col3: '+col3+', col4: '+col4+', col5: '+col5+', col6: '+col6+', col7: '+col7
-				+', col8: '+col8+', col9: '+col9+', col10: '+col10+', col11: NA, col12: NA, col13: NA, col14: '+col14+', col15: none, col16: '+col16+'</content>'
-				+'<link rel=\'self\' type=\'application/atom+xml\' href=\''+selfhref+'\'/>'
-				+'<link rel=\'edit\' type=\'application/atom+xml\' href=\''+edithref+'\'/>'
+				+', col8: '+col8+', col9: '+col9+', col10: '+col10+', col11: '+col11+', col12: '+col12+', col13: '+col13+', col14: '+col14+', col15: '+col15+', col16: '+col16+'</content>'
+				+'<link rel=\'self\' type=\'application/atom+xml\' href=\''+existingselfhref+'\'/>'
+				+'<link rel=\'edit\' type=\'application/atom+xml\' href=\''+existingedithref+'\'/>'
 				+'<gsx:col1>'+col1+'</gsx:col1><gsx:col2>'+col2+'</gsx:col2><gsx:col3>'
 				+col3+'</gsx:col3><gsx:col4>'+col4+'</gsx:col4><gsx:col5>'
 				+col5+'</gsx:col5><gsx:col6>'+col6+'</gsx:col6><gsx:col7>'+col7+'</gsx:col7><gsx:col8>'+col8+'</gsx:col8>'
-				+'<gsx:col9>'+col9+'</gsx:col9><gsx:col10>'+col10+'</gsx:col10><gsx:col11>NA</gsx:col11><gsx:col12>NA</gsx:col12><gsx:col13>NA</gsx:col13><gsx:col14>'+col15+'</gsx:col14>'
+				+'<gsx:col9>'+col9+'</gsx:col9><gsx:col10>'+col10+'</gsx:col10><gsx:col11>'+col11+'</gsx:col11><gsx:col12>'+col12+'</gsx:col12><gsx:col13>'+col13+'</gsx:col13><gsx:col14>'+col14+'</gsx:col14>'
 				+'<gsx:col15>'+col15+'</gsx:col15><gsx:col16>'+col16+'</gsx:col16></entry>';
 			Alloy.Globals.Log('xmldatastring existing to PUT: '+xmldatastring);
 			//eval("type.fetch()");
-			Alloy.Globals.Log("alloy.js::Alloy.Globals.submit:: update DB with col16 :" +col16);
+			////Alloy.Globals.Log("alloy.js::Alloy.Globals.submit:: update DB with col16 :" +col16);
 			//write to DB
-			eval(type+".get(col16).set({col1:col1.trim(),col2:col2.trim(),col3:col3.trim(),col4:col4.trim(),col5:col5.trim(),col6:col6.trim(),col7:col7.trim(),col8:col8.trim(),col9:col9.trim(),col10:col10.trim(),col11:col11.trim(),col12:col12.trim(),col13:col13.trim(),col14:col14.trim(),col15:col15.trim(),col16:col16.trim()}).save()");
+			////eval(type+".get(col16).set({col1:col1.trim(),col2:col2.trim(),col3:col3.trim(),col4:col4.trim(),col5:col5.trim(),col6:col6.trim(),col7:col7.trim(),col8:col8.trim(),col9:col9.trim(),col10:col10.trim(),col11:col11.trim(),col12:col12.trim(),col13:col13.trim(),col14:col14.trim(),col15:col15.trim(),col16:col16.trim()}).save()");
+			//pull latest data and write to DB			
+			var sid = Titanium.App.Properties.getString(type,"none");Alloy.Globals.getPrivateData(sid,type);
+			Alloy.Globals.Log("alloy.js::Alloy.Globals.submit:: pull latest data and write to DB, type, sid :" +type+" , "+sid);
 			alert('Modified & Saved Successfully!');
 		} else {
 			var col16 = now;

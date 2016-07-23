@@ -25,8 +25,8 @@ function doAdd(){
 	  });
 	  
 	  menuItem2.addEventListener("click",function(e){
-  		Alloy.Globals.Log("client.js::doRow array: menuItem2: JSON.stringify(e)  "+JSON.stringify(e));
-  		Alloy.Globals.Log("client.js::doRow array: menuItem2: JSON.stringify(savedata)  "+JSON.stringify(savedata));		
+  		Alloy.Globals.Log("client.js::doAdd array: menuItem2: JSON.stringify(e)  "+JSON.stringify(e));
+  		Alloy.Globals.Log("client.js::doAdd array: menuItem2: JSON.stringify(savedata)  "+JSON.stringify(savedata));		
   		if (!firstnameTextField.value) {
   			var empty = "Firstname"; proceedtosave = 0;
   			} else if (!emailTextField.value) {
@@ -36,7 +36,7 @@ function doAdd(){
   		Alloy.Globals.Log('client.js:: after Check proceedtosave: '+proceedtosave);
   		if (proceedtosave != "0") {
   			Alloy.Globals.submit("client","",savedata.col1,savedata.col2,savedata.col3,savedata.col4,savedata.col5,savedata.col6,savedata.col7,savedata.col8,savedata.col9,savedata.col10,savedata.col11,savedata.col12,savedata.col13,savedata.col14,savedata.col15,savedata.col16);
-  			var submit = true;
+  			submit = true;
 		} else {
 			alert(empty+" is missing");
 		}		
@@ -52,41 +52,41 @@ function doAdd(){
 	var companyTextField = Ti.UI.createTextField({hintText:"company",top:"220",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});	win.add(companyTextField);
 	var countryTextField = Ti.UI.createTextField({hintText:"Country",top:"250",left:"20",borderRadius:"0.25",color:"gray",font:{fontSize:"14"},width:"85%"});win.add(countryTextField);
 	
-	firstnameTextField.addEventListener("blur",function(e){
+	firstnameTextField.addEventListener("change",function(e){
 		savedata.col2=e.value;
-		Alloy.Globals.Log("client.js::doAdd: firstnameTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+		Alloy.Globals.Log("client.js::doAdd: firstnameTextField change: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
 	});
-	lastnameTextField.addEventListener("blur",function(e){
+	lastnameTextField.addEventListener("change",function(e){
 		savedata.col3=e.value;
-		Alloy.Globals.Log("client.js::doAdd: lastnameTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+		Alloy.Globals.Log("client.js::doAdd: lastnameTextField change: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
 	});
-	companyTextField.addEventListener("blur",function(e){
+	companyTextField.addEventListener("change",function(e){
 		savedata.col4=e.value;
-		Alloy.Globals.Log("client.js::doAdd: companyTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+		Alloy.Globals.Log("client.js::doAdd: companyTextField change: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
 	});
-	phoneTextField.addEventListener("blur",function(e){
+	phoneTextField.addEventListener("change",function(e){
 		savedata.col5=e.value;
-		Alloy.Globals.Log("client.js::doAdd: phoneTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+		Alloy.Globals.Log("client.js::doAdd: phoneTextField change: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
 	});
-	emailTextField.addEventListener("blur",function(e){
+	emailTextField.addEventListener("change",function(e){
 		savedata.col6=e.value;
-		Alloy.Globals.Log("client.js::doAdd: emailTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+		Alloy.Globals.Log("client.js::doAdd: emailTextField change: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
 	});
-	streetaddrTextField.addEventListener("blur",function(e){
+	streetaddrTextField.addEventListener("change",function(e){
 		savedata.col7=e.value;
-		Alloy.Globals.Log("client.js::doAdd: streetaddrTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+		Alloy.Globals.Log("client.js::doAdd: streetaddrTextField change: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
 	});
-	cityTextField.addEventListener("blur",function(e){
+	cityTextField.addEventListener("change",function(e){
 		savedata.col8=e.value;
-		Alloy.Globals.Log("client.js::doAdd: cityTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+		Alloy.Globals.Log("client.js::doAdd: cityTextField change: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
 	});
-	stateTextField.addEventListener("blur",function(e){
+	stateTextField.addEventListener("change",function(e){
 		savedata.col9=e.value;
-		Alloy.Globals.Log("client.js::doAdd: stateTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+		Alloy.Globals.Log("client.js::doAdd: stateTextField change: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
 	});
-	countryTextField.addEventListener("blur",function(e){
+	countryTextField.addEventListener("change",function(e){
 		savedata.col9=e.value;
-		Alloy.Globals.Log("client.js::doAdd: countryTextField blur: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
+		Alloy.Globals.Log("client.js::doAdd: countryTextField change: JSON.stringify(savedata)  "+JSON.stringify(savedata));Titanium.UI.Android.hideSoftKeyboard();	
 	});
 	savedata.col11=savedata.col12=savedata.col13=savedata.col15="NA";
 	savedata.col1=savedata.col14=savedata.col16=Date.now();
@@ -97,6 +97,7 @@ function doAdd(){
 		Alloy.Globals.Log("client.js::doAdd : submit "+submit);
 		if (submit) {
 			Alloy.Globals.Log("client.js::doAdd : submit is true: refresh data ");
+			var item='client';var sid = Titanium.App.Properties.getString(item,"none");Alloy.Globals.getPrivateData(sid,item);
 		}
 	});
 	win.open();	
@@ -142,7 +143,33 @@ function transformFunction(model) {
 	transform.labelcolor = (transform.col5.length != 10)?"red":"#330"; //alert user to fix the phone number
 	return transform;
 }
-	
+
+
+
+function pulledEvent(e){
+	Alloy.Globals.Cleanup();
+	var item="client";
+	var sid = Titanium.App.Properties.getString(item,"none");
+	Alloy.Globals.Log("client.js:pulledEvent:use in callback: Alloy.Globals.getPrivateData("+sid+","+item+")");
+	Alloy.Globals.getPrivateData(sid,item);
+	Alloy.Globals.Log("client.js:pulledEvent:use in callback: Alloy.Collections.client.fetch()");
+	Alloy.Collections.client.fetch();
+}	
+function myRefresher(e) {
+    Alloy.Collections.client.fetch({
+        success: e.hide,
+        error: e.hide
+    });
+    Alloy.Globals.Log("client.js:pulledEvent: Alloy.Collections.client.fetch(): " +JSON.stringify(Alloy.Collections.client));
+}
+$.ptr.refresh();
+/*
+refresh.addEventListener('refreshstart',function(e){
+	pulledEvent();
+	setTimeout(function(){
+        refresh.endRefreshing();
+    }, 2000);
+});*/
 
 $.clientlist_table.addEventListener("delete", function(e){
 	Alloy.Globals.Log("client.js::$.clientlist_table delete: "+JSON.stringify(e));
@@ -173,16 +200,25 @@ function doRow(e){
 	Alloy.Globals.Log("client.js::doRow click: "+JSON.stringify(e));
 	var win = Titanium.UI.createWindow({title:"Client Details",backgroundColor:'#F5F5F5'});
 	var activity = win.activity;	
+	savedata = {col1:"",col2:"",col3:"",col4:"",col5:"",col6:"",col7:"",col8:"",col9:"",col10:"",col11:"",col12:"",col13:"",col14:"",col15:"",col16:""};
+	for (k=0;k<16;k++){
+		eval("savedata.col"+parseFloat(k+1)+"=e.rowData.title.split(':')["+parseFloat(k)+"].trim()");
+	}
+	var urls = e.rowData.title.split(':')[13].replace(/yCoLoNy/g,':').replace(/xCoLoNx/g,',');
+	existingurlsidtag = urls.split(',')[0];
+	existingurlsselfhref = urls.split(',')[1];
+	existingurlsedithref = urls.split(',')[2];
+	Alloy.Globals.Log("client.js::doRow click: existingurlsedithref, "+existingurlsedithref+", existingurlsselfhref, "+existingurlsselfhref+",  existingurlsidtag, "+existingurlsidtag);
+	Alloy.Globals.Log("client.js::doRow click: JSON.stringify(savedata) "+JSON.stringify(savedata));
 	var subject = ['firstname','lastname','company','phone','email','streetaddr','city','state','country'];
 	for (i=0;i<subject.length;i++){
 		eval(subject[i]+" =  e.rowData.title.split(':')["+parseFloat(i+1)+"].trim()");
-		Alloy.Globals.Log("client.js::doRow array: "+firstname);
-		eval("var "+subject[i]+"label = Ti.UI.createLabel({text:"+subject[i]+",top:14,color:'#3B3B3B',font:{fontSize:'14'},textAlign:'Ti.UI.TEXT_ALIGNMENT_CENTER'})");
+		Alloy.Globals.Log("client.js::doRow array: subject[i]: "+subject[i]);
+		eval("var "+subject[i]+"label = Ti.UI.createLabel({text:"+subject[i]+",top:14,color:'#3B3B3B',font:{fontSize:'14'}})");
 		eval("var view = Titanium.UI.createView({top:parseFloat(40)*parseFloat("+i+"),height:'39',width:'95%',layout:'vertical',backgroundColor:'#FAFAFA',borderColor:'#EDEDED',borderRadius:'10',borderWidth:'0.1'})");
 		eval("view.add("+subject[i]+"label)");
 		win.add(view);
-	}	
-	
+	}		
 	var firstnameTextField = Ti.UI.createTextField({hintText:firstname,color:"black",font:{fontSize:"14"},width:"95%"});
 	//var ffirstnamelabel = Ti.UI.createLabel({text:'firstname',textAlign:'Ti.UI.TEXT_ALIGNMENT_CENTER', color:"#3B3B3B",font:{fontSize:"14"}});view.add(ffirstnamelabel);
 	activity.onCreateOptionsMenu = function(e){
@@ -204,15 +240,22 @@ function doRow(e){
 		    Alloy.Globals.Log("client.js::doRow array: menuItem1 "+subject[i]+" is: "+eval(subject[i]));
 		    eval(subject[i]+"label.hide()");
 		    eval("var "+subject[i]+"TextField = Ti.UI.createTextField({hintText:"+subject[i]+",color:'black',font:{fontSize:'14'},width:'95%'})");
-		    //firstnameTextField.addEventListener('blur',function(f){var newfirstname=f.value;menuItem2.newfirstname=newfirstname;});
-		    eval(""+subject[i]+"TextField.addEventListener('change',function(f){var new"+subject[i]+"=f.value;menuItem2.new"+subject[i]+"=new"+subject[i]+";})");// menuItem2.newfirstname=erica
+		    //firstnameTextField.addEventListener('blur',function(f){var newfirstname=f.value;menuItem2.newfirstname=newfirstname;savedata.col1=f.value}); //what the line below supposed to do
+		    eval(""+subject[i]+"TextField.addEventListener('change',function(f){var new"+subject[i]+"=f.value;menuItem2.new"+subject[i]+"=new"+subject[i]+";savedata.col"+(i+2)+"=f.value;})");// menuItem2.newfirstname=erica
 		    eval("var view = Titanium.UI.createView({top:parseFloat(40)*parseFloat("+i+"),height:'39',width:'95%',layout:'vertical',backgroundColor:'gray',borderColor:'#EDEDED',borderRadius:'10',borderWidth:'0.1'})");  
 	    	eval("view.add("+subject[i]+"TextField)");
 			win.add(view);
 		}
 	  });
 	  menuItem2.addEventListener("click",function(e){
-	  	 Alloy.Globals.Log("client.js::doRow array: menuItem2: JSON.stringify(e)  "+JSON.stringify(e));
+		  Alloy.Globals.Log("client.js::doRow :menuItem2: click: existingurlsedithref, "+existingurlsedithref+", existingurlsselfhref, "+existingurlsselfhref+",  existingurlsidtag, "+existingurlsidtag);
+	  	  Alloy.Globals.Log("client.js::doRow:menuItem2: click: JSON.stringify(savedata) "+JSON.stringify(savedata));
+	  	  Alloy.Globals.submit("client","",savedata.col1,savedata.col2,savedata.col3,savedata.col4,savedata.col5,savedata.col6,savedata.col7,savedata.col8,savedata.col9,savedata.col10,savedata.col11,savedata.col12,savedata.col13,savedata.col14,savedata.col15,savedata.col16,existingurlsedithref,existingurlsselfhref,existingurlsidtag);
+	  	  win.addEventListener("close",function(){
+	  	  	var type="client";var sid = Titanium.App.Properties.getString(type,"none");Alloy.Globals.getPrivateData(sid,type);
+	  	  	Alloy.Collections.client.fetch();
+	  	    alert("Please pull to refresh");
+	  	  	}); //refresh clientlist once closed
 	  });
 	};	
 	win.open();

@@ -7,6 +7,7 @@
   	       	<MenuItem id="item1" title="Add" onClick="doAdd" />   
   	       	<MenuItem id="item2" title="Search" onClick="doSearch" />     
         </Menu>
+        <Widget id="ptr" src="nl.fokkezb.pullToRefresh" onRelease="myRefresher">
 	  	<TableView id="clientlist_table"  backgroundColor="transparent" dataCollection="client" search="search_history" 
 	  		dataTransform="transformFunction" filterAttribute="title" editable="true" moveable="true">
 		  	<SearchBar id="search_history" height="43" backgroundColor="#212121" />
@@ -17,6 +18,7 @@
 					<Label  id="label_sub3" color="#333"  textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" top="60" text="{address}"/>
 				</TableViewRow>
 		</TableView>
+		</Widget>
 	  </Window>
   </Tab>
 </Alloy>
