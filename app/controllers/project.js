@@ -10,13 +10,13 @@ exports.openMainWindow = function(_tab) {
 	Alloy.Globals.Log("project.js: JSON.stringify($.search_history): "+JSON.stringify($.search_history));
 };
 
-
+savedata = {col1:"",col2:"",col3:"",col4:"",col5:"",col6:"",col7:"",col8:"",col9:"",col10:"",col11:"",col12:"",col13:"",col14:"",col15:"",col16:""};
 
 var clientController;
 
 function transformFunction(model) {
 	var transform = model.toJSON();
-	Alloy.Globals.Log("project.js::transform col1 data:: "+JSON.stringify(transform.col1)+" col15:"+JSON.stringify(transform.col15)+" col16:"+JSON.stringify(transform.col16));
+	//Alloy.Globals.Log("project.js::transform col1 data:: "+JSON.stringify(transform.col1)+" col15:"+JSON.stringify(transform.col15)+" col16:"+JSON.stringify(transform.col16));
 	transform.title = transform.col1.trim()+":"+transform.col2.trim()+":"+transform.col3.trim()+":"+transform.col4.trim()+":"+transform.col5.trim()+":"+transform.col6+":"+transform.col7+":"
 	+transform.col8+":"+transform.col9+":"+transform.col10+":"+transform.col11+":"+transform.col12+":"+transform.col13+":"+transform.col14+":"
 	+transform.col15+":"+transform.col16;
@@ -64,35 +64,15 @@ function addHandler(e) {
 }
 
 function myRefresher(e) {
-	Alloy.Globals.Log("refreshing after pull : " +JSON.stringify(e));
+	var type="project";var sid = Titanium.App.Properties.getString(type,"none");Alloy.Globals.getPrivateData(sid,type);
     Alloy.Collections.project.fetch({
         success: e.hide,
         error: e.hide
     });
+    Alloy.Globals.Log("project.js::refreshing after pull : " +JSON.stringify(e));
 }
 
 Alloy.Globals.Log("project.js::args sourcecall detected is: " +args.sourcecall);
-/*
-if (args.sourcecall) {
-	$.projectlist_window.addEventListener("click", function(e){
-		Alloy.Globals.openDetail(e);
-		var title = e.row.title;
-		var enterinvoiceController = Alloy.createController(args.sourcecall,{
-			title: title
-		});
-		enterinvoiceController.openMainWindow($.tab_enterinvoicelist);
-});
-} else {
-	$.projectlist_window.addEventListener("click", function(e){
-		Alloy.Globals.openDetail(e);
-		var title = e.row.title;
-		var clientController = Alloy.createController('projectdetail',{
-			title: title,
-			callbackFunction : pulledEvent
-		});
-		clientController.openMainWindow($.tab_projectlist);
-	});
-}*/
 
 $.projectlist_table.addEventListener("click", function(e){
 		Alloy.Globals.Log("projectlist_table e : " +JSON.stringify(e));
@@ -286,7 +266,6 @@ function doAdd(e) {
 		jobitemsheaderview.top=parseFloat(jobitemheaderview.top)+parseFloat(jobitemheaderview.height)+parseFloat(jobdescrview.height);
 		projectDetailscrollView.top=parseFloat(jobitemsheaderview.top)+parseFloat(jobitemsheaderview.height);
 		Alloy.Globals.Log("project.js::doAdd:rearrangeView pos: jobitemheaderview.top, jobitemsheaderview.top, projectDetailscrollView.top : "+jobitemheaderview.top+", "+jobitemsheaderview.top+", "+projectDetailscrollView.top);
-
 	}
 	
 	clientheaderview.addEventListener("click",function(){
@@ -481,10 +460,127 @@ function openProjectDetail(title) {
 	selfhref = (data[13])?data[13].replace(/xCoLoNx/g,',').split(',')[1].replace('yCoLoNy',':'):"none";Titanium.App.Properties.setString('selfhref',selfhref);
 	edithref = (data[13])?data[13].replace(/xCoLoNx/g,',').split(',')[2].replace('yCoLoNy',':'):"none";Titanium.App.Properties.setString('edithref',edithref);
 	//variables end
+	//savedata populate start
+	savedata = {col1:"",col2:"",col3:"",col4:"",col5:"",col6:"",col7:"",col8:"",col9:"",col10:"",col11:"",col12:"",col13:"",col14:"",col15:"",col16:""};
+	for (k=0;k<16;k++){
+		eval("savedata.col"+parseFloat(k+1)+"=data["+parseFloat(k)+"].trim()");
+	}
+	var urls = data[13].replace(/yCoLoNy/g,':').replace(/xCoLoNx/g,',');
+	existingurlsidtag = urls.split(',')[0];
+	existingurlsselfhref = urls.split(',')[1];
+	existingurlsedithref = urls.split(',')[2];
+	Alloy.Globals.Log("project.js::doRow click: existingurlsedithref, "+existingurlsedithref+", existingurlsselfhref, "+existingurlsselfhref+",  existingurlsidtag, "+existingurlsidtag);
+	Alloy.Globals.Log("project.js::doRow click: JSON.stringify(savedata) "+JSON.stringify(savedata));
+	//savedata populate end
 	var win = Titanium.UI.createWindow({
             title:"Project Detail",
             backgroundColor: "white"
     });
+    var activity = win.activity;	
+    activity.onCreateOptionsMenu = function(e){
+	  var menu = e.menu;
+  	  var menuItem2 = menu.add({
+	    title: "Item 2",
+	    icon:  Ti.Android.R.drawable.ic_menu_save,
+	    showAsAction: Ti.Android.SHOW_AS_ACTION_ALWAYS
+	  });
+	  menuItem2.addEventListener("click",function(e){
+	  	savedata.col14="none";
+	  	Alloy.Globals.Log("project.js::win.activity:onCreateOptionsMenu:menuItem2:existingurlsedithref, "+existingurlsedithref+", existingurlsselfhref, "+existingurlsselfhref+",  existingurlsidtag, "+existingurlsidtag);
+	  	Alloy.Globals.Log("project.js::win.activity:onCreateOptionsMenu:menuItem2:JSON.stringify(savedata) "+JSON.stringify(savedata));
+	  	Alloy.Globals.submit("project","",savedata.col1,savedata.col2,savedata.col3,savedata.col4,savedata.col5,savedata.col6,savedata.col7,savedata.col8,savedata.col9,savedata.col10,savedata.col11,savedata.col12,savedata.col13,savedata.col14,savedata.col15,savedata.col16,existingurlsedithref,existingurlsselfhref,existingurlsidtag);	
+	  	win.addEventListener("close",function(){
+	  	  	var type="project";var sid = Titanium.App.Properties.getString(type,"none");Alloy.Globals.getPrivateData(sid,type);
+	  	  	Alloy.Collections.project.fetch();
+	  	    alert("Please pull to refresh");
+  	  	}); //refresh projectlist once closed  	
+	  });
+	  var menuItem1 = menu.add({
+	    title: "Item 1",
+	    icon:  Ti.Android.R.drawable.ic_menu_edit,
+	    showAsAction: Ti.Android.SHOW_AS_ACTION_ALWAYS
+	  });
+	  menuItem1.addEventListener("click", function(e) {
+	  	 // notesraw value
+	  	 jobitemsview.backgroundColor="gray";
+	  	 function rearrangeView() {
+	  	 	projectDetailscrollView.remove(headerview);
+	  	 	projectDetailscrollView.remove(statusheaderview);
+	  	 	projectDetailscrollView.remove(statusview);
+	  	 	projectDetailscrollView.remove(datesview);
+	  	 	projectDetailscrollView.remove(joblogview);
+			}
+	  	 rearrangeView();
+	  	 jobitemsview.top=0;
+		  var notesstring = notesraw.replace(/cOlOn/g,':'); 
+		  Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: notesstring: "+notesstring);
+		  jobdescrview.backgroundColor="#AAAAAA";
+		  jobdescrview.height = parseFloat(jobdescrview.height)+30;
+  		  jobdescrview.remove(descrtitlelabel);
+		  jobdescrview.remove(descrbodylabel);
+		  notes = JSON.parse(notesstring);
+		  var descr = notes[0].descr;
+		 // var item = [];
+		  //item.push({"descr":descr});
+		  function displaynotevalue(){
+		  	Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: notes: "+JSON.stringify(notes)); 
+		  	savedata.col12=JSON.stringify(notes).toString().replace(/:/g,'cOlOn');
+		  	Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: savedata: "+JSON.stringify(savedata));
+		  	};
+		  var descrTextArea = Ti.UI.createTextArea({hintText:'Description: '+descr,color:'black',left:"20",font:{fontSize:'14'},width:'90%'});
+		  descrTextArea.addEventListener("change",function(e){
+		  	 notes[0].descr = descrTextArea.value;
+		  	 displaynotevalue();
+		  });
+		  jobdescrview.add(descrTextArea);
+		  Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: jobitemsview: "+JSON.stringify(jobitemsview));  
+		  Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: JSON.stringify(jobitemsview.children): "+JSON.stringify(jobitemsview.children));
+		  var jobitemsviewcount = jobitemsview.children.length;
+		  Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: jobitemsview.children.length: "+jobitemsview.children.length+" jobitemsviewcount: "+jobitemsviewcount);
+		  for (j=jobitemsviewcount;j>0;j--){
+		  	if (jobitemsview.children[j]) {	jobitemsview.remove(jobitemsview.children[j]); };
+		  	Alloy.Globals.Log("jobitemsview.remove(jobitemsview.children["+j+"])");
+		  	Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: jobitemsview.remove: JSON.stringify(jobitemsview.children["+j+"]) "+JSON.stringify(jobitemsview.children[j]));
+		  }
+		  var topvalue = 20;
+		  for (i=1;i<notes.length;i++){
+		  	Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: notes["+i+"]: "+JSON.stringify(notes[i])); 
+		  	var itembodyTextField = Ti.UI.createTextField({hintText: i+' :    '+notes[i].lineitem , top : topvalue, left:"20", color:'#333',font:{fontSize:'14'},width:'90%'});
+		  	Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: JSON.stringify(itembodyTextField) "+JSON.stringify(itembodyTextField)); 
+			eval("itembodyTextField.addEventListener('change',function(e){notes["+i+"].lineitem=e.value;displaynotevalue();})");
+		  	var itemqtyTextField = Ti.UI.createTextField({
+		  		hintText:isNaN(notes[i].qty)?notes[i].qty='Qty :'+0:'Qty :'+notes[i].qty, 
+		  		top : topvalue+24+8, 
+		  		color:'#333',
+		  		font:{fontSize:'14'},
+		  		width:"100",
+		  		left:"20"
+	  		});
+	  		Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: JSON.stringify(itemqtyTextField) "+JSON.stringify(itemqtyTextField));
+	  		eval("itemqtyTextField.addEventListener('change',function(e){notes["+i+"].qty=e.value;displaynotevalue();})"); 
+			var itempriceTextField = Ti.UI.createTextField({
+				hintText:isNaN(notes[i].price)?notes[i].qty='Price : '+0:'Price : '+notes[i].price, 
+				top : topvalue+24+8, 
+				left:"150", 
+				color:'#333',
+				font:{fontSize:'14'},
+				width:"100"
+			});
+			var topvalue = topvalue+24+8+40;
+			Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: JSON.stringify(itempriceTextField) "+JSON.stringify(itempriceTextField));
+			eval("itempriceTextField.addEventListener('change',function(e){notes["+i+"].price=e.value;displaynotevalue();})"); 
+		  	jobitemsview.add(itembodyTextField);
+			jobitemsview.add(itemqtyTextField);
+		    jobitemsview.add(itempriceTextField);
+		    Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: in LOOP: JSON.stringify(jobitemsview) "+JSON.stringify(jobitemsview));
+		  };
+		  Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: out LOOP: JSON.stringify(jobitemsview) "+JSON.stringify(jobitemsview));	 
+		  Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: out LOOP: JSON.stringify(savedata) "+JSON.stringify(savedata));
+		  win.add(jobitemsview);
+		  win.open();
+	  });
+	 
+  	};
     if (Ti.UI.Android){win.windowSoftInputMode = Ti.UI.Android.SOFT_INPUT_ADJUST_PAN;}
 	var headerview = Ti.UI.createView({height:"170"});
 	var statusheaderlabel = Ti.UI.createLabel({text:"Status Summary",left:"20"});
@@ -829,7 +925,7 @@ function datepickertoggle(e){
 	joblogview.add(genreportinpdflabelbutton);
 	statusview.add(picker);
 	
-	// Job Items
+	// Job Items start. notesraw.
 	if (notesraw != "none") {
 		var notesstring = notesraw.replace(/cOlOn/g,':');   // replacing all cOlOn to ':'
 		Alloy.Globals.Log("project.js::notesstring: "+notesstring);
@@ -862,6 +958,7 @@ function datepickertoggle(e){
 		var itemtitlelabel = Ti.UI.createLabel ({
 		left  : "20",
 		top : "4",
+		color : "#333",
 		font:{
 			fontSize:14
 		},
@@ -871,30 +968,27 @@ function datepickertoggle(e){
 		if ( notes.length > 1) {jobitemsview.add(itemtitlelabel); }
 	var topvalue = 24;
 	for (i=1;i<notes.length;i++){
-		var itembodylabel = Ti.UI.createLabel ({
+		var itembodylabel = Ti.UI.createLabel({
 			color : "#333",
-			left  : "20",
-			
+			left  : "20",			
 			top : topvalue,
 			font:{
 				fontSize:12
 			},
 			text : i+' :    '+notes[i].lineitem
 		});		
-		var itemqtylabel = Ti.UI.createLabel ({
+		var itemqtylabel = Ti.UI.createLabel({
 			color : "#333",
-			left  : "200",
-			
+			left  : "200",			
 			top : topvalue+12+4,
 			font:{
 				fontSize:10
 			},
 			text : isNaN(notes[i].qty)?notes[i].qty='Qty :'+0:'Qty :'+notes[i].qty  
 		});
-		var itempricelabel = Ti.UI.createLabel ({
+		var itempricelabel = Ti.UI.createLabel({
 			color : "#333",
-			left  : "320",
-			
+			left  : "320",	
 			top : topvalue+12+4,
 			font:{
 				fontSize:10
