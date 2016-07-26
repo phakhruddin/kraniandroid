@@ -2,10 +2,6 @@ var args = arguments[0] || {};
 exports.openMainWindow = function(_tab) {
   _tab.open($.projectlist_window);
   Alloy.Globals.Log("This is child widow project.js" +_tab);
-  
- 
-
-  	
 	Alloy.Collections.project.fetch();		
 	Alloy.Globals.Log("project.js: JSON.stringify($.search_history): "+JSON.stringify($.search_history));
 };
@@ -64,11 +60,24 @@ function addHandler(e) {
 }
 
 function myRefresher(e) {
-	var type="project";var sid = Titanium.App.Properties.getString(type,"none");Alloy.Globals.getPrivateData(sid,type);
+	$.projectlist_window.close();
+	$.projectlist_window.open();
+	/*for (i=0;i<$.projectlist_table.sections[0].rows.length;i++){
+		Alloy.Globals.Log("client.js::doSearch : JSON.stringify($.projectlist_table.sections[0].rows[i]): "+JSON.stringify($.projectlist_table.sections[0].rows[i]));
+		for(k=0;k<$.projectlist_table.sections[0].rows[i].length;k++){
+			Alloy.Globals.Log("client.js::doSearch : JSON.stringify($.projectlist_table.sections[0].rows[i].children[k]): "+JSON.stringify($.projectlist_table.sections[0].rows[i].children[k]));
+			if ($.projectlist_table.sections[0].rows[i].children[k]) {$.projectlist_table.sections[0].rows[i].removeAllChildren();}
+			Alloy.Globals.Log("client.js::doSearch : removeAllChildren(): JSON.stringify($.projectlist_table.sections[0].rows[i].children[k]): "+JSON.stringify($.projectlist_table.sections[0].rows[i].children[k]));
+		}
+		if($.projectlist_table.sections[0].rows[i]){$.projectlist_table.deleteRow($.projectlist_table.sections[0].rows[i]);}
+	}*/
+	//$.projectlist_table.setData([]);
+	//$.projectlist_window.remove($.projectlist_table);
+	/*var type="project";var sid = Titanium.App.Properties.getString(type,"none");Alloy.Globals.getPrivateData(sid,type);
     Alloy.Collections.project.fetch({
         success: e.hide,
         error: e.hide
-    });
+    });*/
     Alloy.Globals.Log("project.js::refreshing after pull : " +JSON.stringify(e));
 }
 
@@ -78,10 +87,6 @@ $.projectlist_table.addEventListener("click", function(e){
 		Alloy.Globals.Log("projectlist_table e : " +JSON.stringify(e));
 		Alloy.Globals.Log("projectlist_table e.rowData.title : " +e.rowData.title);
 		openProjectDetail(e.rowData.title);
-		////Alloy.Globals.openDetail(e);
-		////var title = e.row.title;
-		///var clientController = Alloy.createController('projectdetail');
-		////clientController.openMainWindow($.tab_projectlist);
 });
 
 $.projectlist_table.search = $.search_history;
@@ -479,6 +484,29 @@ function openProjectDetail(title) {
     var activity = win.activity;	
     activity.onCreateOptionsMenu = function(e){
 	  var menu = e.menu;
+	  var menuItem3 = menu.add({
+	    title: "Item 3",
+	    icon:  Ti.Android.R.drawable.ic_menu_delete,
+	    showAsAction: Ti.Android.SHOW_AS_ACTION_ALWAYS
+	  });
+	  menuItem3.addEventListener("click",function(){
+	  	Alloy.Globals.Log("project.js::win.activity:onCreateOptionsMenu:menuItem3: DELETE:existingurlsedithref, "+existingurlsedithref+", existingurlsselfhref, "+existingurlsselfhref+",  existingurlsidtag, "+existingurlsidtag);
+	  	var deletedialog = Ti.UI.createAlertDialog({
+				cancel: 1,
+				buttonNames: ['NO', 'YES'],
+				message: "Are you sure to delete "+projectname+"?",
+				title: 'Delete'
+			});
+		deletedialog.addEventListener('click', function(e){
+			Alloy.Globals.Log("project.js::win.activity:onCreateOptionsMenu:menuItem3: DELETE:YES_NO: JSON.stringify(e): "+JSON.stringify(e));
+			if (e.index == "0") {var answer = "NO";};
+			if (e.index == "1") {var answer = "YES";Alloy.Globals.deleteData(existingurlsedithref);}
+			Alloy.Globals.Log("project.js::win.activity:onCreateOptionsMenu:menuItem3: DELETE:YES_NO: Answer is "+answer);
+			
+		});
+		deletedialog.show();
+	  });
+	  
   	  var menuItem2 = menu.add({
 	    title: "Item 2",
 	    icon:  Ti.Android.R.drawable.ic_menu_save,
@@ -510,14 +538,18 @@ function openProjectDetail(title) {
 	  	 	projectDetailscrollView.remove(datesview);
 	  	 	projectDetailscrollView.remove(joblogview);
 			}
+		 jobitemheaderlabel.text="Project Name, Item & Description";
 	  	 rearrangeView();
 	  	 jobitemsview.top=0;
 		  var notesstring = notesraw.replace(/cOlOn/g,':'); 
 		  Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: notesstring: "+notesstring);
 		  jobdescrview.backgroundColor="#AAAAAA";
-		  jobdescrview.height = parseFloat(jobdescrview.height)+30;
+		  jobdescrview.height = parseFloat(jobdescrview.height)+80;
   		  jobdescrview.remove(descrtitlelabel);
 		  jobdescrview.remove(descrbodylabel);
+		  var projectnameTextField = Ti.UI.createTextField({hintText:'Project Name: '+projectname, top : 5, left:"20", color:'#333',font:{fontSize:'14'},width:'90%'});
+		  projectnameTextField.addEventListener("change",function(e){savedata.col1=e.value;});
+		  jobdescrview.add(projectnameTextField);
 		  notes = JSON.parse(notesstring);
 		  var descr = notes[0].descr;
 		 // var item = [];
@@ -526,8 +558,8 @@ function openProjectDetail(title) {
 		  	Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: notes: "+JSON.stringify(notes)); 
 		  	savedata.col12=JSON.stringify(notes).toString().replace(/:/g,'cOlOn');
 		  	Alloy.Globals.Log("project.js:: win.activity:onCreateOptionsMenu: savedata: "+JSON.stringify(savedata));
-		  	};
-		  var descrTextArea = Ti.UI.createTextArea({hintText:'Description: '+descr,color:'black',left:"20",font:{fontSize:'14'},width:'90%'});
+	  	  };
+		  var descrTextArea = Ti.UI.createTextArea({hintText:'Description: '+descr,top:50, color:'black',left:"20",font:{fontSize:'14'},width:'90%'});
 		  descrTextArea.addEventListener("change",function(e){
 		  	 notes[0].descr = descrTextArea.value;
 		  	 displaynotevalue();
@@ -1486,9 +1518,4 @@ function datepickertoggle(e){
 	projectDetailscrollView.add(jobitemsview);
 	win.add(projectDetailscrollView);
     win.open();
-    
-
-
 }
-
-

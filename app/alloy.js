@@ -3421,3 +3421,21 @@ Alloy.Globals.LoadRemoteImage = function (obj,url) {
 		xhr.send();
 	};
 	
+Alloy.Globals.deleteData = function(existingurlsedithref){	
+	Alloy.Globals.Log("alloy.js:Alloy.Globals.deleteData:existingurlsedithref:"+existingurlsedithref);
+	var xhr = Ti.Network.createHTTPClient({
+	    onload: function(e) {
+	    try {
+	    		Alloy.Globals.Log("alloy.js:Alloy.Globals.deleteData:delete:success e: "+JSON.stringify(e));
+	    		Alloy.Globals.Log("alloy.js:Alloy.Globals.deleteData:response is: "+this.responseText);
+	    	} catch(e){
+				Alloy.Globals.Log("alloy.js:Alloy.Globals.deleteData:delete:cathing e: "+JSON.stringify(e));
+			}
+		}
+	});
+	xhr.open("DELETE", existingurlsedithref);	
+	xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
+	if (existingurlsedithref) {xhr.send();} else {Alloy.Globals.Log("alloy.js:Alloy.Globals.deleteData: DONE: DELETE : NO edithref. abort delete ");}
+	Alloy.Globals.Log("alloy.js:Alloy.Globals.deleteData: DONE: DELETE "+existingurlsedithref);
+};

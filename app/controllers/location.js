@@ -176,6 +176,18 @@ function doSearch(e){
 	Alloy.Globals.Log("client.js::doSearch : searchstatus "+searchstatus);
 	if ($.search_history.visible) {$.search_history.visible=false;} else {$.search_history.visible=true;}
 	Alloy.Globals.Log("client.js::doSearch : $.search_history.visible: "+$.search_history.visible);
+	//$.table.setData([]);
+	Alloy.Globals.Log("client.js::doSearch : JSON.stringify($.labor_table): "+JSON.stringify($.labor_table));
+	Alloy.Globals.Log("client.js::doSearch : $.labor_table.sections.length:"+$.labor_table.sections.length+", $.labor_table.sections[0].rows.length:"+$.labor_table.sections[0].rows.length+", $.labor_table.sections[0].rows[0].children.length:"+$.labor_table.sections[0].rows[0].children.length);
+	Alloy.Globals.Log("client.js::doSearch : JSON.stringify($.labor_table.sections[0].rows): "+JSON.stringify($.labor_table.sections[0].rows));
+	for (i=0;i<$.labor_table.sections[0].rows.length;i++){
+		Alloy.Globals.Log("client.js::doSearch : JSON.stringify($.labor_table.sections[0].rows[i]): "+JSON.stringify($.labor_table.sections[0].rows[i]));
+		for(k=0;k<$.labor_table.sections[0].rows[i].length;k++){
+			Alloy.Globals.Log("client.js::doSearch : JSON.stringify($.labor_table.sections[0].rows[i].children[k]): "+JSON.stringify($.labor_table.sections[0].rows[i].children[k]));
+		}
+	}
+	//$.labor_table.setData([]);
+	//Alloy.Globals.Log("client.js::doSearch : after $.labor_table.setData([]): JSON.stringify($.labor_table): "+JSON.stringify($.labor_table));
 }
 function doBack(){};
 
