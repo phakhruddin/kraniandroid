@@ -2,15 +2,14 @@ var count=7;
 var timeoutms = 10000; //10secs
 var i=0;
 
-
-
-
 function openNextTab(item){
+	$.activityIndicator.show();
 	var sid = Titanium.App.Properties.getString(item,"none");
 	Alloy.Globals.Log("tabViewOne::openNextTab::sid for "+ item +" : "+sid);
-	Alloy.Globals.getPrivateData(sid,item);
-	var scheduleController = Alloy.createController(item);
-	scheduleController.openMainWindow($.tab_one);	
+	Alloy.Globals.getPrivateData(sid,item,function(e){
+		Alloy.Globals.Log("tabViewOne.js:openNextTab: item: "+item);
+		Alloy.Globals.createController(item,$.tab_one);
+	},function(){ $.activityIndicator.hide();});	
 }
 
 function setMenuText() {
@@ -365,12 +364,18 @@ $.settings.addEventListener ("click", function(e){
 });
 
 $.invoicelistlist.addEventListener ("click", function(e){
+	$.activityIndicator.show();
 	Alloy.Globals.openDetail(e);
  	var item = 'invoice';
 	var sid = Titanium.App.Properties.getString(item,"none");
 	Alloy.Globals.Log("tabviewone.js::sid for "+ item +" : "+sid);
-	Alloy.Globals.getPrivateData(sid,item);
+	Alloy.Globals.getPrivateData(sid,item,function(e){
+		Alloy.Globals.Log("tabViewOne.js:openNextTab: item: "+item);
+		Alloy.Globals.createController("invoicelistlist",$.tab_one);
+	},function(){ $.activityIndicator.hide();});
+	
+	/*Alloy.Globals.getPrivateData(sid,item);
 	var scheduleController = Alloy.createController("invoicelistlist");
- 	scheduleController.openMainWindow($.tab_one);
+ 	scheduleController.openMainWindow($.tab_one);*/
 });
 

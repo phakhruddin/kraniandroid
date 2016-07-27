@@ -10,6 +10,7 @@
   <Collection src="joblogsid"/>
   <Tab id="tab_one" title="MAIN" titleColor="white" backgroundFocusedColor="white">
     <Window id="tabviewone_window" title="Krani" class='container'>
+    	<ActivityIndicator id="activityIndicator" style="Titanium.UI.ActivityIndicatorStyle.BIG_DARK" message="Loading.."/>
     	<TableView>
       		<HeaderView id="tabviewone_headerview">
 				<View height="20" id="status_view" backgroundColor="red">
