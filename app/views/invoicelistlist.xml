@@ -1,5 +1,6 @@
 <Alloy>
 <Model src="dummy"/>
+<Collection src="adhoc"/>
  <Tab id="tab_invoicelist" title="invoice">
   <Window id="invoicelist_window" backgroundColor="#212121" height='Titanium.UI.FILL' title="INVOICE">
   	<ActionBar id="actionbar" onHomeIconItemSelected="doBack"  displayHomeAsUp="true" />

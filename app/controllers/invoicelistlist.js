@@ -304,31 +304,35 @@ function whois(e){
 function openInvoiceDetail(e){
 	Alloy.Globals.Log("invoicelistlist.js: openInvoiceDetail:JSON.stringify e : " +JSON.stringify(e));
 	//variables start	
+	Alloy.Collections.adhoc.deleteAll();
+	var adhocs = Alloy.Collections.instance('adhoc'); //adhocs DB
 	var data = (e[0])?e:eval("e.section.items["+e.itemIndex+"].properties.searchableText.split(':')");
 	Alloy.Globals.Log("invoicelistlist.js: openInvoiceDetail:data : " +data);
-	var invoicenumber = col1 = (e[0])?"TBD":data[0];
-	var firstname = col2 = data[1];
-	var lastname = col3 = data[2];
+	invoicenumber = col1 = (e[0])?"TBD":data[0];
+	firstname = col2 = data[1];
+	lastname = col3 = data[2];
 	var total = col4 =  (e[0])?"TBD":data[3];
-	var balance = col5 =  (e[0])?"TBD":data[4];
+	balance = col5 =  (e[0])?"TBD":data[4];
 	var paid = col6 =  (e[0])?"TBD":data[5];
 	var lastpaiddate = col7 =  (e[0])?"TBD":data[6];
 	var followupdate = col8 =  (e[0])?"TBD":data[7];
 	var customerid = col9 =  (e[0])?data[0]:data[8];
-	var email = col10 = (e[0])?data[5]:data[9];
+	email = col10 = (e[0])?data[5]:data[9];
 	var duedate = col11 = (e[0])?"TBD":data[10];
-	var phone = col12 = (e[0])?data[4]:data[11];
+	phone = col12 = (e[0])?data[4]:data[11];
 	var status = col13 = (e[0])?"TBD":data[12];
 	var currency = col15 = (e[0])?"TBD":data[14];
 	var notes = col14 = col16 = data[15];
 	var filename = 'payment_'+invoicenumber+'_'+firstname+'_'+lastname;
 	var invoicesentfilename = 'invoicesent_'+invoicenumber+'_'+firstname+'_'+lastname;
-	var idtag = (data[13])?data[13].replace(/xCoLoNx/g,',').split(',')[0].replace('yCoLoNy',':'):"none";Titanium.App.Properties.setString('idtag',idtag);
-	var selfhref = (data[13])?data[13].replace(/xCoLoNx/g,',').split(',')[1].replace('yCoLoNy',':'):"none";Titanium.App.Properties.setString('selfhref',selfhref);
-	var edithref = (data[13])?data[13].replace(/xCoLoNx/g,',').split(',')[2].replace('yCoLoNy',':'):"none";Titanium.App.Properties.setString('edithref',edithref);
+	existingurlsidtag = idtag = (data[13])?data[13].replace(/xCoLoNx/g,',').split(',')[0].replace('yCoLoNy',':'):"none";Titanium.App.Properties.setString('idtag',idtag);
+	existingurlsselfhref = selfhref = (data[13])?data[13].replace(/xCoLoNx/g,',').split(',')[1].replace('yCoLoNy',':'):"none";Titanium.App.Properties.setString('selfhref',selfhref);
+	existingurlsedithref = edithref = (data[13])?data[13].replace(/xCoLoNx/g,',').split(',')[2].replace('yCoLoNy',':'):"none";Titanium.App.Properties.setString('edithref',edithref);
 	
 	var openInvoiceDetailscrollView = Ti.UI.createScrollView({scrollType:"vertical"});
-
+	savedata = {col1:"",col2:"",col3:"",col4:"",col5:"",col6:"",col7:"",col8:"",col9:"",col10:"",col11:"",col12:"",col13:"",col14:"",col15:"",col16:""};
+	for (k=1;k<17;k++){eval("savedata.col"+k+"=data["+(k-1)+"]"); } // register everything to savedata
+	Alloy.Globals.Log("invoicelistlist.js:: After: savedata: JSON.stringify(savedata) : "+JSON.stringify(savedata));
 	var clients = Alloy.Collections.instance('client');
 	clients.fetch();		
 	var theclient = clients.where({
@@ -351,6 +355,119 @@ function openInvoiceDetail(e){
 		alert("could not locate "+firstname+" "+lastname+" . Please try again.");
 	}
 	Alloy.Globals.Log("invoicelistlist.js:: locate jobs with uniqueid: "+uniqueid);
+	
+	
+	//variables ends.
+
+	//rows, labels, etc.
+	var win = Titanium.UI.createWindow({title:"Invoice Detail", backgroundColor: "#404040"});	
+	var invoicenumber_rowview = Titanium.UI.createView({id:"invoicenumber_row",backgroundColor:"#F5F5F5",top:'5',  height:"105", borderRadius:"10"});
+	var invoicenumberlabel = Titanium.UI.createLabel({id:"invoicenumber" ,color:"#404040" ,top:"5", font: { fontSize:10 }, text:"Invoice #: "+invoicenumber});
+	var headerlabel = Titanium.UI.createLabel({id:"header", color:"#404040", top:"20", text:firstname+" "+lastname, font: { fontSize:30, fontStyle: 'bold' } }) ;
+	invoicenumber_rowview.add(invoicenumberlabel);invoicenumber_rowview.add(headerlabel);
+	Alloy.Globals.Log("invoicelistlist.js: openInvoiceDetail:JSON.stringify invoicenumber_rowview : " +JSON.stringify(invoicenumber_rowview));
+	var totalbalance_rowview = Titanium.UI.createView({id:"totalbalance_row", top:"85", backgroundColor:"#F5F5F5", height:"180",borderRadius:"10"});
+	var bal_titlelabel = Titanium.UI.createLabel({id:"bal_title", color:"#404040", font: { fontSize:12 },top:"10", text:"BALANCE"});
+	//var balance1label = Titanium.UI.createLabel({id:"balance1",color:"red",textAlign:"Ti.UI.TEXT_ALIGNMENT_CENTER",top:"20",text:balance,font: {fontSize: '54',fontStyle: 'bold'}});
+	var balance2label = Titanium.UI.createLabel({id:"balance2",color:"green", top:"25",text:balance,font: {fontSize: '54',fontStyle: 'bold'}});
+	var currencylabel = Titanium.UI.createLabel({id:"currency",color:"#999999", top:"85",text:(currency != "NA")?currency:""});
+	var totallabel = Titanium.UI.createLabel({id:"total",color:"#404040", left:'10%',top:"105",font: { fontSize:12 },text:'TOTAL: '+total});
+	var paidlabel = Titanium.UI.createLabel({id:"paid",color:"#404040", right:"15%",top:"105",font: { fontSize:12 },text:'PAID: '+paid});
+	var invoice_buttonlabel = Titanium.UI.createLabel({id:"invoice_button",top:"125",color:'#63D1F4',text:"Click to update payment ->"});
+	totalbalance_rowview.add(bal_titlelabel);
+	//totalbalance_rowview.add(balance1label);
+	totalbalance_rowview.add(balance2label);
+	totalbalance_rowview.add(currencylabel);
+	totalbalance_rowview.add(totallabel);
+	totalbalance_rowview.add(paidlabel);
+	totalbalance_rowview.add(invoice_buttonlabel);
+	
+	var dates_rowview = Titanium.UI.createView({id:"dates_row", top:"250", backgroundColor:"#404040", height:"125",borderRadius:"10"});
+	var donelabelbutton = Ti.UI.createLabel({text:"DONE",top:"125",left:"20",color:"#63D1F4"});donelabelbutton.dates = "";
+	var generateinvoice_buttonlabel = Titanium.UI.createLabel({color:'#63D1F4', left:"25%", top:"10", text:"Generate Invoice >"});
+	var duedate_buttonlabel = Titanium.UI.createLabel({id:"duedate_button", color:'#63D1F4', left:"25%", top:"40", text:"DUE DATE: "});
+	var duedate_label = Titanium.UI.createLabel({id:"duedate_label", color:"red" ,left:"50%", top:"40",  text:duedate });
+	var duedate_donebuttonlabel = Titanium.UI.createLabel({id:"duedate_done", color:'#63D1F4', right:"40", top:"10", title:"DONE"});
+	var datepicker = Ti.UI.createPicker({type: Ti.UI.PICKER_TYPE_DATE,top:"5",left:"75"});
+	datepicker.addEventListener("change",function(e){
+		Alloy.Globals.Log("invoicelistlist.js::datepicker:change: "+JSON.stringify(e));
+		var utcdate = Date.parse(e.value.toString());
+		var regdate = new Date(utcdate);
+		var datedue = e.source.datedue;	
+		var datedueISO = e.value.toString();
+		datedue = ( (new Date(utcdate)).getMonth() + 1 )+"/"+(new Date(utcdate)).getDate()+"/"+(new Date(utcdate)).getFullYear();
+		duedate_label.text = datedue;
+		savedata.col11 = datedue;
+		Alloy.Globals.Log("invoicelistlist.js::datepicker:change after: "+datedue+" savedata.col11: "+savedata.col11);
+		donelabelbutton.savedata = savedata;	
+		Alloy.Globals.Log("invoicelistlist.js::datepicker:change after: JSON.stringify(savedata) "+JSON.stringify(savedata));
+	});
+	var pickerrowview = Ti.UI.createView({top:315,height:"150", backgroundColor:"#404040"});
+	pickerrowview.add(datepicker);
+	pickerrowview.add(donelabelbutton);
+	datepicker.visible = false;
+	pickerrowview.hide();
+	duedate_buttonlabel.addEventListener("click",function(e){
+		Alloy.Globals.Log("invoicelistlist.js::duedate_buttonlabel:click: "+JSON.stringify(e));
+		duedate_buttonlabel.color="gray";setTimeout(function(){duedate_buttonlabel.color="#63D1F4";},100);
+		datepicker.source = "duedate_buttonlabel";
+		Alloy.Globals.Log("invoicelistlist.js: openInvoiceDetail:datepicker.visible : " +datepicker.visible);
+		if (datepicker.visible) {
+			datepicker.hide();pickerrowview.hide();
+			action_rowview.top=parseFloat(action_rowview.top)-200;
+			(jobitem_row0) && jobitem_row0.show();
+			(jobitemlist0_row1) && jobitemlist0_row1.show();
+		} 
+		else {
+			pickerrowview.show();pickerrowview.add(donelabelbutton);datepicker.show();
+			action_rowview.top=parseFloat(action_rowview.top)+200;
+			(jobitem_row0) && jobitem_row0.hide();
+			(jobitemlist0_row1) && jobitemlist0_row1.hide();
+		}
+	});
+	donelabelbutton.addEventListener("click",function(e){
+		Alloy.Globals.Log("invoicelistlist.js: donelabelbutton: JSON.stringify(savedata) : " +JSON.stringify(savedata));
+		setTimeout(function(){donelabelbutton.color="gray";},100);
+		datepicker.hide();pickerrowview.hide();
+		action_rowview.top=parseFloat(action_rowview.top)-200;
+		(jobitem_row0) && jobitem_row0.show();
+		(jobitemlist0_row1) && jobitemlist0_row1.show();
+		Alloy.Globals.Log("invoicelistlist.js: donelabelbutton::existingurlsedithref, "+existingurlsedithref+", existingurlsselfhref, "+existingurlsselfhref+",  existingurlsidtag, "+existingurlsidtag);
+		savedata.col14=savedata.col16="NA";Alloy.Globals.submit("project","",savedata.col1,savedata.col2,savedata.col3,savedata.col4,savedata.col5,savedata.col6,savedata.col7,savedata.col8,savedata.col9,savedata.col10,savedata.col11,savedata.col12,savedata.col13,savedata.col14,savedata.col15,savedata.col16,existingurlsedithref,existingurlsselfhref,existingurlsidtag);	
+	});
+	
+	duedate_donebuttonlabel.addEventListener("click",function(e){});
+	dates_rowview.add(duedate_buttonlabel);
+	dates_rowview.add(duedate_label);
+	dates_rowview.add(duedate_donebuttonlabel);
+	dates_rowview.add(generateinvoice_buttonlabel);
+	
+	var action_rowview = Titanium.UI.createView({id:"action_row", top:"335", backgroundColor:"#F5F5F5", height:"150",borderRadius:"10"});
+	var phonebuttonimage = Ti.UI.createImageView({left:"15%", top:"10", height:"30", width:"30", image:"/images/call.png" });
+	phonebuttonimage.addEventListener=("click",function(e){ });
+	var emailbuttonimage = Titanium.UI.createImageView({left:"40%", top:"10", height:"30", width:"30", image:"/images/email.png" });
+	emailbuttonimage.addEventListener=("click",function(e){ });
+	var previewbuttonimage = Titanium.UI.createImageView({left:"65%", top:"10", height:"30", width:"30", image:"/images/documents@2x.png" });
+	emailbuttonimage.addEventListener=("click",function(e){ });
+	action_rowview.add(phonebuttonimage);
+	action_rowview.add(emailbuttonimage);
+	action_rowview.add(previewbuttonimage);	
+	
+	/*
+	win.add(invoicenumber_rowview);	
+	win.add(totalbalance_rowview);	
+	win.add(dates_rowview);	
+	win.add(action_rowview);
+	Alloy.Globals.Log("invoicelistlist.js: openInvoiceDetail:JSON.stringify jobitem_row : " +JSON.stringify(jobitem_row));
+	win.add(jobitem_row);	
+	*/
+	
+	openInvoiceDetailscrollView.add(invoicenumber_rowview);	
+	openInvoiceDetailscrollView.add(totalbalance_rowview);	
+	openInvoiceDetailscrollView.add(dates_rowview);	
+	openInvoiceDetailscrollView.add(action_rowview);
+	openInvoiceDetailscrollView.add(pickerrowview);
+	//Alloy.Globals.Log("invoicelistlist.js: openInvoiceDetail:JSON.stringify openInvoiceDetailscrollView : " +JSON.stringify(openInvoiceDetailscrollView));
 	
 	if (uniqueid){
 		var uniqueid = uniqueid.toString().trim();
@@ -377,9 +494,11 @@ function openInvoiceDetail(e){
 	} else { Alloy.Globals.Log("uniqueid is not a number: uniqueid: "+uniqueid);};
 	
 	if (projectitemsarray && projectitemsarray.length>0) {
-		var topvalue = 10;
-		var jobitem_row = Titanium.UI.createView({id:"jobitem_row", top:"355", backgroundColor:"#F5F5F5", height:"500",borderRadius:"10"});		
+		var topvalue = 415;
+		//var jobitem_row = Titanium.UI.createView({id:"jobitem_row", top:"365", backgroundColor:"#F5F5F5", height:"545",borderRadius:"10"});		
 		for (x=0;x<projectitemsarray.length;x++) {
+			var jobitem_row_topSTART = topvalue;
+			eval("var jobitem_row"+x+" = Titanium.UI.createView({top:topvalue,backgroundColor:'#F5F5F5', height:'300',borderRadius:'10',borderColor:'gray'})");
 			var projectitems = JSON.parse(projectitemsarray[x].replace(/cOlOn/g,":").toString());   // replacing all cOlOn to ':'
 			var projectname = projectnamesarray[x];
 			Alloy.Globals.Log("invoicelistlist.js:: createRow: projectnamesarray["+x+"]: "+projectnamesarray[x]);
@@ -390,24 +509,67 @@ function openInvoiceDetail(e){
 			var projectinfoarray=[];
 			var unchecked = Ti.UI.createImageView({
 				id: projectidentification,
-				top: topvalue,
+				top: 8,
 				left: "85%",
 				height : 30,
 				width : 30,
 				image : "/images/EditControl.png"
 			});
 			var checked = Ti.UI.createImageView({
-				top: topvalue,
+				id: projectidentification,
+				top: 8,
 				left: "85%",
 				height : 30,
 				width : 30,
 				image : "/images/EditControlSelected.png"
 			});
+			unchecked.addEventListener("click",function(e){
+				Alloy.Globals.Log("invoicelistlist.js::unchecked:click: "+JSON.stringify(e));
+				if (e.source.titleid) {
+					Alloy.Globals.Log("invoicelistlist.js::jobitem_row event listener: JSON.stringify(e): "+JSON.stringify(e));
+					if (e.source.image=="/images/EditControl.png"){
+						Alloy.Globals.Log("invoicelistlist.js::after "+e.source.image+" clicked: JSON.stringify(e): "+JSON.stringify(e));
+						Alloy.Globals.Log("invoicelistlist.js::after "+e.source.image+" clicked: retrieved JSON.stringify(e.source.titleid): "+JSON.stringify(e.source.titleid));
+						var info=e.source.titleid;
+						var infostring = JSON.stringify(e.source.titleid);
+						var infostringmod = (infostring)?infostring.replace(/\[/g,"xSqBracketOpen").replace(/\]/g,"xSqBracketClose"):"";
+						Alloy.Globals.Log("invoicelistlist.js::after "+e.source.image+" clicked: retrieved project name at Pos 0 again: "+info[0].names);
+						e.source.image="/images/EditControlSelected.png";
+						var itemid = Date.now().toString();
+						//update adhoc table.
+						var dataModel = Alloy.createModel("adhoc",{
+				                                        col1 :  itemid,
+				                                        col2 : info[0].names,
+				                                        col3 : infostringmod, 
+				                                        //col4:	projectitems[i].price
+				                                });     
+				        dataModel.save();
+						adhocs.fetch();
+						Alloy.Globals.Log("invoicelistlist.js:: aftere adhocs add & fetch: "+JSON.stringify(adhocs));
+						// tag source with itemid
+						e.source.itemid=itemid;
+						Alloy.Globals.Log("invoicelistlist.js::itemid, "+itemid+", stamp to "+e.source.image+" clicked: JSON.stringify(e): "+JSON.stringify(e));
+					} else {
+						Alloy.Globals.Log("invoicelistlist.js::after "+e.source.image+" clicked: JSON.stringify(e): "+JSON.stringify(e));
+						e.source.image="/images/EditControl.png";
+						var itemid=e.source.itemid;
+						adhocs.fetch();
+						var theadhoc = adhocs.where({
+							col1:itemid
+							}); 
+						Alloy.Globals.Log("invoicelistlist.js::to uncheck: theadhoc is: "+JSON.stringify(theadhoc));
+						Alloy.Globals.Log("invoicelistlist.js::to uncheck: adhocs is: "+JSON.stringify(adhocs));
+						Alloy.Collections.adhoc.deleteCol1(itemid);
+						adhocs.fetch();
+						Alloy.Globals.Log("invoicelistlist.js::to uncheck: adhocs after delete : "+JSON.stringify(adhocs));
+					}
+				} else {alert("No items to invoice");}
+			});
 			topvalue = topvalue + 5;
 			var projectnamelabel = Ti.UI.createLabel ({
 				color : "#333",
 				left : "20",
-				top : topvalue,
+				top : 13,
 				font:{
 					fontSize:16,
 					fontWeight: "bold"
@@ -418,7 +580,7 @@ function openInvoiceDetail(e){
 			topvalue = topvalue + 25;
 			var descrtitlelabel = Ti.UI.createLabel ({
 				left  : "20",
-				top : topvalue,
+				top : 33,
 				font:{
 					fontSize:14
 				},
@@ -426,14 +588,16 @@ function openInvoiceDetail(e){
 				text : 'Description: '
 			});
 			//calculate height of item description.
-			var descr_height = ((Math.round(descr.split('').length/70)+(descr.split(/\r?\n|\r/).length))*14)+14;
+			////var descr_height = ((Math.round(descr.split('').length/70)+(descr.split(/\r?\n|\r/).length))*14)+14;
+			var descr_height = ((Math.round(descr.split('').length/50)+(descr.split(/\r?\n|\r/).length))*14)+14;
 			var descrbodylabel = Ti.UI.createLabel ({
 				color : "#333",
 				left  : "120",
-				top : topvalue,
+				top : 35,
 				font:{
 					fontSize:12
 				},
+				width:"60%",
 				text : descr
 			});
 			var innerview = Ti.UI.createView({
@@ -444,37 +608,44 @@ function openInvoiceDetail(e){
 		        borderWidth:"0.1",
 		        borderColor:"white"
 			});	
-			jobitem_row.add(projectnamelabel);
-			jobitem_row.add(unchecked);
-			jobitem_row.add(descrtitlelabel);
-			jobitem_row.add(descrbodylabel);
-			topvalue=topvalue+20+descr_height-20;
+			eval("jobitem_row"+x+".add(projectnamelabel)");
+			eval("jobitem_row"+x+".add(unchecked)");
+			eval("jobitem_row"+x+".add(descrtitlelabel)");
+			eval("jobitem_row"+x+".add(descrbodylabel)");
+			//topvalue=topvalue+20+descr_height-20;
+			topvalue=topvalue+20+descr_height;
 			var itemtitlelabel = Ti.UI.createLabel ({
 				left  : "20",
-				top : topvalue,
+				top : 53+descr_height-20,
 				font:{
 					fontSize:14
 				},
 				color:"black",
 				text : 'List Item :'
 			});
-			if ( projectitems.length > 1) {jobitem_row.add(itemtitlelabel); }
+			var jobitem_row_topEND = topvalue;
+			var jobitem_row_height = jobitem_row_topEND - jobitem_row_topSTART;
+			eval("jobitem_row"+x+".height = jobitem_row_height+4");
+			if ( projectitems.length > 1) {eval("jobitem_row"+x+".add(itemtitlelabel)"); }
+			Alloy.Globals.Log("invoicedetail.js::topvalue "+topvalue+" jobitem_row"+x+".top: "+eval("jobitem_row"+x+".top")+" jobitem_row"+x+".height: "+eval("jobitem_row"+x+".height"));
+			Alloy.Globals.Log("invoicedetail.js::topvalue  JSON.stringify(jobitem_row"+x+"): "+eval("JSON.stringify(jobitem_row"+x+")"));
+			eval("openInvoiceDetailscrollView.add(jobitem_row"+x+")");
+			Alloy.Globals.Log("invoicedetail.js::topvalue: after openInvoiceDetailscrollView.add(jobitem_row"+x+"): openInvoiceDetailscrollView.children.lenghth: "+openInvoiceDetailscrollView.children.lenghth );
 			for (i=1;i<projectitems.length;i++){
-				topvalue=topvalue+20;
+				eval("var jobitemlist"+x+"_row"+i+" = Titanium.UI.createView({top:topvalue,backgroundColor:'#F5F5F5', height:'50',borderRadius:'10'})");
 				var itembodylabel = Ti.UI.createLabel ({
 					color : "#333",
 					left  : "20",
-					top : topvalue,
+					top : 5,
 					font:{
 						fontSize:12
 					},
 					text : i+' :    '+projectitems[i].lineitem
 				});	
-				topvalue=topvalue+14;
 				var itemqtylabel = Ti.UI.createLabel ({
 					color : "#333",
 					left  : "50%",
-					top : topvalue,
+					top : 24,
 					font:{
 						fontSize:10
 					},
@@ -483,36 +654,30 @@ function openInvoiceDetail(e){
 				var itempricelabel = Ti.UI.createLabel ({
 					color : "#333",
 					left  : "75%",
-					top : topvalue,
+					top : 24,
 					font:{
 						fontSize:10
 					},
 					text : 'Price : '+projectitems[i].price
 				});	
-				jobitem_row.add(itembodylabel);
-				jobitem_row.add(itemqtylabel);
-				jobitem_row.add(itempricelabel);
-				jobitem_row.iteminfo=[projectitems[i].lineitem,projectitems[i].qty,projectitems[i].price];
+				topvalue = topvalue + 50;
+				eval("jobitemlist"+x+"_row"+i+".add(itembodylabel)");
+				eval("jobitemlist"+x+"_row"+i+".add(itemqtylabel)");
+				eval("jobitemlist"+x+"_row"+i+".add(itempricelabel)");
 				var info={"names":projectnamesarray[x].trim(),"descr":projectitems[0].descr,"lineitem":projectitems[i].lineitem,"qty":projectitems[i].qty,"price":projectitems[i].price};
 				projectinfoarray.push(info);
-				unchecked.titleid=projectinfoarray;
+				unchecked.titleid=projectinfoarray; //This determine if project has list item that can be invoiced.
 				checked.titleid=projectinfoarray;
+				eval("openInvoiceDetailscrollView.add(jobitemlist"+x+"_row"+i+")");//add row
 				Alloy.Globals.Log("invoicedetail.js::topvalue at Sub END : "+topvalue);
+				Alloy.Globals.Log("invoicedetail.js::topvalue at END : "+topvalue+" jobitemlist"+x+"_row"+i+".top: "+eval("jobitemlist"+x+"_row"+i+".top"));
+				Alloy.Globals.Log("invoicedetail.js::topvalue at END : JSON.stringify(jobitemlist"+x+"_row"+i+"): "+eval("JSON.stringify(jobitemlist"+x+"_row"+i+")"));
 			}
-			topvalue=topvalue+20;
-			var grayline = Ti.UI.createImageView({
-				image: "list_divider@2x.png",
-				height: "2",
-				width: "90%",
-				left: "20",
-				top: topvalue
-			});	
-			jobitem_row.add(grayline);
+			topvalue=topvalue-2;
 			projectinfoarray=[];
-			topvalue = topvalue + 4;
 			Alloy.Globals.Log("invoicedetail.js::topvalue at END : "+topvalue);	
-		}		
-		
+		}
+		Alloy.Globals.Log("invoicedetail.js::topvalue at END: "+topvalue+" jobitem_row"+x+".top: "+eval("jobitem_row"+i+".top"));		
 	} else {
 		Alloy.Globals.Log("invoicedetail.js:: NO projectitemsarray: need client refresh ");
 		var clientsid = Titanium.App.Properties.getString("client");
@@ -522,70 +687,218 @@ function openInvoiceDetail(e){
 	    alert("Invoice data downloaded. Please try again.");
 	};
 
+	//Report Generation. START
+	function genInvoice(e){
+		Alloy.Globals.Log("project.js::generateinvoice_buttonlabel:click: "+JSON.stringify(e));
+		generateinvoice_buttonlabel.color="gray";generateinvoice_buttonlabel.text="Generating report ...";
+		//PDF creator START	
+		var strVarItems="";
+		var pricetotal=0;
+		var adhoc  = Alloy.Collections.instance('adhoc');
+	    adhoc.fetch();
+	    Alloy.Globals.Log("projectdetail.js::JSON stringify adhoc data on emailpdf: "+JSON.stringify(adhoc));
+	    var adhocjson = adhoc.toJSON();
+	    Alloy.Globals.Log("projectdetail.js::jobitemjson.length: "+adhocjson.length);
+	    for (i=0;i<adhocjson.length;i++){
+			Alloy.Globals.Log("invoicelistlist.js::emailpdf:: adhocjson["+i+"].col3: "+adhocjson[i].col3);
+			var jobitemstring=adhocjson[i].col3.replace(/xSqBracketOpen/,'[').replace(/xSqBracketClose/,']');
+			Alloy.Globals.Log("invoicelistlist.js::emailpdf:: adhocs extraction: jobitemstring.length "+jobitemstring.length+ "jobitemstring : "+jobitemstring);
+			var jobitemjson = JSON.parse(jobitemstring);
+			Alloy.Globals.Log("invoicelistlist.js::emailpdf:: adhocs extraction: jobitemjson.length "+jobitemjson.length+ "jobitemjson : "+jobitemjson);
+	    	for (j=0;j<jobitemjson.length;j++){
+		    	var names=jobitemjson[0].names;
+				Alloy.Globals.Log("invoicedetail.js::emailpdf:: adhocs extraction:  jobitemjson["+j+"].names : "+jobitemjson[j].names
+				+" : jobitemjson["+j+"].descr: "+jobitemjson[j].descr+" jobitemjson["+j+"].lineitem : "+jobitemjson[j].lineitem
+				+" jobitemjson["+j+"].price : "+jobitemjson[j].price+" jobitemjson["+j+"].qty : "+jobitemjson[j].qty);
+	    		if (jobitemjson[j].lineitem){
+					strVarItems += "		<br><table width=\"100%\" class=\"jobitem\"><tr>";
+					if (j == "0"){
+						strVarItems += "						<td width=\"10%\">"+jobitemjson[j].names+"<\/td>";
+						strVarItems += "						<td width=\"27%\">"+jobitemjson[j].descr+"<\/td>";
+					} else {
+						strVarItems += "<td width=\"10%\"> <\/td>";
+						strVarItems += "<td width=\"27%\"> <\/td>";
+					};					
+					strVarItems += "						<td width=\"23%\">"+jobitemjson[j].lineitem+"<\/td>";
+					strVarItems += "						<td width=\"5%\">"+jobitemjson[j].qty+"<\/td>";
+					strVarItems += "						<td width=\"5%\">"+jobitemjson[j].price+"<\/td>";
+					var pricetotal = pricetotal + parseFloat(jobitemjson[j].price);
+					Alloy.Globals.Log("invoicelistlist.js: html gen: pricetotal "+pricetotal);
+					strVarItems += "					<\/tr>";
+					////strVarItems += "				<\/tbody>";
+					strVarItems += "			<\/table>";
+		    	}	
+	    	}    	
+	    };
 
-	//variables ends.
+		
+		
+		var coAddress = "1125 Bluemound Rd., Brookfield, WI 53222";
+		var coPhone = "262-290-3141";
+		var coFax = "262-290-3142";
+		var coEmail = "sales@jackmowinc.com";
+		var logourl = 'https://docs.google.com/uc?id=0B8NAtyyp6PTGdkNYaGRma3VtUlE&export=download';
+		var custphone = phone;
+		var strVar='';
+		var address = "2258 S West Dr., Brookfield, WI";
+		strVar += '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
+		strVar += "	<head>";
+		strVar += "		<meta charset=\"utf-8\">";
+		strVar += "		<title>Project Report<\/title>";
+		strVar += "<style>";
+		strVar += "table.header th { text-align: center; text-transform: uppercase; background: #000; color: #FFF;font-size: 300% }";
+		strVar += "h1.header { text-align: center; text-transform: uppercase; font-size: 125% ; letter-spacing: 10px;}";
+		strVar += "table.customer td{border:0;border-width: 1px;}";
+		strVar += "table.summary {align: left;border-width: 0px;}";
+		strVar += "table.jobitem th,td {align: left;border-width: 0px;}";
+		strVar += "th,td {text-align:left;border-width: 0px;}";
+		strVar += "table.summary th,td { padding: 0.5em; position: relative; text-align: left; }";
+		strVar += "table.summary th,td { border-radius: 0.50em;}";
+		strVar += "table.item th{text-align:center;border-width: 1px; padding: 0.5em; position: relative;border-radius: 0.25em; border-style: solid;background:gray;color:white;}";
+		strVar += "</style>";
+		strVar += "	<\/head>";
+		strVar += "	<body>";
+		strVar += "			<table width=\"100%\" class=\"header\">";
+		strVar += "			<tr><th style=\"font-size:200%\">Invoice<\/th></tr>";
+		strVar += "			<\/table>";
+		strVar += "			<br><span><img width=\"100\" height=\"100\" align=\"right\" alt=\"\" src=\""+logourl+"\"><input type=\"hidden\" accept=\"image\/*\"><\/span>";
+		strVar += "				<p align=\"center\" >"+coName+". ";
+		strVar += "				"+coAddress+". ";
+		strVar += "				"+coPhone+". ";
+		strVar += "				"+coEmail+"<\/p>";
+		strVar += "			<h1 class=\"header\">Customer<\/h1>";
+		strVar += "			<table width=\"100%\" align=\"left\" class=\"customer\" >";
+		strVar += "				<tr>";
+		strVar += "					<th ><span >"+((firstname == "none")?"":firstname)+" "+((lastname == "none")?"":lastname)+"<\/span><\/th>";
+		//strVar += "					<th><span >Project Name<\/span><\/th>";
+		//strVar += "					<th><span >"+balance+"<\/span><\/th>";
+		strVar += "				<\/tr>";
+		strVar += "				<tr>";
+		strVar += "					<th><span >"+((address == "none")?"":address)+"<\/span><\/th>";
+		strVar += "					<th><span >Date<\/span><\/th>";
+		strVar += "					<th><span >"+(new Date()).toString().slice(4,16)+"<\/span><\/th>";
+		strVar += "				<\/tr>";
+		strVar += "				<tr>";
+		strVar += "					<th><span >"+((city == "none")?"":city)+", "+((state == "none")?"":state)+"<\/span><\/th>";
+		strVar += "					<th><span >Invoice #<\/span><\/th>";
+		strVar += "					<th><span><\/span><span>"+invoicenumber+"<\/span><\/th>";
+		strVar += "				<\/tr>";
+		strVar += "				<tr>";
+		strVar += "					<th><span >"+((custphone == "none")?"":custphone)+"<\/span><\/th>";
+		strVar += "					<th><span >Total: <\/span><\/th>";
+		strVar += "					<th><span >"+((pricetotal)?pricetotal:"NA")+"<\/span><\/th>";
+		strVar += "				<\/tr>";
+		strVar += "				<tr>";
+		strVar += "					<th><span >"+((email == "none")?"":email)+"<\/span><\/th>";
+		strVar += "				<\/tr>";
+		strVar += "			<\/table><br><br>";
+		strVar += "			<table width=\"100%\" class=\"item\">";
+		strVar += "				<thead>";
+		strVar += "					<tr>";
+		strVar += "						<th><span >Date<\/span><\/th>";
+		strVar += "						<th><span >Description<\/span><\/th>";
+		strVar += "						<th><span >Item<\/span><\/th>";
+		strVar += "						<th><span >Qty<\/span><\/th>";
+		strVar += "						<th><span >Price<\/span><\/th>";
+		strVar += "					<\/tr>";
+		strVar += "				<\/thead>";
+		strVar += strVarItems;
+		strVar += "	<\/table>";
+		strVar += "	<\/body>";
+		strVar += "<\/html>";
+		
+		Alloy.Globals.Log("invoicelistlist.js:: strVar: "+strVar);
+		
+		var pdfCreator = require('com.pablog178.pdfcreator.android');	
+	
+	    pdfCreator.addEventListener("error", function(_evt){
+	    	Alloy.Globals.Log("project.js::pdfCreator:: on error: _evt: " +_evt);
+	        //An error has ocurred
+	    });	
+	   
+	    // Generate a PDF based on HTML	    
+	      
+	    pdfCreator.addEventListener("complete", function (_evt) {
+	        //Handle the PDF created
+	        Alloy.Globals.Log("project.js::pdfCreator::after complete: _evt: " +JSON.stringify(_evt));
+	        generateinvoice_buttonlabel.color="#63D1F4";generateinvoice_buttonlabel.text="Generate Report in PDF > ";
+	        ////var pdfUrl = "http://www.irs.gov/pub/irs-pdf/fw4.pdf";
+			////Ti.Platform.openURL("https://docs.google.com/gview?embedded=true&url=" + Ti.Network.encodeURIComponent(pdfUrl));		
+			var pdfemaildialog = Ti.UI.createAlertDialog({
+				cancel: 1,
+				buttonNames: ['NO', 'YES'],
+				message: 'Would you like to email the PDF?',
+				title: 'email PDF'
+			});
+			pdfemaildialog.addEventListener('click', function(e){
+				Alloy.Globals.Log("project.js::pdfCreator::pdfemaildialog: JSON.stringify(e) :"+JSON.stringify(e));
+				Alloy.Globals.Log("project.js::pdfCreator:: pdfemaildialog: e.source.data :"+e.source.data);
+				
+				var pdfFile = e.source.pdfFile; 
+				Alloy.Globals.Log("project.js::pdfCreator::pdfemaildialog: pdfFile: " +JSON.stringify(pdfFile));
+				/*
+				var pdffilename = e.source.pdffilename; 
+				var name = e.source.name;
+				var parentid = e.source.parentid;
+				var appfilepath = e.source.appfilepath;*/
+				Alloy.Globals.Log("project.js::pdfCreator::pdfemaildialog: b4 dialog launched: pdffilename: "+pdffilename);
+				if (e.index == 1 ) {
+					Alloy.Globals.Log("project.js::pdfCreator::pdfemaildialog: emailing pdffilename :"+pdffilename);
+					pdfemaildialog.hide();
+				    var emailDialog = Ti.UI.createEmailDialog();  
+					emailDialog.addAttachment(pdfFile);
+			 		emailDialog.open(); 				
+				} else {				
+					Alloy.Globals.Log("project.js::pdfCreator::pdfemaildialog: Cancelled : just open:");
+					try{
+					    Ti.Android.currentActivity.startActivity(Ti.Android.createIntent({
+					        action: Ti.Android.ACTION_VIEW,
+					        type: 'application/pdf',
+					        data: appfilepath
+					    }));
+					} catch(e) {
+					    Ti.API.info('error trying to launch activity, e = '+JSON.stringify(e));
+					    Alloy.Globals.Log('project.js::pdfCreator:No PDF apps installed!');			
+					}					
+					Alloy.Globals.Log("project.js::pdfCreator:Alloy.Globals.uploadFile(pdfFile,"+pdffilename+","+parentid+")");
+					Alloy.Globals.uploadFile('hello.pdf',pdffilename,parentid);		
+					pdfemaildialog.hide();			
+				} 	
+			});			
+			var pdfFile = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, _evt.filename);pdfemaildialog.pdfFile=pdfFile;
+			Alloy.Globals.Log("project.js::pdfCreator:: pdfFile: " +JSON.stringify(pdfFile));
+			var date = new Date();var dateinsert = date.getFullYear()+""+(date.getMonth()+1)+""+date.getDate()+""+date.getHours();
+     	 	pdffilename = invoicenumber+"_"+firstname+"_"+lastname+"_"+dateinsert;pdfemaildialog.pdffilename=pdffilename;
+     	 	var kraniemailid = Titanium.App.Properties.getString('kraniemailid');
+		 	var name = kraniemailid.split('@')[0].trim();pdfemaildialog.name=name;
+     	 	var parentid = Titanium.App.Properties.getString(name+"_project");pdfemaildialog.parentid=parentid;
+			var appfilepath = pdfFile.nativePath;pdfemaildialog.appfilepath=appfilepath;
+ 
+ 			pdfemaildialog.show();
 
-	//rows, labels, etc.
-	var win = Titanium.UI.createWindow({title:"Invoice Detail", backgroundColor: "white"});	
-	var invoicenumber_rowview = Titanium.UI.createView({id:"invoicenumber_row",backgroundColor:"#F5F5F5",top:'5',  height:"75", borderRadius:"10"});
-	var invoicenumberlabel = Titanium.UI.createLabel({id:"invoicenumber" ,color:"#404040" ,top:"5", font: { fontSize:10 }, text:"Invoice #: "+invoicenumber});
-	var headerlabel = Titanium.UI.createLabel({id:"header", color:"#404040", top:"20", text:firstname+" "+lastname, font: { fontSize:30, fontStyle: 'bold' } }) ;
-	invoicenumber_rowview.add(invoicenumberlabel);invoicenumber_rowview.add(headerlabel);
-	Alloy.Globals.Log("invoicelistlist.js: openInvoiceDetail:JSON.stringify invoicenumber_rowview : " +JSON.stringify(invoicenumber_rowview));
-	var totalbalance_rowview = Titanium.UI.createView({id:"totalbalance_row", top:"85", backgroundColor:"#F5F5F5", height:"160",borderRadius:"10"});
-	var bal_titlelabel = Titanium.UI.createLabel({id:"bal_title", color:"#404040", font: { fontSize:12 },top:"10", text:"BALANCE"});
-	//var balance1label = Titanium.UI.createLabel({id:"balance1",color:"red",textAlign:"Ti.UI.TEXT_ALIGNMENT_CENTER",top:"20",text:balance,font: {fontSize: '54',fontStyle: 'bold'}});
-	var balance2label = Titanium.UI.createLabel({id:"balance2",color:"green", top:"25",text:balance,font: {fontSize: '54',fontStyle: 'bold'}});
-	var currencylabel = Titanium.UI.createLabel({id:"currency",color:"#999999", top:"85",text:(currency != "NA")?currency:""});
-	var totallabel = Titanium.UI.createLabel({id:"total",color:"#404040", left:'10%',top:"105",font: { fontSize:12 },text:'TOTAL: '+total});
-	var paidlabel = Titanium.UI.createLabel({id:"paid",color:"#404040", right:"15%",top:"105",font: { fontSize:12 },text:'PAID: '+paid});
-	var invoice_buttonlabel = Titanium.UI.createLabel({id:"invoice_button",top:"125",color:'#63D1F4',text:"Click to update payment ->"});
-	totalbalance_rowview.add(bal_titlelabel);
-	//totalbalance_rowview.add(balance1label);
-	totalbalance_rowview.add(balance2label);
-	totalbalance_rowview.add(currencylabel);
-	totalbalance_rowview.add(totallabel);
-	totalbalance_rowview.add(paidlabel);
-	totalbalance_rowview.add(invoice_buttonlabel);
-	
-	var dates_rowview = Titanium.UI.createView({id:"dates_row", top:"250", backgroundColor:"#F5F5F5", height:"35",borderRadius:"10"});
-	var duedate_buttonlabel = Titanium.UI.createLabel({id:"duedate_button", color:'#63D1F4', left:"20%", top:"10", text:"DUE DATE: "});
-	duedate_buttonlabel.addEventListener("click",function(e){});
-	var duedate_label = Titanium.UI.createLabel({id:"duedate_label", color:"red" ,left:"45%", top:"10",  text:duedate });
-	var duedate_donebuttonlabel = Titanium.UI.createLabel({id:"duedate_done", color:'#63D1F4', right:"40", top:"10", title:"DONE"});
-	duedate_donebuttonlabel.addEventListener("click",function(e){});
-	dates_rowview.add(duedate_buttonlabel);
-	dates_rowview.add(duedate_label);
-	dates_rowview.add(duedate_donebuttonlabel);
-	
-	var action_rowview = Titanium.UI.createView({id:"action_row", top:"290", backgroundColor:"#F5F5F5", height:"60",borderRadius:"10"});
-	var phonebuttonimage = Ti.UI.createImageView({left:"15%", top:"10", height:"30", width:"30", image:"/images/call.png" });
-	phonebuttonimage.addEventListener=("click",function(e){ });
-	var emailbuttonimage = Titanium.UI.createImageView({left:"40%", top:"10", height:"30", width:"30", image:"/images/email.png" });
-	emailbuttonimage.addEventListener=("click",function(e){ });
-	var previewbuttonimage = Titanium.UI.createImageView({left:"65%", top:"10", height:"30", width:"30", image:"/images/documents@2x.png" });
-	emailbuttonimage.addEventListener=("click",function(e){ });
-	action_rowview.add(phonebuttonimage);
-	action_rowview.add(emailbuttonimage);
-	action_rowview.add(previewbuttonimage);
-	
-	
-	/*
-	win.add(invoicenumber_rowview);	
-	win.add(totalbalance_rowview);	
-	win.add(dates_rowview);	
-	win.add(action_rowview);
-	Alloy.Globals.Log("invoicelistlist.js: openInvoiceDetail:JSON.stringify jobitem_row : " +JSON.stringify(jobitem_row));
-	win.add(jobitem_row);	
-	*/
-	
-	openInvoiceDetailscrollView.add(invoicenumber_rowview);	
-	openInvoiceDetailscrollView.add(totalbalance_rowview);	
-	openInvoiceDetailscrollView.add(dates_rowview);	
-	openInvoiceDetailscrollView.add(action_rowview);
-	//Alloy.Globals.Log("invoicelistlist.js: openInvoiceDetail:JSON.stringify openInvoiceDetailscrollView : " +JSON.stringify(openInvoiceDetailscrollView));
-	openInvoiceDetailscrollView.add(jobitem_row);	
-	
+			/*
+			var win = Ti.UI.createWindow({ backgroundColor : 'white' });
+			var androidpdf = require('com.ishan.androidpdf');
+			Ti.API.info("module is => " + androidpdf);
+			androidpdf.openPDF({ 'fileName' : 'hello' });
+			win.open();*/
+	    }); 
+	    
+	    Alloy.Globals.Log("project.js::pdfCreator::strVar: " +strVar);
+	    pdfCreator.generatePDFWithHTML({
+	        ////html : '<html><body><h1>Hello World!</h1></body></html>',
+	        html : strVar,
+	        filename : 'hello.pdf'
+	    });	    
+	    //PDF creator end.
+	};
+	generateinvoice_buttonlabel.addEventListener("click",function(e){
+		generateinvoice_buttonlabel.color="gray";
+		setTimeout(function(){generateinvoice_buttonlabel.color='#63D1F4';},100);
+		genInvoice(e);			
+	});
+	//Report Generation. END
+
 	win.add(openInvoiceDetailscrollView);
 	win.open();
 }
