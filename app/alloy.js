@@ -633,18 +633,20 @@ Alloy.Globals.getPrivateData = function(sid,type,nextFunction,nextFunction1) {
 			Alloy.Globals.Log("alloy.js:Alloy.Globals.getPrivateData:::checking data " +JSON.stringify(data));
 			//
 			Alloy.Globals.Log(" Alloy.Globals.getPrivateData::Data were successfuly downloaded from "+url+". Please proceed.");
-			} catch(e){
-				Alloy.Globals.Log("Alloy.Globals.getPrivateData:cathing e: "+JSON.stringify(e));
-			}
 			//Future call back once loaded
 			if (nextFunction) {
 				Alloy.Globals.Log("Alloy.Globals.getPrivateData:nextFunction "+nextFunction);
-				nextFunction(); 
+					nextFunction();		
 				};
 			if(nextFunction1){
 				Alloy.Globals.Log("Alloy.Globals.getPrivateData:nextFunction1 "+nextFunction1);
-				nextFunction1(); 
+					nextFunction1();	 
 			}
+			
+		} catch(e){
+				Alloy.Globals.Log("Alloy.Globals.getPrivateData:cathing e: "+JSON.stringify(e));
+		}
+			
 		}
 	});
 	xhr.onerror = function(e){
@@ -3447,4 +3449,45 @@ Alloy.Globals.deleteData = function(existingurlsedithref){
     xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	if (existingurlsedithref) {xhr.send();} else {Alloy.Globals.Log("alloy.js:Alloy.Globals.deleteData: DONE: DELETE : NO edithref. abort delete ");}
 	Alloy.Globals.Log("alloy.js:Alloy.Globals.deleteData: DONE: DELETE "+existingurlsedithref);
+};
+
+Alloy.Globals.checkFileExist = function(filename,nextFunc){
+		var jsonlist = " ";
+		funcdata = {fileexist:"",sid:"",selfLink:""};
+		var xhr = Ti.Network.createHTTPClient({
+	    onload: function(e) {
+	    try {
+	    		var jsonlist = JSON.parse(this.responseText);
+	    		Alloy.Globals.Log("alloy.js:Alloy.Globals.checkFileExist::response of jsonlist is: "+JSON.stringify(jsonlist));
+	    		Alloy.Globals.Log("jsonlist.items.length: "+jsonlist.items.length);
+				if (jsonlist.items.length == "0" ){
+					Alloy.Globals.Log("alloy.js:Alloy.Globals.checkFileExist::File DOES NOT EXIST. Ignored");
+					var fileexist = "false";
+				} else {
+					funcdata.fileexist = "true";
+					funcdata.sid = jsonlist.items[0].id;
+					funcdata.selfLink = jsonlist.items[0].selfLink;
+					Alloy.Globals.Log("alloy.js:Alloy.Globals.checkFileExist:: File exist.selfLink: "+funcdata.selfLink+" sid is: "+funcdata.sid);
+					if (nextFunc) {
+						Alloy.Globals.Log("alloy.js:Alloy.Globals.checkFileExist:nextFunc is :"+nextFunc);
+						nextFunc(funcdata);
+					} 				
+				};
+				
+	    	} catch(e){
+				Alloy.Globals.Log("alloy.js:Alloy.Globals.checkFileExist::cathing e: "+JSON.stringify(e));
+			}
+			
+		}
+		});
+	xhr.onerror = function(e){
+		Alloy.Globals.Log("alloy.js:Alloy.Globals.checkFileExist::error e: "+JSON.stringify(e));
+		Alloy.Globals.Log("alloy.js:Alloy.Globals.checkFileExist::refReshActivity needed:  Alloy.Globals.refreshActivity()");
+		Alloy.Globals.refreshActivity();
+	};
+	var rawquerystring = '?q=title%3D\''+filename+'\'';
+	xhr.open("GET", 'https://www.googleapis.com/drive/v2/files'+rawquerystring);
+	///xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
+	xhr.send();
 };
