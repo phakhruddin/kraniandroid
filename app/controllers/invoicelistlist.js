@@ -480,6 +480,7 @@ function openInvoiceDetail(e){
 		Alloy.Globals.Log("invoicedetail.js::prefetchpayment::need to check if parent/filename exist: "+parentid+'/'+filename);
 		Alloy.Globals.checkFileExist(filename,function(e){
 			Alloy.Globals.Log("enterPayment.js::JSON.stringify(e): "+JSON.stringify(e));
+			var sid = e.sid;
 			var item="payment";
 			Alloy.Globals.Log("invoicedetail.js::prefetchpayment: updating DB with: item: "+item+" e.sid: "+e.sid);
 			function nexStep(){
@@ -499,7 +500,13 @@ function openInvoiceDetail(e){
 					Alloy.Globals.Log("enterPayment.js:in:datepaidpicker: paymentdone: e.savedata: "+e.savedata+" e.source.savedata: "+e.source.savedata);
 					var datasaved = (e.savedata)?e.savedata:e.source.savedata;
 					if (datasaved.col1 != ""){
-						Alloy.Globals.Log("enterPayment.js:in:datepaidpicker: paymentdone: Proceed save");
+						Alloy.Globals.Log("enterPayment.js:in:datepaidpicker: paymentdone: Proceed save:;Alloy.Globals.submit:sid :"+sid+" datasaved.col1: "+datasaved.col1);
+						savedata.col3 = savedata.col4 = savedata.col6 = savedata.col7 = savedata.col8 = savedata.col9 = savedata.col11 = 'none';
+						savedata.col12 = savedata.col13 = savedata.col14 = savedata.col15 = 'NA';
+						savedata.col10 = sid;
+						//Alloy.Globals.submit("payment","",savedata.col1,savedata.col2,savedata.col3,savedata.col4,savedata.col5,savedata.col6,savedata.col7,savedata.col8,savedata.col9,savedata.col10,savedata.col11,savedata.col12,savedata.col13,savedata.col14,savedata.col15,savedata.col16,existingurlsedithref,existingurlsselfhref,existingurlsidtag);
+			  			Alloy.Globals.submit("payment",sid,savedata.col1,savedata.col2,savedata.col3,savedata.col4,savedata.col5,savedata.col6,savedata.col7,savedata.col8,savedata.col9,savedata.col10,savedata.col11,savedata.col12,savedata.col13,savedata.col14,savedata.col15,savedata.col16);	
+						win.close();
 					}
 				});
 				datepaidpicker.addEventListener("change",function(e){
@@ -508,7 +515,7 @@ function openInvoiceDetail(e){
 					var datesplit = date.toDateString().split(' ');
    					var datepaid = (date.getMonth()+1)+"/"+date.getDate()+"/"+date.getFullYear();
    			 		Alloy.Globals.Log("enterpayment.js::setDate: date: "+date+" datesplit: "+datesplit+" datepaid: "+datepaid);
-					savedata.col2 = datepaid;
+					savedata.col1 = datepaid;
 					paymentdone.savedata = savedata;
 				});
 				var date =  new Date();
@@ -517,7 +524,7 @@ function openInvoiceDetail(e){
 				var paidamountTextField = Ti.UI.createTextField({top:"340",left:"65%", hintText:"200", borderRadius:"0.25",color:"gray",width:"30%"});
 				paidamountTextField.addEventListener("change",function(e){
 					Alloy.Globals.Log("enterPayment.js:in:paidamountTextField: change: e.value"+e.value);
-					savedata.col1=e.value;
+					savedata.col2=e.value;
 					paymentdone.savedata = savedata;
 				});
 				

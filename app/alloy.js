@@ -621,6 +621,7 @@ Alloy.Globals.getPrivateData = function(sid,type,nextFunction,nextFunction1) {
 				});	
 				dataModel.save();
 			}
+			Alloy.Globals.Log("alloy.js:Alloy.Globals.getPrivateData:updating database with dataModel :"+JSON.stringify(dataModel));
 			Alloy.Globals.Log("alloy.js:Alloy.Globals.getPrivateData:updating database with data :"+JSON.stringify(data));
 			var file = Ti.Filesystem.getFile(
 				Ti.Filesystem.tempDirectory, thefile
@@ -1285,7 +1286,7 @@ Alloy.Globals.saveHandler = function(type){
 	///+currency+','+status+')');
  }; 
  
- Alloy.Globals.submit = function(type,ssid,col1,col2,col3,col4,col5,col6,col7,col8,col9,col10,col11,col12,col13,col14,col15,col16,existingedithref,existingselfhref,existingidtag) {	
+ Alloy.Globals.submit = function(type,ssid,col1,col2,col3,col4,col5,col6,col7,col8,col9,col10,col11,col12,col13,col14,col15,col16,existingedithref,existingselfhref,existingidtag,nextFunction) {	
  	Alloy.Globals.Log("alloy.js::Alloy.Globals.submit::executed with: type:"+type+',col1:'+col1+',col2:'+col2+',col3:'+col3+',col4:'+col4);
 	if (! ssid) {
  		var ssid = Titanium.App.Properties.getString(type);
@@ -1376,6 +1377,10 @@ Alloy.Globals.saveHandler = function(type){
         	///eval("var dataModel = Alloy.createModel('"+type+"',{col1:col1.trim(),col2:col2.trim(),col3:col3.trim(),col4:col4.trim(),col5:col5.trim(),col6:col6.trim(),col7:col7.trim(),col8:col8.trim(),col9:col9.trim(),col10:col10.trim(),col11:col11.trim(),col12:col12.trim(),col13:col13.trim(),col14:col14.trim(),col15:col15.trim(),col16:col16.trim()})");			
 			///dataModel.save();
 			alert('Saved Successfully!');
+			if (nextFunction) {
+				Alloy.Globals.Log("Alloy.Globals.submit:nextFunction "+nextFunction);
+					nextFunction();		
+				};
 		} 
 	xhr.setRequestHeader("Content-type", "application/atom+xml");
 	xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
@@ -3490,4 +3495,80 @@ Alloy.Globals.checkFileExist = function(filename,nextFunc){
 	///xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
 	xhr.send();
+};
+
+Alloy.Globals.getPrivateDatathenDrawthenDraw = function(sid,type,nF,nextFunction1) {	
+	var data = [];
+	var maxdebug = Titanium.App.Properties.getInt('maxdebug');
+	var mindebug = Titanium.App.Properties.getInt('mindebug');
+	Alloy.Globals.Log("alloy.js::Alloy.Globals.getPrivateDatathenDraw: type: min max debug: "+type+" :"+mindebug+" : "+maxdebug+" sid: "+sid);
+	(Alloy.Globals.googleAuthSheet.getAccessToken()) || Alloy.Globals.googleAuthSheet.authorize();
+	var url = "https://spreadsheets.google.com/feeds/list/"+sid+"/od6/private/full";
+	var thefile = "gss"+sid+".xml";
+	var xhr = Ti.Network.createHTTPClient({
+	    onload: function(e) {
+		    try {
+		    	Alloy.Globals.Log("alloy.js::Alloy.Globals.getPrivateDatathenDraw:: response txt is: "+this.responseText);
+				var xml = Titanium.XML.parseString(this.responseText);			
+				Alloy.Globals.Log("alloy.js::Alloy.Globals.getPrivateDatathenDraw:: this xml is: " +xml);
+				var feed = xml.documentElement.getElementsByTagName("feed");
+				var entry = xml.documentElement.getElementsByTagName("entry"); 
+				Alloy.Globals.Log("alloy.js::this entry length is: " +entry.length);
+				for (i=1;i<entry.length;i++){
+					var idtag = entry.item(i).getElementsByTagName("id").item(0).textContent.replace(':','yCoLoNy');
+					var link = entry.item(i).getElementsByTagName("link");
+					for (y=0;y<link.length;y++){			
+		    			var listitem = link.item(y);
+		    			if (listitem.getAttribute("rel") == "edit"){ var edithref = listitem.getAttribute("href").replace(':','yCoLoNy');}
+		    			if (listitem.getAttribute("rel") == "self"){ var selfhref = listitem.getAttribute("href").replace(':','yCoLoNy');}
+	    			}
+					data.push({
+						'col1' :  entry.item(i).getElementsByTagName("gsx:col1").item(0).textContent.trim() || "none",
+						'col2' : entry.item(i).getElementsByTagName("gsx:col2").item(0).textContent.trim() || "none",
+						'col3' :  entry.item(i).getElementsByTagName("gsx:col3").item(0).textContent.trim() || "none",
+						'col4' :  entry.item(i).getElementsByTagName("gsx:col4").item(0).textContent.trim() || "none",
+						'col5' :  entry.item(i).getElementsByTagName("gsx:col5").item(0).textContent.trim() || "none",
+						'col6' :  entry.item(i).getElementsByTagName("gsx:col6").item(0).textContent.trim() || "none",
+						'col7' :  entry.item(i).getElementsByTagName("gsx:col7").item(0).textContent.trim() || "none",
+						'col8' :  entry.item(i).getElementsByTagName("gsx:col8").item(0).textContent.trim() || "none",
+						'col9' :  entry.item(i).getElementsByTagName("gsx:col9").item(0).textContent.trim() || "none",
+						'col10' :  entry.item(i).getElementsByTagName("gsx:col10").item(0).textContent.trim() || "none",
+						'col11' :  entry.item(i).getElementsByTagName("gsx:col11").item(0).textContent.trim() || "none",
+						'col12' :  entry.item(i).getElementsByTagName("gsx:col12").item(0).textContent.trim() || "none",
+						'col13' :  entry.item(i).getElementsByTagName("gsx:col13").item(0).textContent.trim() || "none",
+						'col14' :  idtag+"xCoLoNx"+selfhref+"xCoLoNx"+edithref+"xCoLoNx"+selfhref.trim() || "none",
+						'col15' :  entry.item(i).getElementsByTagName("gsx:col15").item(0).textContent.trim() || "none",
+						'col16' :  entry.item(i).getElementsByTagName("gsx:col16").item(0).textContent.trim() || "none"	
+					});		
+					Alloy.Globals.Log("alloy.js::updating database with data :"+col1+" url:"+idtag+" "+edithref);
+				}
+				Alloy.Globals.Log("alloy.js:Alloy.Globals.getPrivateDatathenDraw:::checking data " +JSON.stringify(data));
+				Alloy.Globals.Log(" Alloy.Globals.getPrivateDatathenDraw::Data were successfuly downloaded from "+url+". Please proceed.");
+				//Future call back once loaded
+				if (nextFunction) {
+					Alloy.Globals.Log("Alloy.Globals.getPrivateDatathenDraw:nextFunction "+nextFunction);
+						nextFunction(data);		
+					};
+				if(nextFunction1){
+					Alloy.Globals.Log("Alloy.Globals.getPrivateDatathenDraw:nextFunction1 "+nextFunction1);
+						nextFunction1();	 
+				}
+				
+			} catch(e){
+					Alloy.Globals.Log("Alloy.Globals.getPrivateDatathenDraw:cathing e: "+JSON.stringify(e));
+			}
+			
+		}
+	});
+	xhr.onerror = function(e){
+		//alert(e);
+		Alloy.Globals.Log("alloy.js::Alloy.Globals.getPrivateDatathenDraw::Unable to pull data from cloud. The "+type+" info displayed here is NOT the latest. error is: "+JSON.stringify(e));
+		alert("code:" +e.code+ " Unable to pull data from cloud");
+		Alloy.Globals.googleAuthSheet.authorize();
+	};
+	Alloy.Globals.Log("Alloy.Globals.getPrivateDatathenDraw:: url is: "+url);
+	xhr.open("GET", url);
+	xhr.setRequestHeader("Authorization", 'Bearer '+Alloy.Globals.googleAuthSheet.getAccessToken());
+	xhr.send();
+	
 };

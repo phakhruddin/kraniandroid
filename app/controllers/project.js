@@ -400,38 +400,6 @@ function nextapptdateActionDone(e) {
 
 function openProjectDetail(title) {	
 	
-	var tr = Titanium.UI.create2DMatrix();
-	tr = tr.rotate(90);
-	var drop_button = Titanium.UI.createButton({
-		image : "/images/downbutton.png",
-		height : "40",
-		width : "15",
-		transform:tr
-	});
-
-	var statusarray = [{'text':'Completed','color':'green'}, {'text':'In Progress','color':'orange'},{'text':'Awaiting Customer','color':'yellow'},{'text':'Not Started','color':'red'},{'text':'Invoiced','color':'black'}, {'text':'Proposal','color':'blue'}];
-
-	var pickerColumn = Ti.UI.createPickerColumn();
-	for (i=0;i<statusarray.length;i++){
-		var pickerRow = Titanium.UI.createPickerRow();
-		//var pickerLabel = Titanium.UI.createLabel({text:statusarray[i].text,color:statusarray[i].color,font:{fontSize:14}});
-		var pickerLabel = Titanium.UI.createLabel({text:"PickerLabel "+i, color:"blue"});	
-		pickerRow.add(pickerLabel);
-		pickerRow.title=statusarray[i].text;
-		pickerRow.backgroundColor=statusarray[i].color;
-		pickerRow.id=statusarray[i].text;
-		pickerRow.colorid=statusarray[i].color;
-		pickerColumn.addRow(pickerRow);
-		Alloy.Globals.Log("project.js::pickerRow "+ JSON.stringify(pickerRow));	
-	}
-	
-	var picker = Ti.UI.createPicker({
-	  top:5,
-	  columns: [pickerColumn],
-	  selectionIndicator: true
-	});
-	 
-	//picker_view.add(picker);
 	
 	var slide_in =  Titanium.UI.createAnimation({bottom:0});
 	var slide_out =  Titanium.UI.createAnimation({bottom:-551});
@@ -613,12 +581,58 @@ function openProjectDetail(title) {
 	  });
 	 
   	};
+  	
+  	// status picker
+  	var tr = Titanium.UI.create2DMatrix();
+	tr = tr.rotate(90);
+	var drop_button = Titanium.UI.createButton({
+		image : "/images/downbutton.png",
+		height : "40",
+		width : "15",
+		transform:tr
+	});
+
+	var statusarray = [{'text':'Completed','color':'green'}, {'text':'In Progress','color':'orange'},{'text':'Awaiting Customer','color':'yellow'},{'text':'Not Started','color':'red'},{'text':'Invoiced','color':'black'}, {'text':'Proposal','color':'blue'}];
+
+	var pickerColumn = Ti.UI.createPickerColumn({layout:'vertical'});
+	//display current status
+	var pickerRow = Titanium.UI.createPickerRow({layout:'vertical'});
+	pickerRow.title= status;
+	pickerColumn.addRow(pickerRow);
+	for (i=0;i<statusarray.length;i++){
+		var pickerRow = Titanium.UI.createPickerRow({layout:'vertical'});
+		//var pickerLabel = Titanium.UI.createLabel({text:statusarray[i].text,color:statusarray[i].color,font:{fontSize:14}});
+		var pickerLabel = Titanium.UI.createLabel({text:"PickerLabel "+i, color:"blue"});	
+		pickerRow.add(pickerLabel);
+		pickerRow.title=statusarray[i].text;
+		pickerRow.backgroundColor=statusarray[i].color;
+		pickerRow.id=statusarray[i].text;
+		pickerRow.colorid=statusarray[i].color;
+		pickerColumn.addRow(pickerRow);
+		Alloy.Globals.Log("project.js::pickerRow "+ JSON.stringify(pickerRow));	
+	}
+	
+	var picker = Ti.UI.createPicker({
+	  top:5,
+	  columns: [pickerColumn],
+	  selectionIndicator: true
+	});
+	 
+	picker.addEventListener('change',function(e){
+		var status = e.selectedValue;
+		savedata.col11 = e.selectedValue;
+		Alloy.Globals.Log("project.js:Project Detail:picker:onChange:JSON.stringify(e.selectedValue) "+ JSON.stringify(e.selectedValue) + ", status: "+ status);
+	});
+	//picker_view.add(picker);
+	
+  	
+  	
     if (Ti.UI.Android){win.windowSoftInputMode = Ti.UI.Android.SOFT_INPUT_ADJUST_PAN;}
 	var headerview = Ti.UI.createView({height:"170"});
 	var statusheaderlabel = Ti.UI.createLabel({text:"Status Summary",left:"20"});
 	var statusheaderview = Ti.UI.createView({height:"30",backgroundColor:"#3B3B3B"});
 	statusheaderview.add(statusheaderlabel);
-	var statusview = Ti.UI.createView({height:"30",backgroundColor:"#4D4D4D"});
+	var statusview = Ti.UI.createView({height:"30",backgroundColor:"#4D4D4D",layout:'vertical'});
 	var datesview = Ti.UI.createView({height:"60",backgroundColor:"#3D3D3D"});
 	var joblogview = Ti.UI.createView({height:"60",backgroundColor:"#4D4D4D"});
 	var jobitemheaderlabel = Ti.UI.createLabel({text:"Item & Description",left:"20"});
