@@ -411,3 +411,11 @@ $.switch_futuremenu.addEventListener("change", function(e){
 	};
 });
 
+function dorefreshToken(e){
+	Alloy.Globals.Log("settings:refreshToken:JSON.stringify(e) "+JSON.stringify(e));
+	Alloy.Globals.googleAuthSheet.refreshToken();
+}
+
+function doBack(){
+	$.settings_window.close();
+}

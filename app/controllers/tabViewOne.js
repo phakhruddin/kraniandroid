@@ -4,12 +4,16 @@ var i=0;
 
 function openNextTab(item){
 	$.activityIndicator.show();
-	var sid = Titanium.App.Properties.getString(item,"none");
-	Alloy.Globals.Log("tabViewOne::openNextTab::sid for "+ item +" : "+sid);
-	Alloy.Globals.getPrivateData(sid,item,function(e){
-		Alloy.Globals.Log("tabViewOne.js:openNextTab: item: "+item);
-		Alloy.Globals.createController(item,$.tab_one);
-	},function(){ $.activityIndicator.hide();});	
+	Alloy.Globals.googleAuthSheet.refreshToken(function(){
+		var sid = Titanium.App.Properties.getString(item,"none");
+		Alloy.Globals.Log("tabViewOne::openNextTab::sid for "+ item +" : "+sid);
+		Alloy.Globals.getPrivateData(sid,item,function(e){
+			Alloy.Globals.Log("tabViewOne.js:openNextTab: item: "+item);
+			Alloy.Globals.createController(item,$.tab_one);
+			},function(){ $.activityIndicator.hide();}
+		);	
+	},function(){}); //refresh token that usually expired after 1hr
+
 }
 
 function setMenuText() {
@@ -54,12 +58,15 @@ function login(e) {
 			//login activity
 			setTimeout(function(){
 				Alloy.Globals.Log(new Date()+"::tabviewone.js::login:before loginActivity()");
-				$.status_view.backgroundColor="green";
-				$.status_view.height="2";
+				$.status_view.backgroundColor="white";
+				$.status_view.height="1";
 				$.status_label.text="";
-				$.login_button.title="Logout";
+				//$.login_button.title="Logout";
+				$.login_button.hide();
 				if (Titanium.App.Properties.getString("emailid")) {
 					$.logout_button.title=Titanium.App.Properties.getString("emailid").split('@')[0].trim();
+					$.logout_button.text=Titanium.App.Properties.getString("emailid").split('@')[0].trim();
+					$.logout_button.font={fontSize:10};
 					checkUserLicense($.logout_button.title);					
 					setMenuText();
 					Alloy.Globals.loginActivity();
@@ -82,7 +89,7 @@ function login(e) {
 				//$.tabviewone_window.show();
 				$.login_button.title="REFRESH";	
 				$.status_view.backgroundColor="orange";
-				$.status_view.height="30";
+				$.status_view.height="15";
 				$.status_label.text="Please click REFRESH above.";
 				$.tabviewone_window.add(refreshView);
 				$.tabviewone_window.remove(loadingView);
@@ -222,10 +229,10 @@ function refresh(e){
 			}, 30000);
 		}
 		setTimeout(function(){
-			$.status_view.backgroundColor="green";
-			$.status_view.height="5";
+			$.status_view.backgroundColor="white";
+			$.status_view.height="1";
 			$.status_label.text="";
-			$.login_button.title="Logout";
+			$.login_button.title="";
 			$.tabviewone_window.remove(refreshView);
 			setMenuText();
 			/*
@@ -280,24 +287,28 @@ var signinView = Titanium.UI.createView({
    opacity:"0.95",
    backgroundColor:'#514F4F',
    width:Ti.UI.FILL,
-   height:Ti.UI.FILL
+   height:Ti.UI.FILL,
+   title : 'LOGIN',
+   color : 'white',
+   title : 'LOGIN'
 });
-var signinButton = Titanium.UI.createButton({
-   title: 'LOGIN',
-   width: 150,
-   height: 80,
-   color: "white",
-   font: {
-   	fontSize:"36"
-   }
+var signinButtonLabelView = Titanium.UI.createView({
+   width: 120,
+   height: 60,
+   borderColor: "white",
+   borderWidth: 0.5,
+   borderRadius: 30,
+   title : 'LOGIN'
 });
-signinButton.addEventListener('click',function(e)
+var signinButtonLabel = Ti.UI.createLabel({text:'Sign In',color:'white',font:{fontSize:"24"},title : 'LOGIN'});
+signinView.addEventListener('click',function(e)
 {
    Alloy.Globals.Log("You clicked the button");
    $.tabviewone_window.remove(signinView);
    login(e);
 });
-signinView.add(signinButton);
+signinButtonLabelView.add(signinButtonLabel);
+signinView.add(signinButtonLabelView);
 $.tabviewone_window.add(signinView);
 
 

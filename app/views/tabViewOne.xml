@@ -8,8 +8,12 @@
   <Collection src="proposal"/>
   <Collection src="master"/>
   <Collection src="joblogsid"/>
-  <Tab id="tab_one" title="MAIN" titleColor="white" backgroundFocusedColor="white">
+  <Tab id="tab_one" titleColor="white" backgroundFocusedColor="white">
     <Window id="tabviewone_window" title="Krani" class='container'>
+ 		<ActionBar id="actionbar"/>
+	   	<Menu>
+	       	<MenuItem id="item1" title="Logout" icon='Ti.Android.R.drawable.ic_menu_add' showAsAction="Ti.Android.SHOW_AS_ACTION_ALWAYS"/>  
+	    </Menu>
     	<ActivityIndicator id="activityIndicator" style="Titanium.UI.ActivityIndicatorStyle.BIG_DARK" message="Loading.."/>
     	<TableView>
       		<HeaderView id="tabviewone_headerview">
@@ -50,8 +54,10 @@
 		   </TableViewRow>
 		   <TableViewRow id="google" Title="google"/>
 		   <TableViewRow id="loginrow" backgroundColor="transparent">
-		   		  <Button id="login_button" title="LOGIN" onClick="login" right="50" />
-		   		  <Button id="logout_button" title="Logout" left="20" />
+		   		  <Button id="login_button" title="LOGIN" onClick="login" borderColor="gray" borderWidth="0.2" borderRadius="20"  color="white" right="50" />
+		   		  <View id="logout_view" left='20' height='40' width="80" borderColor="gray" borderRadius="20" backgroundColor="white" borderWidth="0.5" >
+		   		  	<Label id="logout_button" title="Logout" text="Logout" color="gray" font="{fontSize:'14'}"/>
+		   		  </View>
 		   </TableViewRow>
     	</TableView>
     </Window>  

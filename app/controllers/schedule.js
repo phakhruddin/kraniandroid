@@ -646,7 +646,9 @@ function doSearch(e){
 	Alloy.Globals.Log("schedule.js::doSearch : $.search_history.visible: "+$.search_history.visible);
 }
 
-function doBack(e){};
+function doBack(e){
+	$.schedule_window.close();
+};
 
 function createEventFuture() {
 	Alloy.Globals.createController('createevent',$.schedule_tab);

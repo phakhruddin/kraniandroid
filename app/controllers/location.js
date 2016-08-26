@@ -189,7 +189,9 @@ function doSearch(e){
 	//$.labor_table.setData([]);
 	//Alloy.Globals.Log("client.js::doSearch : after $.labor_table.setData([]): JSON.stringify($.labor_table): "+JSON.stringify($.labor_table));
 }
-function doBack(){};
+function doBack(){
+	$.labor_window.close();
+};
 
 function doRow(e){
 	Alloy.Globals.Log("location.js::doRow click: "+JSON.stringify(e));

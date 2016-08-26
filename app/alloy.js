@@ -292,7 +292,7 @@ Alloy.Globals.appendFile = function (content, filename){
 			var file = Ti.Filesystem.getFile(
 				Ti.Filesystem.tempDirectory, filename
 			);
-			file.append(content+"\n");
+			(file) && file.append(content+"\n");
 };
 
 Alloy.Globals.readFile = function (filename){
@@ -556,6 +556,7 @@ Alloy.Globals.createController = function(controller,sourcetab){
 
 Alloy.Globals.getPrivateData = function(sid,type,nextFunction,nextFunction1) {	
 	var data = [];
+	var dataModel = [];
 	var maxdebug = Titanium.App.Properties.getInt('maxdebug');
 	var mindebug = Titanium.App.Properties.getInt('mindebug');
 	Alloy.Globals.Log("alloy.js::Alloy.Globals.getPrivateData: type: min max debug: "+type+" :"+mindebug+" : "+maxdebug+" sid: "+sid);
@@ -3572,3 +3573,7 @@ Alloy.Globals.getPrivateDatathenDrawthenDraw = function(sid,type,nF,nextFunction
 	xhr.send();
 	
 };
+
+Alloy.Globals.refreshToken =  new GoogleAuth({
+	clientId : Alloy.Globals.clientId
+});

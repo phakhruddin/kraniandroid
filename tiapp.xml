@@ -4,7 +4,7 @@
     <property name="acs-api-key-development" type="string">gZwp2y7JSZPtbgjnlwE2cmQgzWenzT4f</property>
     <id>com.krani</id>
     <name>Krani</name>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <publisher>dbayco inc.</publisher>
     <url>http://idevice.net</url>
     <description>KRANI</description>
@@ -52,7 +52,7 @@
         </plist>
     </ios>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
-        <manifest>
+        <manifest android:versionCode="101" android:versionName="1.0.1">
             <!--uses-sdk android:minSdkVersion="14" android:targetSdkVersion="23"></uses-sdk-->
             <application android:theme="@style/Theme.AppCompat.Translucent"/>
         </manifest>

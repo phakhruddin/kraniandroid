@@ -1,72 +1,11 @@
 <Alloy>
 	<Tab id="tab_settings">
   <Window id="settings_window" backgroundColor="white" title="Settings">
- 	  <!--TableView id="settings_table" backgroundColor="transparent">
- 	  	<TableViewSection headerTitle="Debug">
-		 <TableViewRow id="row_mindebug" Title="Min Debug">
-			 <Label id="label_mindebug" color="#333" top="5" left="20" text="Minimum Debug">OFFLINE MODE</Label>
-			 <Label id="label_mindebug1" color="gray" top="30" left="20" text="FG LOC">Turn on/off offline mode</Label>
-		     <Switch id="switch_mindebug" borderColor="#63D1F4" borderRadius="10" borderWidth="0.5" right="20" titleOff="OFF" titleOn="ON" value=false/>
-		 </TableViewRow>
-		 <TableViewRow id="row_maxdebug" Title="max Debug">
-			 <Label id="label_maxdebug" color="#333" top="5" left="20" text="maximum Debug">Turn ON Maximum Debug</Label>
-			 <Label id="label_maxdebug1" color="gray" top="30" left="20" text="FG LOC">Maximum debug</Label>
-		     <Switch id="switch_maxdebug" borderColor="#63D1F4" borderRadius="10" borderWidth="0.5"  right="20" titleOff="OFF" titleOn="ON" value=false/>
-		 </TableViewRow>
-		 <TableViewRow id="row_emailsupport">
-			 <Button id="button_emailsupport" top="0" left="10" backgroundColor="white" color="white" image="/images/email.png" height="60" width="50" onClick="sendSupportEmail" />
-			 <Label id="label_header" left="51" color="#333" top="10" text="Submit Log to support"/>
-			 <Label id="label_sub1" left="20" color="gray" top="35" text="Please turn on maximum debug first"></Label>
-		 </TableViewRow>
-		 </TableViewSection>
-	 	<TableViewSection headerTitle="Profiles">
-		 <TableViewRow height="40">
-		 		<Label id="currency_label" left="20" text="Currency:"></Label>
- 	  			<TextField id="currency_tf" width="200" left="100" hintText="USD" value="" onBlur="currencyAction"/>
- 	  		</TableViewRow>
-		 <TableViewRow id="row_empselect" Title="employee seletion">
-			 <Button id="button_empselect" left="20" title="Select Employee >"/>
-		 </TableViewRow>
-		 </TableViewSection>
- 	  	<TableViewSection headerTitle="Please enter if not present"/>
- 	  	<TableViewSection headerTitle="Company Name">
-	  		<TableViewRow height="40">
- 	  			<TextField id="companygmail_tf"  width="320" left="20" hintText="" keyboardType="Titanium.UI.KEYBOARD_EMAIL" onReturn="coGmail"/>
- 	  		</TableViewRow>
- 	  		<TableViewRow height="40">
- 	  			<TextField id="companyname_tf" width="320" left="20" onBlur="coName" />
- 	  		</TableViewRow>
- 	  	</TableViewSection>
- 	  	<TableViewSection headerTitle="Company Address">
- 	  		<TableViewRow height="40">
- 	  			<TextField id="streetaddress_tf" width="320" left="20" hintText="Address: 2855 W Bluemound Dr" value="" onBlur="coStreetAddress"/>
- 	  		</TableViewRow>
- 	  		<TableViewRow height="40">
- 	  			<TextField id="city_tf" left="20" width="160" value="" onBlur="coCity" />
- 	  			<TextField id="state_tf" left="200"  width="70" value="" onBlur="coState" />
- 	  			<TextField id="zipcode_tf" left="280"  width="90" value="" onBlur="coZip" keyboardType="Ti.UI.KEYBOARD_DECIMAL_PAD" >
- 	  		</TextField>
- 	  		</TableViewRow>
-  		</TableViewSection>
-  		<TableViewSection headerTitle="Company Contact">
-	  		<TableViewRow height="40">
- 	  			<TextField id="companyphone_tf" width="300" left="20" value="" keyboardType="Titanium.UI.KEYBOARD_PHONE_PAD" onBlur="coPhone">
-  	  			</TextField>
- 	  		</TableViewRow>
- 	  		</TableViewSection>
- 	  	<TableViewSection headerTitle="Logo">
- 	  		<TableViewRow id="logo_row" height="Ti.UI.Size">
- 	  		</TableViewRow>
-  		</TableViewSection>
-	  	<TableViewSection headerTitle="Beta Feature">
-		 <TableViewRow id="row_futuremenu" Title="Future Features">
-			 <Label id="label_futuremenu" color="#333" top="5" left="20" text="Future Features">Turn ON Future Features</Label>
-			 <Label id="label_futuremenu1" color="gray" top="30" left="20" text="FG LOC">Future Feature</Label>
-		     <Switch id="switch_futuremenu" right="20" titleOff="OFF" titleOn="ON" value=false />
-		 </TableViewRow>
-		  <TableViewRow/>
-  		</TableViewSection>
-	  </TableView-->
+  	  	<ActionBar id="actionbar" onHomeIconItemSelected="doBack"  displayHomeAsUp="true" />
+	   	<Menu>
+	       	<MenuItem id="item1" icon='Ti.Android.R.drawable.ic_menu_rotate' showAsAction="Ti.Android.SHOW_AS_ACTION_ALWAYS" onClick="dorefreshToken"/>    
+	    </Menu>
+      <ActivityIndicator id="activityIndicator" style="Titanium.UI.ActivityIndicatorStyle.BIG_DARK"/>
 	  <ScrollView id="scrollView" layout='vertical' scrollType="vertical" >
 	  	<View id="row_mindebug" height="50" Title="Min Debug">
 			 <Label id="label_mindebug" color="#333" top="5" left="20" text="Minimum Debug">OFFLINE MODE</Label>

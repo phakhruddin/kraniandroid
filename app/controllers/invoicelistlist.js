@@ -6,7 +6,9 @@ exports.openMainWindow = function(_tab) {
 
 };
 
-function doBack(){};
+function doBack(){
+	$.invoicelist_window.close();
+};
 
 function projectdoAdd(e) {
   	
@@ -302,6 +304,9 @@ function whois(e){
 }
    
 function openInvoiceDetail(e){
+	$.activityIndicator.show();
+	var activityIndicator = Ti.UI.createActivityIndicator({style: Titanium.UI.ActivityIndicatorStyle.BIG_DARK});
+	activityIndicator.show();
 	Alloy.Globals.Log("invoicelistlist.js: openInvoiceDetail:JSON.stringify e : " +JSON.stringify(e));
 	//variables start	
 	Alloy.Collections.adhoc.deleteAll();
@@ -472,7 +477,7 @@ function openInvoiceDetail(e){
         
 	}
 	
-	function enterPayment(filename){
+	function enterPayment(filename,cbfunc){
 		Alloy.Globals.Log("invoicelistlist.js::enterPayment::after filename: " +filename);
 		var kraniemailid = Titanium.App.Properties.getString('kraniemailid');
 		var name = kraniemailid.split('@')[0].trim();
@@ -484,89 +489,99 @@ function openInvoiceDetail(e){
 			var item="payment";
 			Alloy.Globals.Log("invoicedetail.js::prefetchpayment: updating DB with: item: "+item+" e.sid: "+e.sid);
 			function nexStep(){
+				var payment = [];
+				var enterPaymentwin = Ti.UI.createWindow({title:"Enter Payment",backgroundColor:'#404040'});
+				var enterPaymentScrollView = Ti.UI.createScrollView({scrollType:'vertical',top:0,height:'60%'});
 				var payment = Alloy.Collections.instance('payment');
-				payment.fetch();
-				var content = payment.toJSON();
-				Alloy.Globals.Log("enterPayment.js:in:Alloy.Globals.checkFileExist: Alloy.Globals.getPrivateData:nexStep:JSON stringify content: "+JSON.stringify(content));
-				Alloy.Globals.Log("enterPayment.js:in:Alloy.Globals.checkFileExist: Alloy.Globals.getPrivateData:nexStep:content.length: "+content.length);
-				//Prep Windows. START
-				savedata = {col1:"",col2:"",col3:"",col4:"",col5:"",col6:"",col7:"",col8:"",col9:"",col10:"",col11:"",col12:"",col13:"",col14:"",col15:"",col16:""};
-				openInvoiceDetailscrollView.removeAllChildren();
-				openInvoiceDetailscrollView.bottom = "40%";
-				var datepaidpicker = Ti.UI.createPicker({type: Ti.UI.PICKER_TYPE_DATE,top:"370",left:"10%"});
-				var paymentdone = Ti.UI.createButton({bottom:"5%",left:"75%",title:"DONE"});
-				paymentdone.addEventListener("click",function(e){
-					Alloy.Globals.Log("enterPayment.js:in:datepaidpicker: paymentdone: JSON.stringify(e): "+JSON.stringify(e));
-					Alloy.Globals.Log("enterPayment.js:in:datepaidpicker: paymentdone: e.savedata: "+e.savedata+" e.source.savedata: "+e.source.savedata);
-					var datasaved = (e.savedata)?e.savedata:e.source.savedata;
-					if (datasaved.col1 != ""){
-						Alloy.Globals.Log("enterPayment.js:in:datepaidpicker: paymentdone: Proceed save:;Alloy.Globals.submit:sid :"+sid+" datasaved.col1: "+datasaved.col1);
-						savedata.col3 = savedata.col4 = savedata.col6 = savedata.col7 = savedata.col8 = savedata.col9 = savedata.col11 = 'none';
-						savedata.col12 = savedata.col13 = savedata.col14 = savedata.col15 = 'NA';
-						savedata.col10 = sid;
-						//Alloy.Globals.submit("payment","",savedata.col1,savedata.col2,savedata.col3,savedata.col4,savedata.col5,savedata.col6,savedata.col7,savedata.col8,savedata.col9,savedata.col10,savedata.col11,savedata.col12,savedata.col13,savedata.col14,savedata.col15,savedata.col16,existingurlsedithref,existingurlsselfhref,existingurlsidtag);
-			  			Alloy.Globals.submit("payment",sid,savedata.col1,savedata.col2,savedata.col3,savedata.col4,savedata.col5,savedata.col6,savedata.col7,savedata.col8,savedata.col9,savedata.col10,savedata.col11,savedata.col12,savedata.col13,savedata.col14,savedata.col15,savedata.col16);	
-						win.close();
-					}
-				});
-				datepaidpicker.addEventListener("change",function(e){
-					Alloy.Globals.Log("enterPayment.js:in:datepaidpicker: change: e.value"+e.value);
-					var date = e.value;
-					var datesplit = date.toDateString().split(' ');
-   					var datepaid = (date.getMonth()+1)+"/"+date.getDate()+"/"+date.getFullYear();
-   			 		Alloy.Globals.Log("enterpayment.js::setDate: date: "+date+" datesplit: "+datesplit+" datepaid: "+datepaid);
-					savedata.col1 = datepaid;
-					paymentdone.savedata = savedata;
-				});
-				var date =  new Date();
-				var currentdate = (date.getMonth()+1)+"/"+date.getDate()+"/"+date.getFullYear();
-				var datepaidlabel = Ti.UI.createLabel({left:20,top:350,text:currentdate,color:"white"});
-				var paidamountTextField = Ti.UI.createTextField({top:"340",left:"65%", hintText:"200", borderRadius:"0.25",color:"gray",width:"30%"});
-				paidamountTextField.addEventListener("change",function(e){
-					Alloy.Globals.Log("enterPayment.js:in:paidamountTextField: change: e.value"+e.value);
-					savedata.col2=e.value;
-					paymentdone.savedata = savedata;
-				});
-				
-				win.add(datepaidpicker);
-				win.add(datepaidlabel);
-				win.add(paidamountTextField);
-				win.add(paymentdone);
-				win.title = "Enter Payment";
-				//Prep Windows. END
-				var topvalue = 10;				
-				var paidamount = 0;
-				for (i=0;i<content.length;i++){
-						var notesbody = content[i].col2;
-				        var imageurl = content[i].col4;
-				        var date = content[i].col1;
-				        var dateadded = content[i].col16;
-				        var employee = content[i].col5;
-				        
-	        			var paymentheader_rowview = Titanium.UI.createView({top:topvalue, backgroundColor:"gray", height:"40",borderRadius:"10"});
-						var payment_rowview = Titanium.UI.createView({top:topvalue+15, backgroundColor:"white", height:"43"});
-		
-						var payment_paidlabel = Titanium.UI.createLabel({left:"50%", font:{fontSize:"24"}, color:"gray",text:notesbody });
-						var payment_datepaidlabel = Titanium.UI.createLabel({left:"10", top:5, font:{fontSize:"12"}, color:"black",text:date });
-						var payment_datelabel = Titanium.UI.createLabel({left:"10",font:{fontSize:"8"}, color:"orange" ,top:"1", text:new Date(+dateadded).toLocaleString()});
-						var payment_employeelabel = Titanium.UI.createLabel({right:"5",font:{fontSize:"8"}, color:"orange" ,top:"1", text:employee });
-						
-						paymentheader_rowview.add(payment_employeelabel);
-						paymentheader_rowview.add(payment_datelabel);
-						payment_rowview.add(payment_paidlabel);
-						payment_rowview.add(payment_datepaidlabel);
-						topvalue = topvalue + 60;
-						openInvoiceDetailscrollView.add(paymentheader_rowview);
-						openInvoiceDetailscrollView.add(payment_rowview);	
-				        // calculate total
-				        var paidamount = parseFloat(notesbody) + paidamount   ;
-				        }
-				Alloy.Globals.Log("enterPayment.js:in:Alloy.Globals.checkFileExist: Alloy.Globals.getPrivateData:nexStep:paidamount : "+paidamount);
-				
+				payment.fetch(); //1st then 2nd fetch.
+				setTimeout(function(){
+					payment.fetch();
+					var content = payment.toJSON();
+					Alloy.Globals.Log("enterPayment.js:in:Alloy.Globals.checkFileExist: Alloy.Globals.getPrivateData:nexStep:JSON stringify content: "+JSON.stringify(content));
+					Alloy.Globals.Log("enterPayment.js:in:Alloy.Globals.checkFileExist: Alloy.Globals.getPrivateData:nexStep:content.length: "+content.length);
+					//Prep enterPaymentwindows. START
+					savedata = {col1:"",col2:"",col3:"",col4:"",col5:"",col6:"",col7:"",col8:"",col9:"",col10:"",col11:"",col12:"",col13:"",col14:"",col15:"",col16:""};
+					enterPaymentScrollView.bottom = "40%";
+					var datepaidpicker = Ti.UI.createPicker({type: Ti.UI.PICKER_TYPE_DATE,top:"370",left:"10%"});
+					var paymentdone = Ti.UI.createButton({bottom:"5%",left:"75%",title:"DONE"});
+					paymentdone.addEventListener("click",function(e){
+						Alloy.Globals.Log("enterPayment.js:in:datepaidpicker: paymentdone: JSON.stringify(e): "+JSON.stringify(e));
+						Alloy.Globals.Log("enterPayment.js:in:datepaidpicker: paymentdone: e.savedata: "+e.savedata+" e.source.savedata: "+e.source.savedata);
+						var datasaved = (e.savedata)?e.savedata:e.source.savedata;
+						if (datasaved.col1 != ""){
+							Alloy.Globals.Log("enterPayment.js:in:datepaidpicker: paymentdone: Proceed save:;Alloy.Globals.submit:sid :"+sid+" datasaved.col1: "+datasaved.col1);
+							savedata.col3 = savedata.col4 = savedata.col6 = savedata.col7 = savedata.col8 = savedata.col9 = savedata.col11 = 'none';
+							savedata.col12 = savedata.col13 = savedata.col14 = savedata.col15 = 'NA';
+							savedata.col10 = sid;
+							//Alloy.Globals.submit("payment","",savedata.col1,savedata.col2,savedata.col3,savedata.col4,savedata.col5,savedata.col6,savedata.col7,savedata.col8,savedata.col9,savedata.col10,savedata.col11,savedata.col12,savedata.col13,savedata.col14,savedata.col15,savedata.col16,existingurlsedithref,existingurlsselfhref,existingurlsidtag);
+				  			Alloy.Globals.submit("payment",sid,savedata.col1,savedata.col2,savedata.col3,savedata.col4,savedata.col5,savedata.col6,savedata.col7,savedata.col8,savedata.col9,savedata.col10,savedata.col11,savedata.col12,savedata.col13,savedata.col14,savedata.col15,savedata.col16);	
+							enterPaymentwin.close();
+						}
+					});
+					datepaidpicker.addEventListener("change",function(e){
+						Alloy.Globals.Log("enterPayment.js:in:datepaidpicker: change: e.value"+e.value);
+						var date = e.value;
+						var datesplit = date.toDateString().split(' ');
+	   					var datepaid = (date.getMonth()+1)+"/"+date.getDate()+"/"+date.getFullYear();
+	   			 		Alloy.Globals.Log("enterpayment.js::setDate: date: "+date+" datesplit: "+datesplit+" datepaid: "+datepaid);
+						savedata.col1 = datepaid;
+						paymentdone.savedata = savedata;
+					});
+					var date =  new Date();
+					var currentdate = (date.getMonth()+1)+"/"+date.getDate()+"/"+date.getFullYear();
+					var datepaidlabel = Ti.UI.createLabel({left:20,top:350,text:currentdate,color:"white"});
+					var paidamountTextField = Ti.UI.createTextField({top:"340",left:"65%", hintText:"200", borderRadius:"0.25",color:"gray",width:"30%"});
+					paidamountTextField.addEventListener("change",function(e){
+						Alloy.Globals.Log("enterPayment.js:in:paidamountTextField: change: e.value"+e.value);
+						savedata.col2=e.value;
+						paymentdone.savedata = savedata;
+					});
+					
+					enterPaymentwin.add(datepaidpicker);
+					enterPaymentwin.add(datepaidlabel);
+					enterPaymentwin.add(paidamountTextField);
+					enterPaymentwin.add(paymentdone);
+					enterPaymentwin.title = "Enter Payment";
+					//Prep enterPaymentwindows. END
+					var topvalue = 10;				
+					var paidamount = 0;
+					for (i=0;i<content.length;i++){
+							var notesbody = content[i].col2;
+					        var imageurl = content[i].col4;
+					        var date = content[i].col1;
+					        var dateadded = content[i].col16;
+					        var employee = content[i].col5;
+					        
+		        			var paymentheader_rowview = Titanium.UI.createView({top:topvalue, backgroundColor:"gray", height:"40",borderRadius:"10"});
+							var payment_rowview = Titanium.UI.createView({top:topvalue+15, backgroundColor:"white", height:"43"});
+			
+							var payment_paidlabel = Titanium.UI.createLabel({left:"50%", font:{fontSize:"24"}, color:"gray",text:notesbody });
+							var payment_datepaidlabel = Titanium.UI.createLabel({left:"10", top:5, font:{fontSize:"12"}, color:"black",text:date });
+							var payment_datelabel = Titanium.UI.createLabel({left:"10",font:{fontSize:"8"}, color:"orange" ,top:"1", text:new Date(+dateadded).toLocaleString()});
+							var payment_employeelabel = Titanium.UI.createLabel({right:"5",font:{fontSize:"8"}, color:"orange" ,top:"1", text:employee });
+							
+							paymentheader_rowview.add(payment_employeelabel);
+							paymentheader_rowview.add(payment_datelabel);
+							payment_rowview.add(payment_paidlabel);
+							payment_rowview.add(payment_datepaidlabel);
+							topvalue = topvalue + 60;
+							enterPaymentScrollView.add(paymentheader_rowview);
+							enterPaymentScrollView.add(payment_rowview);	
+					        // calculate total
+					        var paidamount = parseFloat(notesbody) + paidamount   ;
+					        }
+					Alloy.Globals.Log("enterPayment.js:in:Alloy.Globals.checkFileExist: Alloy.Globals.getPrivateData:nexStep:paidamount : "+paidamount);
+					enterPaymentwin.add(enterPaymentScrollView);
+					enterPaymentwin.addEventListener('close', function(){(cbfunc) && cbfunc();});
+					enterPaymentwin.open();
+					setTimeout(function(){(cbfunc) && cbfunc();},2000);
+				},1000);			
 			}
 			Alloy.Globals.getPrivateData(e.sid,item,nexStep(),function(){});			
 		});	
 		//setTimeout(function(){nexStep();},4000);
+		
+		
 		
 	}
 
@@ -608,6 +623,7 @@ function openInvoiceDetail(e){
 	
 	//rows, labels, etc.
 	var win = Titanium.UI.createWindow({title:"Invoice Detail", backgroundColor: "#404040"});	
+	var activityIndicator = Ti.UI.createActivityIndicator({style: Titanium.UI.ActivityIndicatorStyle.BIG_DARK});
 	var invoicenumber_rowview = Titanium.UI.createView({id:"invoicenumber_row",backgroundColor:"#F5F5F5",top:'5',  height:"105", borderRadius:"10"});
 	var invoicenumberlabel = Titanium.UI.createLabel({id:"invoicenumber" ,color:"#404040" ,top:"5", font: { fontSize:10 }, text:"Invoice #: "+invoicenumber});
 	var headerlabel = Titanium.UI.createLabel({id:"header", color:"#404040", top:"20", text:firstname+" "+lastname, font: { fontSize:30, fontStyle: 'bold' } }) ;
@@ -622,10 +638,11 @@ function openInvoiceDetail(e){
 	var paidlabel = Titanium.UI.createLabel({id:"paid",color:"#404040", right:"15%",top:"105",font: { fontSize:12 },text:'PAID: '+paid});
 	var invoice_buttonlabel = Titanium.UI.createLabel({id:"invoice_button",top:"125",color:'#63D1F4',text:"Click to update payment ->"});
 	invoice_buttonlabel.addEventListener("click",function(){
+		activityIndicator.show();
 		invoice_buttonlabel.color="gray";
 		setTimeout(function(){invoice_buttonlabel.color='#63D1F4';},100);
 		//altenterPayment(filename);
-		enterPayment(filename);
+		enterPayment(filename,function(){activityIndicator.hide();});
 	});
 	totalbalance_rowview.add(bal_titlelabel);
 	//totalbalance_rowview.add(balance1label);
@@ -1153,5 +1170,7 @@ function openInvoiceDetail(e){
 	//Report Generation. END
 
 	win.add(openInvoiceDetailscrollView);
+	win.add(activityIndicator);
+	win.addEventListener('close',function(){});
 	win.open();
 }

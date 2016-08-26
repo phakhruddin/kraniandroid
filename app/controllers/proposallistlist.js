@@ -229,7 +229,9 @@ function doAdd(e){
 	win.open()
 };
 
-function doBack(){};
+function doBack(){
+	$.proposallist_window.close();
+};
 
 $.search_history.visible=false;
 function doSearch(e){

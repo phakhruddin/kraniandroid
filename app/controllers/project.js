@@ -130,6 +130,7 @@ $.projectlist_table.addEventListener("delete", function(e){
 
 function doBack(e) {
 	Alloy.Globals.Log("project.js::doMenuClick: "+JSON.stringify(e));
+	$.projectlist_window.close();
 }
 function doAdd(e) {
   	

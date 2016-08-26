@@ -67,7 +67,9 @@ Alloy.Globals.Log("employeedetail.js:: existing edithref: " +edithref);
 (idtag)?Titanium.App.Properties.setString('idtag',idtag):Ti.App.Properties.removeProperty('idtag');
 Alloy.Globals.Log("employeedetail.js:: existing Titanium.App.Properties.getString('edithref'): " +Titanium.App.Properties.getString('edithref'));
 
-function doBack(){};
+function doBack(){
+	$.enteremployee_window.close();
+};
 
 function addRows(){
  Alloy.Globals.Log("JSON stringify e : " +JSON.stringify(e));

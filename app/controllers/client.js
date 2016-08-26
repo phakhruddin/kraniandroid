@@ -111,7 +111,9 @@ function doSearch(e){
 	if ($.search_history.visible) {$.search_history.visible=false;} else {$.search_history.visible=true;}
 	Alloy.Globals.Log("client.js::doSearch : $.search_history.visible: "+$.search_history.visible);
 }
-function doBack(){};
+function doBack(){
+	$.clientlist_window.close();
+};
 
 //action taken when window is closed.
 
